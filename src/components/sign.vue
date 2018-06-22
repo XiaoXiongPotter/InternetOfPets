@@ -1,5 +1,5 @@
 <template>
-	<div class="sign">
+	<div class="sign" ref="sign">
 		<div class="sign-content">
 			<el-header class="sign-header">
 				<p>用户登录</p>
@@ -14,6 +14,7 @@
 				<el-input
 					placeholder="密码"
 					type="password"
+					v-model="input9"
   					clearable
   					class="password">
 				</el-input>
@@ -28,7 +29,7 @@
 				<el-checkbox class="check" v-model="checked">记住密码</el-checkbox>
 				<el-button class="forget" type="text">忘记密码?</el-button>
 				<el-button class="login" type="primary" @click="login">登录</el-button>
-				<el-button class="set" type="danger">注册</el-button>
+				<el-button class="set" type="danger"><router-link to="/register">注册</router-link></el-button>
 			</el-main>
 			<el-footer class="footer">
 				<span class="line"></span>
@@ -39,8 +40,9 @@
 					<li><img src="../image/sina.png"><p>新浪微博</p></li>
 				</ul>
 			</el-footer>
-		</div>
 	</div>
+	</div>
+
 </template>
 <script>
 	export default{
@@ -48,10 +50,16 @@
 		data () {
 			return {
 				 input10: '',
+				 input9:'',
 				 input1:'',
 				 checked: false,
 				 show:[]
 			}
+		},
+		created () {
+			this.$nextTick(() => {
+				this.draw()
+			})
 		},
 		methods: {
 			draw () {
@@ -101,27 +109,50 @@
 			login () {
 				let val = this.input1;
 				let num = this.show.join('');
-				if(val==''){
+				if(this.input10.length==0){
+					alert('请输入账号')
+				}
+				else if(this.input9.length==0){
+					alert('请输入密码')
+				}
+				else if(val==''){
                 alert('请输入验证码！');
-            }else if(val == num){
-                alert('登录成功');
-                this.input1 = '';
-             
-            }else{
+            }else if(val != num){
                 alert('验证码错误！请重新输入！');
                 this.input1 = '';
-         
+            }
+            else{
+                alert('登录成功');
+                this.input1 = '';
+//              this.$http.get("http://192.168.0.136:8080/petUser/id").then(
+//          function (res) {
+//              // 处理成功的结果
+//              alert(res.body);
+//          },function (res) {
+//          // 处理失败的结果
+//          }
+//      );
             }
 			}
+                                                                                                            
 	}
 		}
 			
 </script>
 
 <style scoped>
+a{
+	text-decoration: none;
+	color: white;
+}
 .sign{
 	height: 950px;
 	background-image: url("../image/timg.jpg");
+}
+@media screen and (max-width: 768px){
+	.sign{
+	height: 0px;
+	}
 }
 .sign-content{
 	width:400px;
