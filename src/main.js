@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import VueResource  from 'vue-resource'
+import axios from 'axios'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.config.productionTip = false
 
@@ -17,4 +18,4 @@ new Vue({
     components: { App },
     template: '<App/>'
 })
-router.push('/sign')
+ router.push('/login')

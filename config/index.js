@@ -6,17 +6,23 @@ const path = require('path')
 
 module.exports = {
     dev: {
-
+        //axios跨域问题
+        proxyTable: {
+            '/api': {
+                target: 'http://192.168.0.136:8080',//设置你调用的接口域名和端口号 别忘了加http
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/api': '/'
+                }
+            }
+        },
         // Paths
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
-        proxyTable: {} 
- 		,
-
         // Various Dev Server settings
         host: 'localhost', // can be overwritten by process.env.HOST
         port: 8089, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-        autoOpenBrowser: false,
+        autoOpenBrowser: true,
         errorOverlay: true,
         notifyOnErrors: true,
         poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
