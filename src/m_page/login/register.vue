@@ -116,9 +116,10 @@ export default {
 					console.log(res)
 					if(res.code==200){
 						alert('注册成功')
+						this.$router.replace({ path: '/login' })
 					}
-					else {
-						alert('注册失败')
+					else {						
+						alert('注册失败')						
 					}
 				}).catch(error => {
 					console.log(error)

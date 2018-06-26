@@ -54,6 +54,7 @@ export default {
       username: "",
       password: "",
       code:'',
+      count:0,
       checked: false,
       flag:false,
       show: []
@@ -75,9 +76,14 @@ export default {
         console.log(res)
         if(res.code==200){
         	alert('登录成功')
+        	this.$router.replace({ path: '/register' })
         }
         else{
         	alert('登录失败,用户名或密码错误')
+        	this.count++
+			if(this.count>4){
+			this.flag=true
+			}
         }
       }).catch(error => {
       	console.log(error)
@@ -129,7 +135,7 @@ export default {
 .sign-msg{
 	height: 300px;
 }
-.set a{
+a{
 	color: white;
 }
 
