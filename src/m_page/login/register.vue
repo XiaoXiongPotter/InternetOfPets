@@ -25,9 +25,9 @@
   			</el-input>
   			<span class="danger" v-show="flag5">手机不正确</span>
   			<br />
-  			<el-button v-show="flag1" class="get">点击验证</el-button>
+  			<el-button v-show="flag1" class="get" @click="send" ref='banner' :disabled='forbidden'>{{msg}}</el-button>
 				<el-input
-					placeholder=""
+					placeholder="输入验证码"
   					v-model="input4"
   					v-show="flag1"
   					clearable
@@ -74,8 +74,11 @@ export default {
 			phonenumber:'',
 			input4:'',
 			select:'',
-			flag:true,
-			flag1:false,
+			msg:'点击验证',
+			timer:0,
+			forbidden:false,
+			flag:false,
+			flag1:true,
 			flag2:false,
 			flag3:false,
 			flag4:false,
@@ -88,34 +91,56 @@ export default {
 				this.flag1 = !this.flag1
 			},
 			finish(){ 
-//				if(this.input10.length==0&&this.flag==true){
-//					alert('邮箱未填')
-//				}
-//				else if(this.input1.length==0){
-//					alert('密码未填')
-//				}
-//				else if(this.input2.length==0){
-//					alert('密码未确认')
-//				}
-//				else if(this.input3.length==0&&this.flag==false){
-//					alert('手机未填')
-//				}
-//				else if(this.flag2==true||this.flag3==true||this.flag4==true||this.flag5==true){
-//					alert('注册失败')
-//				}
-//				else{		
-//				}
-				let params = {
+				if(this.phonenumber.length==0&&this.flag==false){
+					alert('手机未填')
+				}
+			    else if(this.email.length==0&&this.flag==true){
+					alert('邮箱未填')
+				}
+				else if(this.password.length==0){
+					alert('密码未填')
+				}
+				else if(this.repassword.length==0){
+					alert('密码未确认')
+				}
+				else if(this.flag2==true||this.flag3==true||this.flag4==true||this.flag5==true){
+					alert('注册失败')
+				}
+				else{
+					let params = {
 					username: this.email,
 					password: this.password,
 					mobile: this.phonenumber
 				}
 				register(params).then(res => {
 					console.log(res)
+					if(res.code==200){
+						alert('注册成功')
+					}
+					else {
+						alert('注册失败')
+					}
 				}).catch(error => {
 					console.log(error)
 				})
+				}
+		},
+		send () {
+			let countdown = 60
+			this.timer=setInterval(() => {
+				if(countdown==0){
+				this.msg='点击验证'
+				countdown = 60
+				clearInterval(this.timer)
+				this.forbidden=false
 			}
+			else{
+				countdown--
+				this.msg='重新发送'+countdown+'S'
+				this.forbidden=true
+			}
+			},1000)
+		}
 		},
 		watch: {
 			password(newval,oldval){
@@ -161,15 +186,17 @@ export default {
 	color: white;
 	font-family: "微软雅黑";
 	font-size: 20px;
+	position: relative;
 }
 .register-header p{
 	font-weight: bold;
-	margin-top: 20px;
+	margin-top: 18px;
 }
 .el-icon-arrow-left{
 	position: absolute;
-	left: 10px;
-	top: 4%;
+	left: 5%;
+	top: 50%;
+	transform: translate(-5%,-50%);
 }
 .el-input{
 	margin-top: 10px;
@@ -184,10 +211,10 @@ a{
 	color: white;
 }
 .get{
-	width: 100px;
+	width: 110px;
 }
 .yanzheng{
-	width: 175px;
+	width: 165px;
 }
 .danger{
 	font-size: 10px;

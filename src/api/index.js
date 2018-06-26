@@ -5,5 +5,5 @@ export const userLogin = (params) => {
 }
 // 注册账号
 export const register = (params) => {
-  return http.fetchPost('/api/petUser', params)
+  return http.fetchPost('/api/register', params)
 }
