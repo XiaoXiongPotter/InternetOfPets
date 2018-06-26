@@ -157,11 +157,7 @@ a{
 	height: 950px;
 	background-image: url("../image/timg2.jpg");
 }
-@media screen and (max-width: 768px){
-	.register{
-	height: 0px;
-	}
-}
+
 .register-content{
 	width:400px;
 	height:400px;

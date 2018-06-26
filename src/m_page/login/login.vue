@@ -27,6 +27,7 @@
 			
 				<el-checkbox class="check" v-model="checked">记住密码</el-checkbox>
 				<el-button class="forget" type="text">忘记密码?</el-button>
+				<br/>
 				<el-button class="login" type="primary" @click="login">登录</el-button>
 				<el-button class="set" type="danger"><router-link to="/register">注册</router-link></el-button>
 			</el-main>
@@ -69,6 +70,8 @@ export default {
       };
       userLogin(params).then(res => {
         console.log(res)
+      }).catch(error => {
+      	console.log(error)
       });
       //   let val = this.code;
       //   if (this.username.length == 0) {
@@ -97,3 +100,58 @@ export default {
   }
 };
 </script>
+<style scoped>
+.sign-header{
+	text-align: center;
+	background-color: #1E90FF;
+	color: white;
+	font-family: "微软雅黑";
+	font-size: 20px;
+}
+.sign-header p{
+	padding-top: 20px;
+	font-weight: bold;
+}
+.el-input{
+	margin-top: 10px;
+}
+.forget{
+	margin-left: 125px;
+}
+.login{
+	margin-left: 25%;
+	margin-top: 10px;
+}
+.set a{
+	color: white;
+}
+.line {
+  display: inline-block;
+  height: 1px;
+  width: 100%;
+  border-bottom: solid 1px #dcdcdc;
+}
+.footer {
+  position: relative;
+}
+.three {
+  background-color: white;
+  position: absolute;
+  top: 5px;
+  left: 40%;
+  color: #808080;
+}
+.footer ul li{
+	float: left;
+	padding-left: 10%;
+	margin-top: 20%;
+}
+.footer ul li img{
+	width: 50px;
+	height: 50px;
+}
+.footer ul li p{
+	font-size: 15px;
+	text-align: center;
+}
+</style>

@@ -150,11 +150,6 @@ a {
   height: 950px;
   background-image: url("../image/timg.jpg");
 }
-@media screen and (max-width: 768px) {
-  .sign {
-    height: 0px;
-  }
-}
 .sign-content {
   width: 400px;
   height: 550px;
