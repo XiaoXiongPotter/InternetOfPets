@@ -18,16 +18,19 @@
   					clearable
   					class="password">
 				</el-input>
-				<el-input
+				<div class="ver">
+					<el-input
 					placeholder="请输入验证码"
   					v-model="code"
   					v-show='flag'
   					clearable
   					class="Verification">
 				</el-input>
-			
+				<img v-show="flag" src="http://192.168.0.117:8080/code/image?width=100" class="image" @click="change" ref="banner"/>
+				</div>
+			<br />
 				<el-checkbox class="check" v-model="checked">记住密码</el-checkbox>
-				<el-button class="forget" type="text">忘记密码?</el-button>
+				<el-button class="forget" type="text"><router-link to="/forgetpassword">忘记密码?</router-link></el-button>
 				<br/>
 				<div class="btn">
 				<el-button class="login" type="primary" @click="login">登录</el-button>
@@ -70,13 +73,14 @@ export default {
     login() {
       let params = {
         username: this.username,
-        password: this.password
-      };
+        password: this.password,
+        imageCode: this.code
+      }
       userLogin(params).then(res => {
         console.log(res)
         if(res.code==200){
         	alert('登录成功')
-        	this.$router.replace({ path: '/register' })
+//      	this.$router.replace({ path: '/register' })
         }
         else{
         	alert('登录失败,用户名或密码错误')
@@ -84,20 +88,18 @@ export default {
 			if(this.count>4){
 			this.flag=true
 			}
+			
         }
       }).catch(error => {
       	console.log(error)
       });
-      if(this.username.length==0){
-      	alert('用户名未填')
-      }
-      else if(this.password.length==0){
-      	alert('密码未填')
-      }
       if(this.checked==true){
       	localStorage.setItem('username',this.username);
       	localStorage.setItem('password',this.password);
       }
+    },
+    change(){
+    	this.$refs.banner.setAttribute("src","http://192.168.0.117:8080/code/image?width=100")
     }
   }
 };
@@ -124,6 +126,9 @@ export default {
 	position: absolute;
 	right: 15px;
 }
+.forget a{
+	color: #409EFF;
+}
 .btn{
 	width: 155px;
 	height: 40px;
@@ -135,10 +140,12 @@ export default {
 .sign-msg{
 	height: 300px;
 }
-a{
+.set a{
 	color: white;
 }
-
+.Verification{
+	width: 50%;
+}
 .three {
   	text-align: center;	
   	color: #708090;
@@ -181,5 +188,14 @@ a{
 	font-size: 15px;
 	text-align: center;
 	margin-top: 50px;
+}
+.ver{
+	position: relative;
+}
+.image{
+	position: absolute;
+	right: 0%;
+	top:70%;
+	transform: translate(0%,-70%);
 }
 </style>

@@ -64,6 +64,7 @@
 </template>
 <script>
 import {register} from '../../api/index.js'
+import {Verification} from '../../api/index.js'
 export default {
   name: "register",
   data() {
@@ -97,6 +98,9 @@ export default {
 			    else if(this.email.length==0&&this.flag==true){
 					alert('邮箱未填')
 				}
+			    else if(this.input4.length==0&&this.flag==false){
+			    	alert('请输入手机验证码')
+			    }
 				else if(this.password.length==0){
 					alert('密码未填')
 				}
@@ -116,7 +120,7 @@ export default {
 					console.log(res)
 					if(res.code==200){
 						alert('注册成功')
-						this.$router.replace({ path: '/login' })
+//						this.$router.replace({ path: '/login' })
 					}
 					else {						
 						alert('注册失败')						
@@ -141,6 +145,14 @@ export default {
 				this.forbidden=true
 			}
 			},1000)
+			let params = {
+				mobile:this.phonenumber
+			}
+			Verification(params).then(res => {
+				console.log(res)
+			}).catch(error => {
+				console.log(error)
+			})
 		}
 		},
 		watch: {
