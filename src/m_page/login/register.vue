@@ -65,6 +65,7 @@
 <script>
 import {register} from '../../api/index.js'
 import {Verification} from '../../api/index.js'
+import {registerByMobile} from '../../api/index.js'
 export default {
   name: "register",
   data() {
@@ -112,14 +113,15 @@ export default {
 				}
 				else{
 					let params = {
-					username: this.email,
+					mobile: this.phonenumber,
 					password: this.password,
-					mobile: this.phonenumber
+					smsCode: this.input4
 				}
-				register(params).then(res => {
+				registerByMobile(params).then(res => {
 					console.log(res)
-					if(res.code==200){
+					if(res.data.code==200){
 						alert('注册成功')
+						//成功后跳转页面
 //						this.$router.replace({ path: '/login' })
 					}
 					else {						
@@ -148,7 +150,7 @@ export default {
 			let params = {
 				mobile:this.phonenumber
 			}
-			Verification(params).then(res => {
+			Verification(params.mobile).then(res => {
 				console.log(res)
 			}).catch(error => {
 				console.log(error)
@@ -165,10 +167,10 @@ export default {
 				}
 			},
 			repassword(newval,oldval){
-				if(newval != this.password){
+				if(newval != this.password&&newval.length!=0){
 					this.flag3 = true
 				}
-				else if(newval == this.password||newval.length==0){
+				else{
 					this.flag3 = false
 				}
 			},

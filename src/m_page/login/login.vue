@@ -50,6 +50,7 @@
 </template>
 <script>
 import {userLogin} from '../../api/index.js'
+import store from '../../store/store.js'
 export default {
   name: "login",
   data() {
@@ -60,7 +61,7 @@ export default {
       count:0,
       checked: false,
       flag:false,
-      show: []
+      num: 1
     };
   },
   mounted() {
@@ -77,11 +78,15 @@ export default {
         imageCode: this.code
       }
       userLogin(params).then(res => {
-        console.log(res)
-        if(res.code==200){
+//根据store中set_token方法将token保存至localStorage/sessionStorage中，data["Authentication-Token"]，获取token的value值
+      	console.log(res)
+        if(res.data.code==200){
         	alert('登录成功')
-//      	this.$router.replace({ path: '/register' })
-        }
+        let data = res.headers["x-auth-token"];
+        this.$store.commit('set_token', data);
+		console.log(data)
+//      this.$router.replace({ path: '/register' })
+}
         else{
         	alert('登录失败,用户名或密码错误')
         	this.count++

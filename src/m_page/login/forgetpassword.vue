@@ -5,13 +5,15 @@
 				<router-link to='/login'><i class="el-icon-arrow-left"></i></router-link><p>找回密码</p>
 			</el-header>
 			<el-main>
-				<el-input v-model='phonenumber' placeholder="请输入手机号" class="input-with-select">
+				<el-input v-model='phonenumber' placeholder="请输入手机号" class="input-with-select" @change="find">
     			<el-select  slot="prepend" v-model="select" placeholder="+86" class="change">
       			<el-option label="+86" value="1"></el-option>
       			<el-option label="001" value="2"></el-option>
       			<el-option label="0049" value="3"></el-option>
     			</el-select>
   		</el-input>
+  		<span class="danger" v-show="flag4">手机号未注册</span>
+  		<br />
   				<el-button  class="get" @click="send" :disabled='forbidden'>{{msg}}</el-button>
 				<el-input
 					placeholder="输入验证码"
@@ -27,6 +29,7 @@
 					type="password"
 					>				
 				</el-input>
+				<span class="danger" v-show="flag1">密码不能少于6位</span>
 				<el-input
 					placeholder="确认密码"
 					v-model="input1"
@@ -34,6 +37,7 @@
 					type="password"
 					>				
 				</el-input>
+				<span class="danger" v-show="flag2">密码不一致</span>
 			</el-main>
 			<el-footer>
 				<el-button type="danger" class="over" @click="wan">
@@ -45,7 +49,9 @@
 </template>
 
 <script>
-	import {forget} from '../../api/index.js'
+	import {updatePasswordByMobile} from '../../api/index.js'
+	import {Verification} from '../../api/index.js'
+	import {judge} from '../../api/index.js'
 	export default{
 		name: "forgetpassword",
 		data () {
@@ -56,7 +62,10 @@
 				phonenumber:'',
 				select:'',
 				input1:'',
-				respect:''
+				respect:'',
+				flag1:false,
+				flag2:false,
+				flag4:false
 			}
 		},
 		methods :{
@@ -75,19 +84,66 @@
 				this.forbidden=true
 			}
 			},1000)
-		},
-		wan(){
 			let params = {
-				id:'1',
-				password:this.respect,
-				smsCode:this.input4
+				mobile:this.phonenumber
 			}
-			forget(params).then(res => {
+			Verification(params.mobile).then(res => {
 				console.log(res)
 			}).catch(error => {
 				console.log(error)
 			})
+		},
+		wan(){
+			let params = {
+				mobile:this.phonenumber,
+				password:this.respect,
+				smsCode:this.input4
+			}
+			updatePasswordByMobile(params).then(res => {
+				if(res.data.code==200){
+					alert('修改成功')
+				}
+				console.log(res)
+			}).catch(error => {
+				console.log(error)
+				alert('修改失败')
+			})
+		},
+		find(){
+			if(this.phonenumber.length>0){
+				let params = this.phonenumber
+			judge(params).then(res => {
+				console.log(res)
+				if(res.data==false){
+					this.flag4=true
+				}
+				else{
+					this.flag4=false
+				}
+			}).catch(error => {
+				console.log(error)
+			})
+			}
+			else{
+				this.flag4=false
+			}
 		}
+		},
+		watch: {
+			respect(val){
+				if(val.length<6&&val.length>0){
+					this.flag1=true
+				}else{
+					this.flag1=false
+				}
+			},
+			input1(val){
+				if(val!=this.respect&&val.length!=0){
+					this.flag2=true
+				}else{
+					this.flag2=false
+				}
+			}
 		}
 	}
 </script>
@@ -130,5 +186,9 @@ a{
 	position: absolute;
 	left: 50%;
 	transform: translate(-50%);
+}
+.danger{
+	font-size: 10px;
+	color: red;
 }
 </style>
