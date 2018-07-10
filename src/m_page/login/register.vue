@@ -10,21 +10,22 @@
   					v-model="email"
   					clearable
   					class="mailbox"
-  					v-show="flag"
+  					v-show="flag"				
   					>
 				</el-input>
-				<el-button class="phone" type="text" @click="phone" v-show="flag">手机注册?</el-button>
 				<span class="danger" v-show="flag4">邮箱格式不正确</span>
-				<br/>
+				<p class="danger" v-show="flag7">邮箱已被注册</p>
 				<el-input v-model='phonenumber' placeholder="请输入手机号" class="input-with-select" v-show="flag1">
-    			<el-select  slot="prepend" v-model="select" placeholder="+86" class="change">
-      			<el-option label="+86" value="1"></el-option>
-      			<el-option label="001" value="2"></el-option>
-      			<el-option label="0049" value="3"></el-option>
+    			<el-select  slot="prepend" v-model="select" placeholder="86" class="change" @change="choice">
+      			<el-option label="86" value="86"></el-option>
+      			<el-option label="001" value="001"></el-option>
+      			<el-option label="0049" value="0049"></el-option>
     			</el-select>
   			</el-input>
   			<span class="danger" v-show="flag5">手机不正确</span>
   			<br />
+  			<p class="danger" v-show="flag6">手机已被注册</p>
+  			
   			<el-button v-show="flag1" class="get" @click="send" ref='banner' :disabled='forbidden'>{{msg}}</el-button>
 				<el-input
 					placeholder="输入验证码"
@@ -34,8 +35,9 @@
   					class="yanzheng"
   				>
 				</el-input>
-  				<el-button class="phone" type="text" @click="phone" v-show="flag1">邮箱注册?</el-button>
-  		</br>
+				<p class="danger" v-show="flag8">60s内不能重复发送</p>
+				<br />
+  				<el-button class="phone" type="text" @click="phone">{{msg1}}</el-button>
   				<el-input
 					placeholder="请输入密码"
   					v-model="password"
@@ -63,9 +65,11 @@
 	</div>
 </template>
 <script>
-import {register} from '../../api/index.js'
 import {Verification} from '../../api/index.js'
 import {registerByMobile} from '../../api/index.js'
+import {registerSendEmail} from '../../api/index.js'
+import {email} from '../../api/index.js'
+import store from '../../store/store.js'
 export default {
   name: "register",
   data() {
@@ -77,84 +81,157 @@ export default {
 			input4:'',
 			select:'',
 			msg:'点击验证',
+			msg1:'邮箱注册?',
 			timer:0,
+			count:60,
 			forbidden:false,
 			flag:false,
 			flag1:true,
 			flag2:false,
 			flag3:false,
 			flag4:false,
-			flag5:false
+			flag5:false,
+			flag6:false,
+			flag7:false,
+			flag8:false
     }
+  },
+  mounted(){
+	if(sessionStorage.getItem('time')){
+  		let count1=sessionStorage.getItem('time')
+    	this.timer=setInterval(() => {		
+				count1--
+				this.msg='重新发送'+count1+'S'
+				this.forbidden=true
+				this.count=count1
+				sessionStorage.setItem('time', count1)
+				if(this.count==0){
+				this.msg='点击验证'
+				this.count = 60
+				clearInterval(this.timer)
+				this.forbidden=false
+				sessionStorage.removeItem('time',count1)
+			}
+			},1000)
+	}
+    
   },
   methods: {
 			phone () {
-				this.flag = !this.flag
 				this.flag1 = !this.flag1
+				if(this.flag1==true){
+					this.msg1='邮箱注册?'
+					this.flag=false
+				}else{
+					this.flag=true
+					this.msg1='手机注册?'
+				}
 			},
 			finish(){ 
-				if(this.phonenumber.length==0&&this.flag==false){
-					alert('手机未填')
-				}
-			    else if(this.email.length==0&&this.flag==true){
-					alert('邮箱未填')
-				}
-			    else if(this.input4.length==0&&this.flag==false){
-			    	alert('请输入手机验证码')
-			    }
-				else if(this.password.length==0){
-					alert('密码未填')
-				}
-				else if(this.repassword.length==0){
-					alert('密码未确认')
-				}
-				else if(this.flag2==true||this.flag3==true||this.flag4==true||this.flag5==true){
-					alert('注册失败')
-				}
-				else{
+				if(this.flag1==true){					
 					let params = {
 					mobile: this.phonenumber,
 					password: this.password,
 					smsCode: this.input4
 				}
 				registerByMobile(params).then(res => {
-					console.log(res)
+					console.log(res.data)
 					if(res.data.code==200){
-						alert('注册成功')
 						//成功后跳转页面
-//						this.$router.replace({ path: '/login' })
+						this.$router.replace({ path: '/complete' })
 					}
 					else {						
-						alert('注册失败')						
+						this.$message({
+          				message: res.data.msg,
+          				center: true,
+          				type:'error'
+        					});
+        					
 					}
 				}).catch(error => {
 					console.log(error)
 				})
+				}else{
+					if(this.email.length>0){
+			let params = this.email
+			email(params).then(res => {
+				console.log(res.data)
+				if(res.data.data==false){
+					this.flag7=false					
+					let params = {
+						email:this.email,
+						password: this.password
+					}
+				registerSendEmail(params).then(res => {
+					console.log(res.data)
+					if(res.data.code==200){
+						this.$message({
+          				message: '请前往注册邮箱点击激活',
+          				center: true,
+          				type:'warning'
+        				});	
+					}else{
+						this.$message({
+          				message: res.data.msg,
+          				center: true,
+          				type:'error'
+        				});					
+					}
+				}).catch(error => {
+					console.log(error)
+				})
+				
+				}else{
+					this.flag7=true
+				}				
+			}).catch(error => {
+				console.log(error)
+			})
+			}else{
+				this.flag7=false
+			}
 				}
 		},
 		send () {
-			let countdown = 60
-			this.timer=setInterval(() => {
-				if(countdown==0){
+			
+			let params = this.phonenumber
+			email(params).then(res => {
+				console.log(res.data)
+				if(res.data.data==false){
+				this.flag6=false
+				this.timer=setInterval(() => {
+				if(this.count==0){
 				this.msg='点击验证'
-				countdown = 60
+				this.count = 60
 				clearInterval(this.timer)
 				this.forbidden=false
+				sessionStorage.removeItem('time',this.count)
 			}
 			else{
-				countdown--
-				this.msg='重新发送'+countdown+'S'
+				this.count--
+				this.msg='重新发送'+this.count+'S'
 				this.forbidden=true
+				sessionStorage.setItem('time', this.count);
 			}
 			},1000)
 			let params = {
-				mobile:this.phonenumber
+				mobile:this.phonenumber+'&nativeCode='+this.select
 			}
 			Verification(params.mobile).then(res => {
 				console.log(res)
 			}).catch(error => {
 				console.log(error)
 			})
+				}else{
+					this.flag6=true
+				}				
+			}).catch(error => {
+				console.log(error)
+			})		
+		},
+		choice(){
+			
+			console.log(this.select)
 		}
 		},
 		watch: {

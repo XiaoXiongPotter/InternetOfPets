@@ -26,7 +26,7 @@
   					clearable
   					class="Verification">
 				</el-input>
-				<img v-show="flag" src="http://192.168.0.117:8080/code/image?width=100" class="image" @click="change" ref="banner"/>
+				<img v-show="flag" :src="img" class="image" @click="change" ref="banner"/>
 				</div>
 			<br />
 				<el-checkbox class="check" v-model="checked">记住密码</el-checkbox>
@@ -50,6 +50,8 @@
 </template>
 <script>
 import {userLogin} from '../../api/index.js'
+import {systemInit} from '../../api/index.js'
+import {getimg} from '../../api/index.js'
 import store from '../../store/store.js'
 export default {
   name: "login",
@@ -61,10 +63,20 @@ export default {
       count:0,
       checked: false,
       flag:false,
+      img:'',
       num: 1
     };
   },
   mounted() {
+  		systemInit().then(res => {
+		 let data = res.headers["x-auth-token"];
+		 if(data!=undefined){
+		 	this.$store.commit('set_token', data);
+		 }        
+	}).catch(error => {
+		console.log(error)
+	})
+  	
     if(localStorage){
     	this.username=localStorage.getItem('username');
     	this.password=localStorage.getItem('password');
@@ -78,22 +90,29 @@ export default {
         imageCode: this.code
       }
       userLogin(params).then(res => {
+      	
 //根据store中set_token方法将token保存至localStorage/sessionStorage中，data["Authentication-Token"]，获取token的value值
-      	console.log(res)
+      	console.log(res.data)
         if(res.data.code==200){
         	alert('登录成功')
-        let data = res.headers["x-auth-token"];
-        this.$store.commit('set_token', data);
-		console.log(data)
 //      this.$router.replace({ path: '/register' })
 }
         else{
-        	alert('登录失败,用户名或密码错误')
-        	this.count++
-			if(this.count>4){
+		this.$message({
+          message: res.data.msg,
+          center: true,
+          type:'error',
+        });
+        	if(res.data.code==4001){        	
 			this.flag=true
+			getimg().then(res => {
+				this.img='data:image/jpeg;base64,'+res.data.data
+			}).catch(error => {
+				console.log(error)
+			})
 			}
-			
+				
+		console.log(res)
         }
       }).catch(error => {
       	console.log(error)
@@ -104,7 +123,11 @@ export default {
       }
     },
     change(){
-    	this.$refs.banner.setAttribute("src","http://192.168.0.117:8080/code/image?width=100")
+    	getimg().then(res => {
+				this.img='data:image/jpeg;base64,'+res.data.data
+			}).catch(error => {
+				console.log(error)
+			})
     }
   }
 };

@@ -17,6 +17,9 @@ axios.interceptors.request.use(config => {
 if(store.state.token){
 config.headers.common['x-auth-token']=store.state.token
 }
+if(store.state.resetToken){
+config.headers.common['resetToken']=store.state.resetToken
+}
 return config;
 }, error => {
 // 对请求错误做些什么
@@ -53,4 +56,4 @@ new Vue({
     components: { App },
     template: '<App/>'
 })
- router.push('/login')
+

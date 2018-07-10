@@ -3,9 +3,9 @@ import http from './public'
 export const userLogin = (params) => {
   return http.fetchPost('/api/authentication/form', params)
 }
-// 注册账号
-export const register = (params) => {
-  return http.fetchPost('/api/register', params)
+// 邮箱注册账号
+export const registerSendEmail = (params) => {
+  return http.fetchPost('/api/registerSendEmail', params)
 }
 // 手机注册
 export const registerByMobile = (params) => {
@@ -24,6 +24,22 @@ export const updatePasswordByMobile = (params) => {
 	return http.fetchPost('/api/updatePasswordByMobile', params)
 }
 //判断用户是否存在
-export const judge = (params) => {
-	return http.fetchGet('/api/petUser/exist_user/'+params)
+export const email = (params) => {
+	return http.fetchGet('/api/petUser/exist_user?type='+params)
+}
+//重置密码提交
+export const submitpassword = (params) => {
+	return http.fetchPost('/api/update_password', params)
+}
+//邮箱重置链接
+export const sendreset = (params) => {
+	return http.fetchPost('/api/send_reset_pass_link', params)
+}
+
+export const systemInit = () => {
+	return http.fetchGet('/api/systemInit')
+}
+//图形验证码
+export const getimg = () => {
+	return http.fetchGet('/api/code/image?width=100')
 }

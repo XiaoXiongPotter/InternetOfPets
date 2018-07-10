@@ -3,12 +3,18 @@ import Router from 'vue-router'
 import login from '../m_page/login/login.vue'
 import register from '../m_page/login/register.vue'
 import forgetpassword from '../m_page/login/forgetpassword.vue'
+import complete from '../m_page/login/complete.vue'
+import resetpassword from '../m_page/login/resetpassword.vue'
+import resetsuccess from '../m_page/login/resetsuccess.vue'
+import registerfalse from '../m_page/login/registerfalse.vue'
 import store from '../store/store.js'
 Vue.use(Router)
+
 
 if (sessionStorage.getItem('token')) {
 store.commit('set_token', sessionStorage.getItem('token'))
 }
+
 
 const router = new Router({
 	mode: "history",
@@ -27,6 +33,26 @@ const router = new Router({
     	path: '/forgetpassword',
     	name: 'forgetpassword',
     	component: forgetpassword
+    },
+    {
+    	path: '/complete',
+    	name: 'complete',
+    	component: complete
+    },
+      {
+    	path: '/resetpassword',
+    	name: 'resetpassword',
+    	component: resetpassword
+    },
+     {
+    	path: '/resetsuccess',
+    	name: 'resetsuccess',
+    	component: resetsuccess
+    },
+    {
+    	path: '/registerfalse',
+    	name: 'registerfalse',
+    	component: registerfalse
     }
   ]
 })
