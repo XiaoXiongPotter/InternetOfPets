@@ -6,10 +6,13 @@
 			</el-header>
 			<el-main>
 				<el-input v-model='phonenumber' placeholder="请输入手机号" class="input-with-select"  v-show="flag">
-    			<el-select  slot="prepend" v-model="select" placeholder="+86" class="change">
-      			<el-option label="+86" value="1"></el-option>
-      			<el-option label="001" value="2"></el-option>
-      			<el-option label="0049" value="3"></el-option>
+    			<el-select  slot="prepend" v-model="select" placeholder="中国" class="change">
+      			<el-option v-for="item in cities"
+      			:key="item.value"
+      			:label="item.label"
+      			:value="item.value">
+      			<span style="float: left">{{ item.label }}</span>
+      			<span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span></el-option>
     			</el-select>
   		</el-input>
   		<span class="danger" v-show="flag4">手机号未注册</span>
@@ -91,7 +94,26 @@
 				flag6:false,
 				flag7:false,
 				flag8:true,
-				flag9:false
+				flag9:false,
+				cities: [{
+          value: '86',
+          label: '中国'
+        }, {
+          value: '001',
+          label: '美国'
+        }, {
+          value: '0082',
+          label: '韩国'
+        }, {
+          value: '007',
+          label: '俄罗斯'
+        }, {
+          value: '0081',
+          label: '日本'
+        }, {
+          value: '44',
+          label: '英国'
+        }]
 			}
 		},
 		mounted(){
@@ -291,7 +313,7 @@ a{
 	width: 110px;
 }
 .change{
-	width: 80px;
+	width: 100px;
 }
 .el-input{
 	margin-top: 10px;

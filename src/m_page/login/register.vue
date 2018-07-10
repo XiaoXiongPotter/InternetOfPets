@@ -16,10 +16,13 @@
 				<span class="danger" v-show="flag4">邮箱格式不正确</span>
 				<p class="danger" v-show="flag7">邮箱已被注册</p>
 				<el-input v-model='phonenumber' placeholder="请输入手机号" class="input-with-select" v-show="flag1">
-    			<el-select  slot="prepend" v-model="select" placeholder="86" class="change" @change="choice">
-      			<el-option label="86" value="86"></el-option>
-      			<el-option label="001" value="001"></el-option>
-      			<el-option label="0049" value="0049"></el-option>
+    			<el-select  slot="prepend" v-model="select" placeholder="中国" class="change" @change="choice">
+      			<el-option  v-for="item in cities"
+      			:key="item.value"
+      			:label="item.label"
+      			:value="item.value">
+      			<span style="float: left">{{ item.label }}</span>
+      			<span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span></el-option>
     			</el-select>
   			</el-input>
   			<span class="danger" v-show="flag5">手机不正确</span>
@@ -35,7 +38,6 @@
   					class="yanzheng"
   				>
 				</el-input>
-				<p class="danger" v-show="flag8">60s内不能重复发送</p>
 				<br />
   				<el-button class="phone" type="text" @click="phone">{{msg1}}</el-button>
   				<el-input
@@ -93,7 +95,26 @@ export default {
 			flag5:false,
 			flag6:false,
 			flag7:false,
-			flag8:false
+			flag8:false,
+			cities: [{
+          value: '86',
+          label: '中国'
+        }, {
+          value: '001',
+          label: '美国'
+        }, {
+          value: '0082',
+          label: '韩国'
+        }, {
+          value: '007',
+          label: '俄罗斯'
+        }, {
+          value: '0081',
+          label: '日本'
+        }, {
+          value: '44',
+          label: '英国'
+        }]
     }
   },
   mounted(){
@@ -297,7 +318,7 @@ export default {
 	margin-left: 35%;
 }
 .change{
-	width: 80px;
+	width: 100px;
 }
 a{
 	color: white;
