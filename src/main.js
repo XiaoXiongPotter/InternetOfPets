@@ -10,6 +10,7 @@ import store from './store/store'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.config.productionTip = false
 
+
 // 添加请求拦截器
 axios.interceptors.request.use(config => {
 // 在发送请求之前做些什么

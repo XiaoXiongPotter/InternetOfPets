@@ -49,10 +49,11 @@
 	</div>
 </template>
 <script>
-import {userLogin} from '../../api/index.js'
 import {systemInit} from '../../api/index.js'
 import {getimg} from '../../api/index.js'
 import store from '../../store/store.js'
+import Qs from 'qs'
+import axios from 'axios'
 export default {
   name: "login",
   data() {
@@ -76,7 +77,14 @@ export default {
 	}).catch(error => {
 		console.log(error)
 	})
-  	
+	if(sessionStorage.getItem('imgcode')){
+		this.flag=true
+		getimg().then(res => {
+				this.img='data:image/jpeg;base64,'+res.data.data
+			}).catch(error => {
+				console.log(error)
+			})
+	}
     if(localStorage){
     	this.username=localStorage.getItem('username');
     	this.password=localStorage.getItem('password');
@@ -84,26 +92,37 @@ export default {
   },
   methods: {
     login() {
-      let params = {
-        username: this.username,
+var data =  Qs.stringify({
+    	username: this.username,
         password: this.password,
         imageCode: this.code
-      }
-      userLogin(params).then(res => {
-      	
-//根据store中set_token方法将token保存至localStorage/sessionStorage中，data["Authentication-Token"]，获取token的value值
-      	console.log(res.data)
-        if(res.data.code==200){
+})
+axios(
+{
+		method: 'post',
+      	url: '/api/authentication/login',
+		headers:{
+			 "Content-Type":'application/x-www-form-urlencoded; charset=UTF-8'
+		},
+		data
+	}
+).then((res)=>{
+	console.log(res.data)
+	      if(res.data.code==200){
+	      	sessionStorage.removeItem('imgcode')
         	alert('登录成功')
 //      this.$router.replace({ path: '/register' })
 }
-        else{
+	else{
 		this.$message({
           message: res.data.msg,
           center: true,
           type:'error',
-        });
-        	if(res.data.code==4001){        	
+      })
+		if(res.data.data.hasImgCode){
+			sessionStorage.setItem('imgcode',res.data.data.hasImgCode)
+		}
+			if(res.data.code==4001){
 			this.flag=true
 			getimg().then(res => {
 				this.img='data:image/jpeg;base64,'+res.data.data
@@ -111,12 +130,10 @@ export default {
 				console.log(error)
 			})
 			}
-				
-		console.log(res)
-        }
-      }).catch(error => {
+			}
+}).catch(error => {
       	console.log(error)
-      });
+      })
       if(this.checked==true){
       	localStorage.setItem('username',this.username);
       	localStorage.setItem('password',this.password);

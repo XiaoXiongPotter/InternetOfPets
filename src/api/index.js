@@ -17,7 +17,7 @@ export const mobile = (params) => {
 }
 //发送验证码
 export const Verification = (params) => {
-	return http.fetchGet('/api/code/sms?mobile='+params)
+	return http.fetchPost('/api/code/sms?mobile='+params)
 }
 //忘记密码
 export const updatePasswordByMobile = (params) => {
@@ -25,7 +25,7 @@ export const updatePasswordByMobile = (params) => {
 }
 //判断用户是否存在
 export const email = (params) => {
-	return http.fetchGet('/api/petUser/exist_user?type='+params)
+	return http.fetchPost('/api/petUser/exist_user?account='+params)
 }
 //重置密码提交
 export const submitpassword = (params) => {
@@ -37,9 +37,9 @@ export const sendreset = (params) => {
 }
 
 export const systemInit = () => {
-	return http.fetchGet('/api/systemInit')
+	return http.fetchPost('/api/systemInit')
 }
 //图形验证码
 export const getimg = () => {
-	return http.fetchGet('/api/code/image?width=100')
+	return http.fetchPost('/api/code/image?width=100')
 }
