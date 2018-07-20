@@ -41,7 +41,7 @@
 				<p class="three">第三方软件</p>
 					<ul>
 					<li><img src="@/image/qq.png"><p>QQ</p></li>
-					<li><img src="@/image/wechat.png"><p>微信</p></li>
+					<li><a href="https://open.weixin.qq.com/connect/qrconnect?appid=wx21af39d03b12dd37&redirect_uri=http://www.dognessnetwork.com:8080/wxLogin&response_type=code&scope=snsapi_login&state=wx#wechat_redirect"><img src="@/image/wechat.png"><p>微信</p></a></li>
 					<li><img src="@/image/sina.png"><p>新浪微博</p></li>
 				</ul>
 			</el-footer>
@@ -242,5 +242,8 @@ axios(
 	right: 0%;
 	top:70%;
 	transform: translate(0%,-70%);
+}
+.footer p{
+	color: black;
 }
 </style>
