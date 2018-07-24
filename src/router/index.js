@@ -8,68 +8,80 @@ import resetpassword from '../m_page/login/resetpassword.vue'
 import resetsuccess from '../m_page/login/resetsuccess.vue'
 import registerfalse from '../m_page/login/registerfalse.vue'
 import store from '../store/store.js'
+import home from '../m_page/home/home.vue'
+import finder from '../m_page/finder/finder.vue'
+import account from '../m_page/myAccount/account.vue'
 Vue.use(Router)
 
 
 if (sessionStorage.getItem('token')) {
-store.commit('set_token', sessionStorage.getItem('token'))
+  store.commit('set_token', sessionStorage.getItem('token'))
 }
 
 
 const router = new Router({
-	mode: "history",
+  mode: "history",
   routes: [
-  {
-    	path: '/login',
-      name: 'login',
-      component: login
-   },
     {
-    	path: '/register',
+      path: '/',
+      name: 'home',
+      component: home
+    }, {
+      path: '/finder',
+      name: 'finder',
+      component: finder
+    },
+    {
+      path: '/myAccount',
+      name: 'account',
+      component: account
+    },
+    {
+      path: '/register',
       name: 'register',
       component: register
     },
     {
-    	path: '/forgetpassword',
-    	name: 'forgetpassword',
-    	component: forgetpassword
+      path: '/forgetpassword',
+      name: 'forgetpassword',
+      component: forgetpassword
     },
     {
-    	path: '/complete',
-    	name: 'complete',
-    	component: complete
-    },
-      {
-    	path: '/resetpassword',
-    	name: 'resetpassword',
-    	component: resetpassword
-    },
-     {
-    	path: '/resetsuccess',
-    	name: 'resetsuccess',
-    	component: resetsuccess
+      path: '/complete',
+      name: 'complete',
+      component: complete
     },
     {
-    	path: '/registerfalse',
-    	name: 'registerfalse',
-    	component: registerfalse
+      path: '/resetpassword',
+      name: 'resetpassword',
+      component: resetpassword
+    },
+    {
+      path: '/resetsuccess',
+      name: 'resetsuccess',
+      component: resetsuccess
+    },
+    {
+      path: '/registerfalse',
+      name: 'registerfalse',
+      component: registerfalse
     }
   ]
 })
 router.beforeEach((to, from, next) => {
-if (to.matched.some(r => r.meta.requireAuth)) {           //这里的requireAuth为路由中定义的 meta:{requireAuth:true}，意思为：该路由添加该字段，表示进入该路由需要登陆的
-if (store.state.token) {
-next();
-}
-else {
-next({
-path: '/login',
-query: {redirect: to.fullPath}
-})
-}
-}
-else {
-next();
-}
+  if (to.matched.some(r => r.meta.requireAuth)) {           //这里的requireAuth为路由中定义的 meta:{requireAuth:true}，意思为：该路由添加该字段，表示进入该路由需要登陆的
+    if (store.state.token) {
+      next();
+    }
+    else {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    }
+  }
+  else {
+    next();
+  }
 })
 export default router
