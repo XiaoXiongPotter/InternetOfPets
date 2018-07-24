@@ -1,7 +1,7 @@
 <template>
     <div class="sign" ref="sign">
 		<div class="sign-content">
-			<el-header class="sign-header">
+			<el-header class="sign-header" style="height: 50px;">
 				<p>用户登录</p>
 			</el-header>
 			<el-main class="sign-msg">
@@ -92,6 +92,7 @@ export default {
   },
   methods: {
     login() {
+
 var data =  Qs.stringify({
     	username: this.username,
         password: this.password,
@@ -155,10 +156,10 @@ axios(
 	background-color: #1E90FF;
 	color: white;
 	font-family: "微软雅黑";
-	font-size: 20px;
+	font-size: 18px;
 }
 .sign-header p{
-	padding-top: 20px;
+	padding-top: 15px;
 	font-weight: bold;
 }
 .el-input{
@@ -175,7 +176,7 @@ axios(
 	color: #409EFF;
 }
 .btn{
-	width: 155px;
+	/*width: 160px;*/
 	height: 40px;
 	position: absolute;
 	left: 50%;
@@ -233,6 +234,7 @@ axios(
 	font-size: 15px;
 	text-align: center;
 	margin-top: 50px;
+	color: black;
 }
 .ver{
 	position: relative;
@@ -242,8 +244,5 @@ axios(
 	right: 0%;
 	top:70%;
 	transform: translate(0%,-70%);
-}
-.footer p{
-	color: black;
 }
 </style>

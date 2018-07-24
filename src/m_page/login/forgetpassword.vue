@@ -1,7 +1,7 @@
 <template>
 	<div class="forgetpassword">
 		<el-container>
-			<el-header class='forgetpassword-header'>
+			<el-header class='forgetpassword-header' style="height: 50px;">
 				<router-link to='/login'><i class="el-icon-arrow-left"></i></router-link><p>找回密码</p>
 			</el-header>
 			<el-main>
@@ -952,12 +952,12 @@
 	background-color: #1E90FF;
 	color: white;
 	font-family: "微软雅黑";
-	font-size: 20px;
+	font-size: 18px;
 	position: relative;
 }
 .forgetpassword-header p{
 	font-weight: bold;
-	margin-top: 18px;
+	margin-top: 15px;
 }
 .el-icon-arrow-left{
 	position: absolute;

@@ -1,7 +1,7 @@
 <template>
     	<div class="register">
 		<el-container class="register-content">
-			<el-header class="register-header">
+			<el-header class="register-header" style="height: 50px;">
 			<router-link to='/login'><i class="el-icon-arrow-left"></i></router-link><p>用户注册</p>
 			</el-header>
 			<el-main class="main">
@@ -956,12 +956,12 @@ export default {
 	background-color: #1E90FF;
 	color: white;
 	font-family: "微软雅黑";
-	font-size: 20px;
+	font-size: 18px;
 	position: relative;
 }
 .register-header p{
 	font-weight: bold;
-	margin-top: 18px;
+	margin-top: 15px;
 }
 .el-icon-arrow-left{
 	position: absolute;
