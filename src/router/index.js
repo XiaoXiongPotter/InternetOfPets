@@ -11,6 +11,9 @@ import store from '../store/store.js'
 import home from '../m_page/home/home.vue'
 import finder from '../m_page/finder/finder.vue'
 import account from '../m_page/myAccount/account.vue'
+import deviceManage from '../m_page/home/deviceManage.vue'
+import addDevice from '../m_page/home/addDevice.vue'
+import connectDevice from '../m_page/home/connectDevice.vue'
 Vue.use(Router)
 
 
@@ -25,7 +28,19 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      component: home
+      component: home,
+    }, {
+      path: '/deviceManage',
+      name: 'deviceManage',
+      component: deviceManage
+    },{
+      path: '/connectDevice',
+      name: 'connectDevice',
+      component: connectDevice
+    }, {
+      path: '/addDevice',
+      name: 'addDevice',
+      component: addDevice
     }, {
       path: '/finder',
       name: 'finder',
