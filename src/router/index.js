@@ -7,13 +7,17 @@ import complete from '../m_page/login/complete.vue'
 import resetpassword from '../m_page/login/resetpassword.vue'
 import resetsuccess from '../m_page/login/resetsuccess.vue'
 import registerfalse from '../m_page/login/registerfalse.vue'
-import store from '../store/store.js'
 import home from '../m_page/home/home.vue'
 import finder from '../m_page/finder/finder.vue'
 import account from '../m_page/myAccount/account.vue'
 import deviceManage from '../m_page/home/deviceManage.vue'
 import addDevice from '../m_page/home/addDevice.vue'
 import connectDevice from '../m_page/home/connectDevice.vue'
+import mypet from '../m_page/myAccount/mypet.vue'
+import mysearch from '../m_page/myAccount/mysearch.vue'
+import releaseSearch from '../m_page/finder/releaseSearch.vue'
+import userInformation from '../m_page/myAccount/userInformation.vue'
+import store from '../store/store.js'
 Vue.use(Router)
 
 
@@ -25,6 +29,31 @@ if (sessionStorage.getItem('token')) {
 const router = new Router({
   mode: "history",
   routes: [
+
+  {
+      	path: '/login',
+      	name: 'login',
+      	component: login
+   },
+
+   
+   
+    {
+      path: '/register',
+      name: 'register',
+      component: register
+    },
+    {
+      path: '/forgetpassword',
+      name: 'forgetpassword',
+      component: forgetpassword
+    },
+    {
+      path: '/complete',
+      name: 'complete',
+      component: complete
+    },
+
     {
       path: '/',
       name: 'home',
@@ -52,21 +81,26 @@ const router = new Router({
       component: account
     },
     {
-      path: '/register',
-      name: 'register',
-      component: register
+      path: '/mypet',
+      name: 'mypet',
+      component: mypet
     },
     {
-      path: '/forgetpassword',
-      name: 'forgetpassword',
-      component: forgetpassword
+      path: '/mysearch',
+      name: 'mysearch',
+      component: mysearch
     },
     {
-      path: '/complete',
-      name: 'complete',
-      component: complete
+      path: '/releaseSearch',
+      name: 'releaseSearch',
+      component: releaseSearch
     },
     {
+      path: '/userInformation',
+      name: 'userInformation',
+      component: userInformation
+    },
+{
       path: '/resetpassword',
       name: 'resetpassword',
       component: resetpassword

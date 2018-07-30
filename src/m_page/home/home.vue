@@ -1,3 +1,4 @@
+
 <template>
 
 <div>
@@ -51,11 +52,13 @@
 </div>
 </template>
 <script>
-import Pheader from '../../components/header'
+import header from '../../components/header'
+import footernav from '../../components/footernav'
 export default {
   name: "home",
    components: {
-      'v-header':Pheader
+   'v-header':header,
+   'v-foot':footernav
   }
 };
 </script>

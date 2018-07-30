@@ -1,3 +1,4 @@
+
 <template>
   <div class="header">
       <div class="imgBox"><img src="../image/logo-m.png" alt=""></div>
@@ -40,3 +41,4 @@ export default {
   
 }
 </style>
+
