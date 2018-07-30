@@ -3,7 +3,6 @@
   <div class="header">
       <div class="imgBox"><img src="../image/logo-m.png" alt=""></div>
           <router-link class="add" to="/addDevice"></router-link>
-   
   </div>
 </template>
 <script>

@@ -29,15 +29,16 @@ if (sessionStorage.getItem('token')) {
 const router = new Router({
   mode: "history",
   routes: [
-
-  {
-      	path: '/login',
-      	name: 'login',
-      	component: login
-   },
-
-   
-   
+    {
+      path: '/',
+      name: 'home',
+      component: home,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
+    },
     {
       path: '/register',
       name: 'register',
@@ -53,16 +54,11 @@ const router = new Router({
       name: 'complete',
       component: complete
     },
-
     {
-      path: '/',
-      name: 'home',
-      component: home,
-    }, {
       path: '/deviceManage',
       name: 'deviceManage',
       component: deviceManage
-    },{
+    }, {
       path: '/connectDevice',
       name: 'connectDevice',
       component: connectDevice
@@ -100,7 +96,7 @@ const router = new Router({
       name: 'userInformation',
       component: userInformation
     },
-{
+    {
       path: '/resetpassword',
       name: 'resetpassword',
       component: resetpassword

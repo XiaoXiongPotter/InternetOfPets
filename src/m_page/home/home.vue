@@ -49,6 +49,7 @@
             </div>
         </li>
     </ul>
+    <v-foot></v-foot>
 </div>
 </template>
 <script>
