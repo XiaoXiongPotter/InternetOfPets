@@ -10,6 +10,9 @@ import registerfalse from '../m_page/login/registerfalse.vue'
 import home from '../m_page/home/home.vue'
 import finder from '../m_page/finder/finder.vue'
 import account from '../m_page/myAccount/account.vue'
+import deviceManage from '../m_page/home/deviceManage.vue'
+import addDevice from '../m_page/home/addDevice.vue'
+import connectDevice from '../m_page/home/connectDevice.vue'
 import mypet from '../m_page/myAccount/mypet.vue'
 import mysearch from '../m_page/myAccount/mysearch.vue'
 import releaseSearch from '../m_page/finder/releaseSearch.vue'
@@ -26,15 +29,16 @@ if (sessionStorage.getItem('token')) {
 const router = new Router({
   mode: "history",
   routes: [
-
-  {
-      	path: '/login',
-      	name: 'login',
-      	component: login
-   },
-
-   
-   
+    {
+      path: '/',
+      name: 'home',
+      component: home,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
+    },
     {
       path: '/register',
       name: 'register',
@@ -50,11 +54,18 @@ const router = new Router({
       name: 'complete',
       component: complete
     },
-
     {
-      path: '/',
-      name: 'home',
-      component: home
+      path: '/deviceManage',
+      name: 'deviceManage',
+      component: deviceManage
+    }, {
+      path: '/connectDevice',
+      name: 'connectDevice',
+      component: connectDevice
+    }, {
+      path: '/addDevice',
+      name: 'addDevice',
+      component: addDevice
     }, {
       path: '/finder',
       name: 'finder',
@@ -85,7 +96,7 @@ const router = new Router({
       name: 'userInformation',
       component: userInformation
     },
-{
+    {
       path: '/resetpassword',
       name: 'resetpassword',
       component: resetpassword
