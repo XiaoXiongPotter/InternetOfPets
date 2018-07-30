@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <template>
 <div class="home">
 	<v-header></v-header>

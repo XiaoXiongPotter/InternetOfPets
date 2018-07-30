@@ -50,7 +50,7 @@
   				>
 				</el-input>
 				<span class="danger" v-show="flag2">密码少于6位</span>
-		</br>
+		<br>
   				<el-input
 					placeholder="再次输入密码"
   					v-model="repassword"

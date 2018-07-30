@@ -1,3 +1,4 @@
+
 <template>
 	<div class="finder">
 	<v-header></v-header>
@@ -206,4 +207,5 @@
 .reward-btn{
 	position: relative;
 }
+
 </style>

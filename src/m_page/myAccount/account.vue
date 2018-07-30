@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <template>
 	<div class="account" ref='banner'>
 	<v-header></v-header>
@@ -157,4 +158,16 @@ export default {
 	top: 30%;
 	right: 10px;
 }
+=======
+<template>
+  <div>account</div>
+</template>
+<script>
+
+export default {
+  name: "account"
+};
+</script>
+<style >
+>>>>>>> branch 'master' of http://liujinfeng@192.168.0.160:10101/r/~wanghaiyang/InternetOfPets.git
 </style>
