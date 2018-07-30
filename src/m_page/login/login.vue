@@ -92,7 +92,6 @@ export default {
   },
   methods: {
     login() {
-
 var data =  Qs.stringify({
     	username: this.username,
         password: this.password,
@@ -111,8 +110,8 @@ axios(
 	console.log(res.data)
 	      if(res.data.code==200){
 	      	sessionStorage.removeItem('imgcode')
-        	alert('登录成功')
-//      this.$router.replace({ path: '/register' })
+//      	alert('登录成功')
+        this.$router.replace({ path: '/home' })
 }
 	else{
 		this.$message({
