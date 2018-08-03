@@ -1,7 +1,8 @@
-
 <template>
 	<div class="finder">
-	<v-header></v-header>
+		<div class="header">
+      <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
+  	</div>
 	<el-main style="padding: 0;">
 		<div class="main-header">
 			<span>Finder</span>
@@ -33,7 +34,6 @@
 </template>
 <script>
 	import IScroll from 'iscroll/build/iscroll-probe'
-	import header from '../../components/header'
 	import footernav from '../../components/footernav'
 	export default{
 		name: "finder",
@@ -89,12 +89,28 @@
 			}
 		},
 		 components: {
-   			'v-header':header,
    			'v-foot':footernav
   		}
 	}
 </script>
 <style scoped>
+.header .imgBox {
+  width: 100px;
+  margin: 0 auto;
+}
+.imgBox img {
+  width: 100%;
+  vertical-align: middle;
+}
+.header{
+	display: flex;
+	width: 100%;
+  	background: #fff;
+  	color: #0ca8e3;
+  	height: 40px;
+  	line-height: 40px;
+	position: relative;
+}
 .main-header{
  	text-align: center;
  	font-size: 15px;

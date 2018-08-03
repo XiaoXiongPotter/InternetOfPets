@@ -3,25 +3,28 @@
 	<div class="userInformation" v-show="showflag" ref='banner'>
 	<div class="header">
  	<img src="../../image/back.png" class="back" @click="back"/>
-    <span>DOGNESS</span>
+ 	<div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
  </div>
- <div class="main">
+ <div class="userInformation-main">
  		<div class="head-img">
 				<img :src="img" @click="change"/>
-				<p>点击可修改头像</p>
+				<p>点击头像可更换照片</p>
 			</div>
-		<el-row type="flex" class="row-bg" style="height: 40px;line-height: 40px;border-bottom: solid 1px #DCDCDC;margin-top: 10px;">
-  		<el-col :span="17"><div class="msg"><p>昵称</p></div></el-col>
-  		<el-col :span="7"><div class="right"><span>{{user}}</span><img src="../../image/change.png" @click="changeuser"></div></el-col>
-		</el-row>
-		<el-row type="flex" class="row-bg" style="height: 40px;line-height: 40px;border-bottom: solid 1px #DCDCDC;margin-top: 10px;">
-  		<el-col :span="18"><div class="msg"><p>手机号</p></div></el-col>
-  		<el-col :span="6"><div class="right"><span>{{phonenumber}}</span></div></el-col>
-		</el-row>
-		<el-row type="flex" class="row-bg" style="height: 40px;line-height: 40px;border-bottom: solid 1px #DCDCDC;margin-top: 10px;">
-  		<el-col :span="13"><div class="msg"><p>邮箱</p></div></el-col>
-  		<el-col :span="11"><div class="right"><span>{{email}}</span></div></el-col>
-		</el-row>
+		<div style="height: 40px;line-height: 40px;border-bottom: solid 1px #DCDCDC;margin-top: 10px;display: flex;">
+  		<div class="msg" style="flex: 2;"><p>昵称</p></div>
+  		<div class="right" style="flex: 1;"><span v-if="flag" class="username">{{list[0].user}}<img src="../../image/change.png" @click="edit"></span><el-input v-model='username' placeholder='输入昵称' v-else @blur='input' ref='inp'></el-input></div>
+		</div>
+		<div style="height: 40px;line-height: 40px;border-bottom: solid 1px #DCDCDC;margin-top: 10px;display: flex;">
+  		<div class="msg" style="flex: 2;"><p>手机号</p></div>
+  		<div class="right" style="flex: 1;"><span class="phonenumber">{{list[0].phonenumber}}</span></div>
+		</div>
+		<div style="height: 40px;line-height: 40px;border-bottom: solid 1px #DCDCDC;margin-top: 10px;display: flex;">
+  		<div class="msg" style="flex: 2;"><p>邮箱</p></div>
+  		<div class="right" style="flex: 1;"><span class="email">{{list[0].email}}</span></div>
+		</div>
+		<div class="btn">
+		<el-button type="primary" round style='margin: auto;display: block;'>保存修改</el-button>
+		</div>
  </div>
 	 <transition name='fade'>
     	<ul v-show="listshow" class="list">
@@ -43,41 +46,73 @@
 				'img':require('../../image/man.jpg'),
 				showflag:false,
 				listshow:false,
-				user:'尼古拉斯',
-				phonenumber:'88888888',
-				email:'88888888@163.com'
+				username:'',
+				flag:true,
+				changeflag:false,
+				user:'this.list[0].user',
+				list:[{
+				'user':'尼古拉斯',
+				'phonenumber':'88888888',
+				'email':'88888888@163.com'	
+				}
+				]
 			}
 		},
+		beforeUpdate(){
+			this.$nextTick(() => {
+			if(this.flag==false){
+          	this.$refs.inp.focus()
+          }
+			})	
+		},
 		methods:{
-			back(){
-  		this.showflag=false
+		back(){
+  		if(this.changeflag==true){
+  		  this.$message({
+          message: '请保存修改',
+          center: true,
+          type:'error'
+      })
+  		}else{
+  			this.showflag=false
+  		}
   		},
   		show(){
-  			this.showflag=true
+  		this.showflag=true
   		},
-  	cancel(){
+  		cancel(){
   		this.listshow=false
-  	},
-  	change(){
+  		},
+  		change(){
   		this.listshow=true
-  	},
-  	changeuser(){
-  		   this.$prompt('请输入新昵称', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-        }).then(({ value }) => {
-        	this.user=value
-        }).catch(() => {});
-      }
+  		},
+  		edit(){
+  		this.flag=false
+  		this.username=this.list[0].user
+  		},
+  		input(){
+  		this.flag=true
+  		if(this.username!=this.list[0].user){
+  		this.list[0].user=this.username
+  		this.changeflag=true
+  		}
+  		}
 		}
 	}
 </script>
 <style>
-.el-message-box{
-	width: 90%;
-	position: absolute;
-	top: 30%;
-	left: 5%;
+.right .el-input__inner{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.right .el-input__inner:hover{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.el-message{
+min-width: 50%;
 }
 </style>
 <style scoped>
@@ -127,7 +162,7 @@
 	border-bottom: solid 1px #DCDCDC;
 }
 .mask{
-	    position: fixed;
+	  position: fixed;
       left: 0;
       top: 0;
       width: 100%;
@@ -149,9 +184,22 @@
   line-height: 40px;
   flex: 1;
 }
+.header .imgBox {
+  width: 100px;
+  margin: 0 auto;
+}
+.imgBox img {
+  width: 100%;
+  vertical-align: middle;
+}
 .header{
 	display: flex;
 	position: relative;
+	width: 100%;
+  	background: #fff;
+  	color: #0ca8e3;
+  	height: 40px;
+  	line-height: 40px;
 }
 .back{
 	width: 22px;
@@ -167,13 +215,33 @@
 .row-bg{
 	position: relative;
 }
-.right span{
+.right{
+	position: relative;
+}
+.phonenumber{
 	font-size: 15px;
 	color: 	#A9A9A9;
+	position: absolute;
+	right: 0;	
+}
+.email{
+	font-size: 15px;
+	color: 	#A9A9A9;
+	position: absolute;
+	right: 0;
+}
+.username{
+	font-size: 15px;
+	color: 	#A9A9A9;
+	position: absolute;
+	right: 25px;
 }
 .right img{
-	position: absolute;
-	top: 10%;
-	right: 3px;
+position: absolute;
+top: 3px;
+
+}
+.btn{
+	margin-top: 30px;
 }
 </style>

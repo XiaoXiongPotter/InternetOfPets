@@ -1,7 +1,8 @@
-<<<<<<< HEAD
 <template>
 	<div class="account" ref='banner'>
-	<v-header></v-header>
+	<div class="header">
+      <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
+  </div>
   <div ref="wrapper" class='main'>
   	<div>
   	<div class="main-header">
@@ -27,22 +28,28 @@
   		<el-col :span="3"><div class="right"><img src="../../image/right.png"></div></el-col>
 			</el-row>
 			</div>
+			<div @click="changepassword">
 			<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
   		<el-col :span="21"><div class="msg"><img src="../../image/changepassword.png"><p>修改密码</p></div></el-col>
   		<el-col :span="3"><div class="right"><img src="../../image/right.png"></div></el-col>
 			</el-row>
+			</div>
 			<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
   		<el-col :span="21"><div class="msg"><img src="../../image/Customer.png"><p>在线客服</p></div></el-col>
   		<el-col :span="3"><div class="right"><img src="../../image/right.png"></div></el-col>
 			</el-row>
+			<div @click="commonproblem">
 			<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
   		<el-col :span="21"><div class="msg"><img src="../../image/help.png"><p>常见问题</p></div></el-col>
   		<el-col :span="3"><div class="right"><img src="../../image/right.png"></div></el-col>
 			</el-row>
-				<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
+			</div>
+			<div @click="loginauthorization">
+			<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
   		<el-col :span="21"><div class="msg"><img src="../../image/authorization.png"><p>登录授权</p></div></el-col>
   		<el-col :span="3"><div class="right"><img src="../../image/right.png"></div></el-col>
 			</el-row>
+			</div>
 		</div>
 		  <div>
   </div>
@@ -53,7 +60,7 @@
 </div>
 </template>
 <script>
-import header from '../../components/header'
+import IScroll from 'iscroll/build/iscroll-probe'
 import footernav from '../../components/footernav'
 import userInformation from '../myAccount/userInformation'
 export default {
@@ -68,6 +75,13 @@ export default {
   		listshow:false
   	}
   },
+    created(){
+	 this.$nextTick(() => {
+          this.Scroll = new IScroll(this.$refs.wrapper, {
+          click: true
+        })
+       })     
+  },
   methods:{
   	mypet(){
   		this.$router.replace({ path: '/mypet' })
@@ -77,22 +91,48 @@ export default {
   	},
   	changeimg(){
   		this.$refs.user.show()
+  	},
+  	changepassword(){
+  		this.$router.replace({ path: '/changepassword' })
+  	},
+  	commonproblem(){
+  		this.$router.replace({ path: '/commonproblem' })
+  	},
+  	loginauthorization(){
+  		this.$router.replace({ path: '/loginauthorization' })
   	}
   },
    components: {
-   'v-header':header,
    'v-foot':footernav,
    userInformation
   }
 };
 </script>
 <style scoped>
+.header .imgBox {
+  width: 100px;
+  margin: 0 auto;
+}
+.imgBox img {
+  width: 100%;
+  vertical-align: middle;
+}
+.header{
+	display: flex;
+	width: 100%;
+  	background: #fff;
+  	color: #0ca8e3;
+  	height: 40px;
+  	line-height: 40px;
+	position: relative;
+}
 .main{
 	overflow: hidden;
 	position: absolute;
 	bottom: 49px;
 	top: 40px;
 	width: 100%;
+	touch-action: none;
 }
 .main-header{
  	text-align: center;
@@ -158,16 +198,5 @@ export default {
 	top: 30%;
 	right: 10px;
 }
-=======
-<template>
-  <div>account</div>
-</template>
-<script>
-
-export default {
-  name: "account"
-};
-</script>
-<style >
->>>>>>> branch 'master' of http://liujinfeng@192.168.0.160:10101/r/~wanghaiyang/InternetOfPets.git
 </style>
+

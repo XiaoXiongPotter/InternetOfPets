@@ -19,6 +19,13 @@ import releaseSearch from '../m_page/finder/releaseSearch.vue'
 import userInformation from '../m_page/myAccount/userInformation.vue'
 import necklaceManage from '../m_page/home/necklaceManage.vue'
 import changePet from "../components/changepet.vue";
+import petinfo from '../m_page/myAccount/petinfo.vue'
+import editpet from '../m_page/myAccount/editpet.vue'
+import addpet from '../m_page/myAccount/addpet.vue'
+import changepassword from '../m_page/myAccount/changepassword.vue'
+import nextchangepassword from '../m_page/myAccount/nextchangepassword.vue'
+import commonproblem from '../m_page/myAccount/commonproblem.vue'
+import loginauthorization from '../m_page/myAccount/loginauthorization.vue'
 import store from '../store/store.js'
 
 Vue.use(Router)
@@ -129,6 +136,41 @@ const router = new Router({
       path: '/registerfalse',
       name: 'registerfalse',
       component: registerfalse
+    },
+     {
+      path: '/petinfo',
+      name: 'petinfo',
+      component: petinfo
+    },
+     {
+      path: '/addpet',
+      name: 'addpet',
+      component: addpet
+    },
+     {
+      path: '/changepassword',
+      name: 'changepassword',
+      component: changepassword
+    },
+     {
+      path: '/nextchangepassword',
+      name: 'nextchangepassword',
+      component: nextchangepassword
+    },
+     {
+      path: '/editpet',
+      name: 'editpet',
+      component: editpet
+    },
+     {
+      path: '/commonproblem',
+      name: 'commonproblem',
+      component: commonproblem
+    },
+     {
+      path: '/loginauthorization',
+      name: 'loginauthorization',
+      component: loginauthorization
     }
   ]
 })
