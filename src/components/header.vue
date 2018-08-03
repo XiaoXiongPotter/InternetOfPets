@@ -31,7 +31,7 @@ export default {
   display: inline-block;
   width: 25px;
   height: 25px;
-  background-image: url(../image/add.png);
+  /*background-image: url(../image/add.png);*/
   background-size: 25px;
   position: absolute;
   right: 10px;

@@ -2,12 +2,14 @@
 <div class="mypet">
  <div class="header">
  	<img src="../../image/back.png" class="back" @click="back"/>
-    <span>DOGNESS</span>
-    <img src="../../image/add.png" class="add"/>
+    <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
+    <img src="../../image/add.png" class="add" @click="addpet"/>
+    <i v-show="showflag"></i>
+    <p v-show="showflag" @click="addpetto">添加宠物</p>
  </div>
  <div class="main" ref='wrapper'>
  	<ul>
- 	<li v-for="(item,index) in petlist" :key='index' class="petlist">
+ 	<li v-for="(item,index) in petlist" :key='index' class="petlist" @click="petinfos(index)">
  		<div class="petimg"><img :src="item.img"/></div>
  		<div class="petmsg">
  		<p class="petname">{{item.petname}}</p>
@@ -16,12 +18,12 @@
  	</li>
  	</ul>
  </div>
-  <v-foot></v-foot>
+ <petinfo ref='banner' :list='petlist[index]' :index='index' @remove='remove'></petinfo>
   </div>
 </template>
 <script>
 import IScroll from 'iscroll/build/iscroll-probe'
-import footernav from '../../components/footernav'
+import petinfo from '../myAccount/petinfo'
 export default {
   name: "mypet",
   data(){
@@ -29,13 +31,29 @@ export default {
   		petlist:[{
   			'img':require('../../image/pet2.jpg'),
   			'petname':'蝴蝶',
-  			'binddevice':'蓝牙计步器'
+  			'binddevice':'蓝牙计步器',
+  			'petbelong':'蝴蝶犬',
+  			'sex':'女',
+  			'height':'30',
+  			'weight':'20',
+  			'birthday':'2018-02-28',
+  			'haircolor':'白色',
+  			'pettype':'尼古拉斯'
   		},
   		{
-  			'img':require('../../image/pet2.jpg'),
-  			'petname':'蝴蝶',
-  			'binddevice':'蓝牙计步器'
-  		}]
+  			'img':require('../../image/pet1.jpg'),
+  			'petname':'二哈',
+  			'binddevice':'蓝牙计步器',
+  			'petbelong':'哈士奇',
+  			'sex':'男',
+  			'height':'40',
+  			'weight':'30',
+  			'birthday':'2018-11-28',
+  			'haircolor':'黑白',
+  			'pettype':'尼古拉斯'
+  		}],
+  		index:'',
+  		showflag:false
   	}
   },
   created(){
@@ -48,27 +66,67 @@ export default {
   methods:{
   	back(){
   		this.$router.replace({ path: '/myAccount' })
+  	},
+  	petinfos(index){
+  		this.index=index
+		this.$refs.banner.show()
+  	},
+  	addpet(){
+		this.showflag=!this.showflag
+  	},
+  	addpetto(){
+        this.$router.replace({ path: '/addpet' })
+  	},
+  	remove(index){
+  		this.petlist.splice(index,1)
   	}
   },
-   components: {
-   'v-foot':footernav
-  }
+  	components: {
+   		petinfo
+  	}
 };
 </script>
 <style scoped>
-.header span{
+.header .imgBox {
+  width: 100px;
+  margin: 0 auto;
+}
+.imgBox img {
   width: 100%;
-  text-align: center;
-  background: #fff;
-  color:#0CA8E3;
-  height: 40px;
-  line-height: 40px;
-  flex: 1;
+  vertical-align: middle;
 }
 .header{
 	display: flex;
 	position: relative;
 	border-bottom: solid 1px #DCDCDC;
+	width: 100%;
+ 	background: #fff;
+  	height: 40px;
+  	line-height: 40px;
+}
+.header i{
+	width: 0;
+    height: 0;
+    border-bottom: 20px solid black;
+    border-left: 20px solid transparent;
+    position: absolute;
+    z-index: 10;
+    top: 33px;
+    right: 15px;
+    
+}
+.header p{
+	z-index: 10;
+	background-color: black;
+	color: white;
+	font-size: 13px;
+	line-height: 30px;
+	width: 80px;
+	text-align: center;
+	height: 30px;
+	position: absolute;
+	top: 42px;
+	right: 5px;
 }
 .back{
 	width: 22px;
@@ -88,7 +146,7 @@ export default {
 	overflow: hidden;
 	width: 100%;
 	top: 41px;
-	bottom: 49px;
+	bottom: 0px;
 	touch-action: none;
 }
 .petlist{

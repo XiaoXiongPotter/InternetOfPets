@@ -1,11 +1,11 @@
 <template>
-  <transition name="show">
-<div class="releaseSearch" v-show="showflag" ref='banner'>
+<div class="releaseSearch" ref='banner'>
 	<div class="header">
  	<img src="../../image/back.png" class="back" @click="back"/>
-    <span>DOGNESS</span>
- </div>
- <div class="main">
+      <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
+  </div>
+ <div class="main" ref='wrapper'>
+ 	<div>
  	<div class="losepet">
  	<p>走失宠物</p>
  	<el-input v-model="petname"></el-input>
@@ -18,12 +18,27 @@
  		<p>协寻简介</p>
  		<el-input v-model="introduction" placeholder="宝贝走丢了总该说点什么吧..."></el-input>
  	</div>
+ 	 	<div class="losttime">
+ 		<p>走失时间</p>
+ 		<el-input v-model="time" placeholder="请填写走失时间"></el-input>
+ 	</div>
+ 	<div class="petphoto">
+ 		<p>宠物照片</p>
+ 		<img src="../../image/addpet.png"/>
+ 	</div>
+ 	 	<div class="place">
+ 		<p>走失地点</p>
+ 		<el-input v-model="time" placeholder="宝贝在哪里走丢的呢?"></el-input>
+ 	</div>
+ 	<div class="release-btn">
+ 		 	<el-button type="primary" round style="margin: auto;display: block;margin-top: 15px;">确认发布</el-button>
+ 	</div>
+ 	</div>
  </div>
 </div>
-</transition>
 </template>
 <script>
-
+import IScroll from 'iscroll/build/iscroll-probe'
 	export default {
 			name:'releaseSearch',
 			data(){
@@ -31,15 +46,20 @@
 					showflag:false,
 					petname:'',
 					money:'',
-					introduction:''
+					introduction:'',
+					time:''
 				}
 			},
-			methods:{
+			mounted(){
+	 	  this.$nextTick(() => {
+          this.Scroll = new IScroll(this.$refs.wrapper, {
+          click: true
+        })
+       })     
+  },
+		methods:{
   		back(){
-  		this.showflag=false
-  		},
-  		show(){
-  			this.showflag=true
+  		this.$router.replace({ path: '/mypet' })
   		}
   		}
 		}
@@ -65,35 +85,46 @@
 	border-right-color: white;
 	border-left-color: white;
 }
+.losttime .el-input__inner{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.losttime .el-input__inner:hover{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.place .el-input__inner{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.place .el-input__inner:hover{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
 .synopsis .el-input__inner{
-	height: 100px;
+	height: 80px;
 }
 </style>
 <style scoped>
-.releaseSearch{
-	position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 49px;
-	width: 100%;
-    z-index: 30;
-    background-color: #fff;
-    transition: all .2s linear;
+.header .imgBox {
+  width: 100px;
+  margin: 0 auto;
 }
-.releaseSearch.show-enter, .releaseSearch.show-leave-to{
-	      transform: translateX(100%);
-}
-.header span{
+.imgBox img {
   width: 100%;
-  text-align: center;
-  background: #fff;
-  color:#0CA8E3;
-  height: 40px;
-  line-height: 40px;
-  flex: 1;
+  vertical-align: middle;
 }
 .header{
 	display: flex;
+	width: 100%;
+  background: #fff;
+  color: #0ca8e3;
+  height: 40px;
+  line-height: 40px;
 	position: relative;
 }
 .back{
@@ -103,10 +134,16 @@
 	top: 18%;
 }
 .main{
-	margin-top: 20px;
+	position: absolute;
+	top: 40px;
+	bottom: 0;
+	width: 100%;
+	overflow: hidden;
+	touch-action: none;
 }
 .main p{
 	padding-left: 10px;
+	font-size: 13px;
 }
 .getmoney{
 	margin-top: 15px;
@@ -116,5 +153,18 @@
 }
 .synopsis p{
 	padding: 10px 10px;
+}
+.losttime{
+	margin-top: 15px;
+}
+.petphoto{
+	margin-top: 15px;
+}
+.petphoto img{
+	margin-left: 10px;
+	margin-top: 10px;
+}
+.place{
+	margin-top: 15px;
 }
 </style>
