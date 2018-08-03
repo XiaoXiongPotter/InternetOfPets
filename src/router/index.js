@@ -17,15 +17,14 @@ import mypet from '../m_page/myAccount/mypet.vue'
 import mysearch from '../m_page/myAccount/mysearch.vue'
 import releaseSearch from '../m_page/finder/releaseSearch.vue'
 import userInformation from '../m_page/myAccount/userInformation.vue'
+import necklaceManage from '../m_page/home/necklaceManage.vue'
+import changePet from "../components/changepet.vue";
 import store from '../store/store.js'
+
 Vue.use(Router)
-
-
 if (sessionStorage.getItem('token')) {
   store.commit('set_token', sessionStorage.getItem('token'))
 }
-
-
 const router = new Router({
   mode: "history",
   routes: [
@@ -34,6 +33,7 @@ const router = new Router({
       name: 'home',
       component: home,
     },
+    //登录，注册
     {
       path: '/login',
       name: 'login',
@@ -54,33 +54,52 @@ const router = new Router({
       name: 'complete',
       component: complete
     },
+    //设备管理
     {
       path: '/deviceManage',
       name: 'deviceManage',
       component: deviceManage
-    }, {
+    },
+    {
+      path: '/necklaceManage',
+      name: 'necklaceManage',
+      component: necklaceManage
+    },{
+      path: '/changepet',
+      name: 'changePet',
+      component: changePet
+    },
+    //设备连接
+    {
       path: '/connectDevice',
       name: 'connectDevice',
       component: connectDevice
-    }, {
+    },
+    //添加设备
+    {
       path: '/addDevice',
       name: 'addDevice',
       component: addDevice
-    }, {
+    },
+    //协寻
+    {
       path: '/finder',
       name: 'finder',
       component: finder
     },
+    //我的
     {
       path: '/myAccount',
       name: 'account',
       component: account
     },
+    //我的宠物
     {
       path: '/mypet',
       name: 'mypet',
       component: mypet
     },
+    //我的协寻
     {
       path: '/mysearch',
       name: 'mysearch',

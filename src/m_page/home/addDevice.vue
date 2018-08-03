@@ -1,5 +1,6 @@
 <template>
   <div class="addDevice">
+    <v-header :go-back='true' ></v-header>
     <div class="title">
         <i class="line"></i>
         <span>Add Device</span>
@@ -12,18 +13,32 @@
                 <img src="../../image/robot.jpg" alt="">
                 <span>多尼斯智能宠物机器狗</span>
             </router-link>
-            
         </li>
-        
+        <li>
+            <router-link to="/connectDevice">
+                <img src="../../image/feeder.jpg" alt="">
+                <span>多尼斯智能喂食器</span>
+            </router-link>
+        </li>
+        <li>
+            <router-link to="/connectDevice">
+                <img src="../../image/bread.jpg" alt="">
+                <span>多尼斯智能面包机</span>
+            </router-link>
+        </li>
     </ul>
   </div>
 </template>
 <script>
+import header from "../../components/header";
 export default {
-  name: "Pheader"
+  name: "addDevice",
+  components:{
+    'v-header':header
+  }
 };
 </script>
-<style>
+<style scroped>
 .title {
   text-align: center;
 }
@@ -63,7 +78,7 @@ export default {
   vertical-align: middle;
   color: #0ca8e3;
 }
-.addDevice img {
+.addDevice ul img {
   width: 80px;
   height: 80px;
   vertical-align: middle;

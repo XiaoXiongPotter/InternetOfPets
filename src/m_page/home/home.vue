@@ -1,69 +1,92 @@
 
 <template>
-
 <div>
-<v-header></v-header>
+<v-header :go-back='false' :add-devices='true'></v-header>
     <div class="title">
         <i class="line"></i>
         <span>Home</span>
         <i class="line"></i>
     </div>
     <ul class="device_box">
-        <li>
+        <li v-for="info in infos" :key="info">
             <div class="device_box_l">
-                <img src="../../image/necklace.png" alt="">
-                <span>蓝牙计步器</span>
+                <img  :src="'../../../static/img/'+info.type+'.png'">
+                <span>{{info.type}}</span>
             </div>
             <div class="device_box_r">
                 <div class="touxiang_box">
                     <img src="../../image/dog-pic.jpg" alt="">
                 </div>
                 <div class="info_box">
-                        <p>蓝牙计步器</p>
-                        <p>大金毛</p>
+                        <p>{{info.name}}</p>
+                        <p>{{info.dogType}}</p>
                 </div>
                 <div class="btn_box">
-                    
                      <router-link class="btn caozuo" to="/deviceManage"></router-link>
-                    <router-link class="btn guanli" to="/deviceManage"></router-link>
+                    <router-link class="btn guanli" to="/necklaceManage"></router-link>
                 </div>
             </div>
         </li>
-         <li>
+         <!-- <li>
             <div class="device_box_l">
                 <img src="../../image/necklace.png" alt="">
-                <span>蓝牙计步器</span>
+                <span>协寻吊坠</span>
             </div>
             <div class="device_box_r">
                 <div class="touxiang_box">
                     <img src="../../image/dog-pic.jpg" alt="">
                 </div>
                 <div class="info_box">
-                        <p>蓝牙计步器</p>
+                        <p>协寻吊坠</p>
                         <p>大金毛</p>
                 </div>
                 <div class="btn_box">
-                  <router-link class="btn caozuo" to="/deviceManage"></router-link>
-                    <router-link class="btn guanli" to="/deviceManage"></router-link>
+                     <router-link class="btn caozuo" to="/deviceManage"></router-link>
+                    <router-link class="btn guanli" to="/necklaceManage"></router-link>
                 </div>
             </div>
-        </li>
+        </li> -->
     </ul>
     <v-foot></v-foot>
 </div>
 </template>
-<script>
-import header from '../../components/header'
-import footernav from '../../components/footernav'
+<script >
+import header from "../../components/header";
+import footernav from "../../components/footernav";
 export default {
   name: "home",
-   components: {
-   'v-header':header,
-   'v-foot':footernav
+  data() {
+    return {
+      necklace: require("../../image/necklace.png"),
+
+      infos: [
+        {
+          type: "necklace",
+          touxiang: "../../image/dog-pic.jpg",
+          name: "大金毛",
+          dogType: "拉布拉多"
+        },
+        {
+          type: "pendant",
+          touxiang: "../../image/dog-pic.jpg",
+          name: "小金毛",
+          dogType: "阿拉斯加"
+        }
+      ]
+    };
+  },
+  // computed: {
+  //   deviceType:fucntion(type){
+
+  //   }
+  // },
+  components: {
+    "v-header": header,
+    "v-foot": footernav
   }
 };
 </script>
-<style >
+<style scoped>
 img {
   width: 100%;
 }
@@ -126,8 +149,11 @@ img {
   float: left;
   padding: 0 10px;
   font-size: 14px;
-  width: 40%;
+  width: 45%;
   box-sizing: border-box;
+}
+.info_box p {
+  margin-top: 10px;
 }
 .info_box::after {
   content: " ";
@@ -138,7 +164,8 @@ img {
   float: left;
   width: 20%;
   line-height: 82px;
-  padding-left: 20px;
+  padding-left: 10px;
+  box-sizing: border-box;
 }
 .btn {
   display: block;
