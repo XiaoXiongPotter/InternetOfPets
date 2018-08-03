@@ -58,13 +58,11 @@ export default {
   vertical-align: middle;
 }
 .header .add {
-
   float: left;
   width: 10%;
   height: 40px;
   background-image: url(../image/add.png);
   background-repeat: no-repeat;
-
   display: inline-block;
   /*background-image: url(../image/add.png);*/
   background-size: 25px;
