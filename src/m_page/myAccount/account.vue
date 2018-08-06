@@ -51,11 +51,14 @@
 			</el-row>
 			</div>
 		</div>
+		<div class="out-btn">
+			<el-button type="danger" plain style='margin:15px auto; display: block;' @click='out'>退出登录</el-button>
+		</div>
 		  <div>
   </div>
 </div>
   </div>
-  <v-foot></v-foot>
+  <v-foot :loginsuccess='loginsuccess' :loginshowflag='loginshowflag'></v-foot>
   <userInformation ref='user'></userInformation>
 </div>
 </template>
@@ -72,7 +75,9 @@ export default {
   			'user':'尼古拉斯',
   			'username':'88888888'
   		}],
-  		listshow:false
+  		listshow:false,
+  		loginsuccess:false,
+  		loginshowflag:true
   	}
   },
     created(){
@@ -80,6 +85,10 @@ export default {
           this.Scroll = new IScroll(this.$refs.wrapper, {
           click: true
         })
+          if(sessionStorage.getItem('login')){
+          	this.loginsuccess=true
+          	this.loginshowflag=false
+          }
        })     
   },
   methods:{
@@ -100,6 +109,10 @@ export default {
   	},
   	loginauthorization(){
   		this.$router.replace({ path: '/loginauthorization' })
+  	},
+  	out(){
+  		this.$router.replace({ path: '/login' })
+  		sessionStorage.removeItem('login')
   	}
   },
    components: {

@@ -18,7 +18,13 @@
         </div>
         <div>协寻</div>
       </router-link>
-      <router-link :to="{name:'account',params:{user:'xu'}}" active-class="activeNav" tag="li">
+      <router-link :to="{name:'account',params:{user:'xu'}}" active-class="activeNav" tag="li" v-show='loginsuccess'>
+        <div>
+          <i class="icon account-tip"></i>
+        </div>
+        <div>我的</div>
+      </router-link>
+       <router-link :to="{name:'login'}" active-class="activeNav" tag="li" v-show='loginshowflag'>
         <div>
           <i class="icon account-tip"></i>
         </div>
@@ -29,7 +35,8 @@
 </template>
 <script type="text/ecmascript-6">
 export default {
-  name: "footernav"
+  name: "footernav",
+   props:['loginsuccess','loginshowflag']
 };
 </script>
 <style >

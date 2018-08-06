@@ -840,7 +840,7 @@
 					},
 					data
 					}).then(res => {
-				if(res.data.code==200){
+				if(res.data.header.status==1000){
 					this.$router.replace({ path: '/resetsuccess' })
 				}else{
 					this.$message({
@@ -949,7 +949,7 @@
 
 .forgetpassword-header{
 	text-align: center;
-	background-color: #1E90FF;
+	background-color: #0ca8e3;
 	color: white;
 	font-family: "微软雅黑";
 	font-size: 18px;

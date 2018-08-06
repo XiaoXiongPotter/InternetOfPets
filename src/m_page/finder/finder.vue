@@ -29,7 +29,7 @@
 			</ul>
 		</div>
 	</el-main>
-	<v-foot></v-foot>
+	<v-foot :loginsuccess='loginsuccess' :loginshowflag='loginshowflag'></v-foot>
 	</div>
 </template>
 <script>
@@ -60,7 +60,9 @@
 				src1:require('../../image/icon-up.png'),
 				srcchange1:false,
 				src2:require('../../image/icon-up.png'),
-				srcchange2:false
+				srcchange2:false,
+				loginsuccess:false,
+				loginshowflag:true
 			}
 		},
   created(){
@@ -68,6 +70,11 @@
           this.Scroll = new IScroll(this.$refs.wrapper, {
           click: true
         })
+       if(sessionStorage.getItem('login')){
+          	this.loginsuccess=true
+          	this.loginshowflag=false
+          }
+         
        })     
   },
 		methods:{

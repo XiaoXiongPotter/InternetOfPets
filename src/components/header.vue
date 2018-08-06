@@ -64,7 +64,6 @@ export default {
   background-image: url(../image/add.png);
   background-repeat: no-repeat;
   display: inline-block;
-  /*background-image: url(../image/add.png);*/
   background-size: 25px;
   background-position: center;
   position: relative;

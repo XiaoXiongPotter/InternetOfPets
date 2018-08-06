@@ -86,7 +86,7 @@
 <style scoped>
 .resetpassword-header{
 	text-align: center;
-	background-color: #1E90FF;
+	background-color: #0ca8e3;
 	color: white;
 	font-family: "微软雅黑";
 	font-size: 20px;
