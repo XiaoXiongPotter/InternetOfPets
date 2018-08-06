@@ -45,6 +45,7 @@
 					<li><img src="@/image/sina.png"><p>新浪微博</p></li>
 				</ul>
 			</el-footer>
+			<v-foot :loginsuccess='loginsuccess' :loginshowflag='loginshowflag'></v-foot>
 	</div>
 	</div>
 </template>
@@ -54,6 +55,7 @@ import {getimg} from '../../api/index.js'
 import store from '../../store/store.js'
 import Qs from 'qs'
 import axios from 'axios'
+import footernav from '../../components/footernav'
 export default {
   name: "login",
   data() {
@@ -65,8 +67,13 @@ export default {
       checked: false,
       flag:false,
       img:'',
-      num: 1
+      num: 1,
+      loginsuccess:false,
+      loginshowflag:true
     };
+  },
+   components: {
+   'v-foot':footernav,
   },
   mounted() {
   		systemInit().then(res => {
@@ -108,21 +115,22 @@ axios(
 	}
 ).then((res)=>{
 	console.log(res.data)
-	      if(res.data.code==200){
+	      if(res.data.header.status==1000){
 	      	sessionStorage.removeItem('imgcode')
-//      	alert('登录成功')
-        this.$router.replace({ path: '/home' })
+	      	this.loginsuccess=true
+		this.$router.replace({ path: '/myAccount' })
+		sessionStorage.setItem('login','1')
 }
 	else{
 		this.$message({
-          message: res.data.msg,
+          message: res.data.header.message,
           center: true,
           type:'error',
       })
 		if(res.data.data.hasImgCode){
 			sessionStorage.setItem('imgcode',res.data.data.hasImgCode)
 		}
-			if(res.data.code==4001){
+			if(res.data.header.status==3001){
 			this.flag=true
 			getimg().then(res => {
 				this.img='data:image/jpeg;base64,'+res.data.data
@@ -149,10 +157,15 @@ axios(
   }
 };
 </script>
+<style>
+.el-message{
+min-width: 60%;
+}
+</style>
 <style scoped>
 .sign-header{
 	text-align: center;
-	background-color: #1E90FF;
+	background-color: #0ca8e3;
 	color: white;
 	font-family: "微软雅黑";
 	font-size: 18px;

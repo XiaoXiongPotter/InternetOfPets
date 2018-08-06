@@ -810,9 +810,10 @@ export default {
 					data
 					}).then(res => {
 					console.log(res.data)
-					if(res.data.code==200){
+					if(res.data.header.status==1000){
 						//成功后跳转页面
-						this.$router.replace({ path: '/complete' })
+						this.$router.replace({ path: '/myAccount' })
+						sessionStorage.setItem('login','1')
 					}
 					else {						
 						this.$message({
@@ -845,7 +846,7 @@ export default {
 					data
 					}).then(res => {
 					console.log(res.data)
-					if(res.data.code==200){
+					if(res.data.header.status==1000){
 						this.$message({
           				message: '请前往注册邮箱点击激活',
           				center: true,
@@ -953,7 +954,7 @@ export default {
 <style scoped>
 .register-header{
 	text-align: center;
-	background-color: #1E90FF;
+	background-color: #0ca8e3;
 	color: white;
 	font-family: "微软雅黑";
 	font-size: 18px;

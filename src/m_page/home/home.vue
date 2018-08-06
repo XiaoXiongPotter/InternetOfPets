@@ -8,7 +8,7 @@
         <i class="line"></i>
     </div>
     <ul class="device_box">
-        <li v-for="info in infos" :key="info">
+        <li v-for="(info,index) in infos" :key="index">
             <div class="device_box_l">
                 <img  :src="'../../../static/img/'+info.type+'.png'">
                 <span>{{info.type}}</span>
@@ -47,7 +47,7 @@
             </div>
         </li> -->
     </ul>
-    <v-foot></v-foot>
+    <v-foot :loginsuccess='loginsuccess' :loginshowflag='loginshowflag'></v-foot>
 </div>
 </template>
 <script >
@@ -72,8 +72,18 @@ export default {
           name: "小金毛",
           dogType: "阿拉斯加"
         }
-      ]
+      ],
+      loginsuccess:false,
+      loginshowflag:true
     };
+  },
+    created(){
+	 this.$nextTick(() => {
+       if(sessionStorage.getItem('login')){
+          	this.loginsuccess=true
+          	this.loginshowflag=false
+         }         
+       })     
   },
   // computed: {
   //   deviceType:fucntion(type){
