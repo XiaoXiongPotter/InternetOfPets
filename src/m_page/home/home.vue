@@ -8,7 +8,7 @@
         <i class="line"></i>
     </div>
     <ul class="device_box">
-        <li v-for="info in infos" :key="info">
+        <li v-for="(info,index) in infos" :key="index">
             <div class="device_box_l">
                 <img  :src="'../../../static/img/'+info.type+'.png'">
                 <span>{{info.type}}</span>
@@ -27,25 +27,6 @@
                 </div>
             </div>
         </li>
-         <!-- <li>
-            <div class="device_box_l">
-                <img src="../../image/necklace.png" alt="">
-                <span>协寻吊坠</span>
-            </div>
-            <div class="device_box_r">
-                <div class="touxiang_box">
-                    <img src="../../image/dog-pic.jpg" alt="">
-                </div>
-                <div class="info_box">
-                        <p>协寻吊坠</p>
-                        <p>大金毛</p>
-                </div>
-                <div class="btn_box">
-                     <router-link class="btn caozuo" to="/deviceManage"></router-link>
-                    <router-link class="btn guanli" to="/necklaceManage"></router-link>
-                </div>
-            </div>
-        </li> -->
     </ul>
     <v-foot></v-foot>
 </div>
@@ -58,7 +39,6 @@ export default {
   data() {
     return {
       necklace: require("../../image/necklace.png"),
-
       infos: [
         {
           type: "necklace",
@@ -77,7 +57,6 @@ export default {
   },
   // computed: {
   //   deviceType:fucntion(type){
-
   //   }
   // },
   components: {
@@ -106,7 +85,6 @@ img {
   position: relative;
   top: -4px;
 }
-
 .device_box li {
   box-sizing: border-box;
   margin-top: 20px;

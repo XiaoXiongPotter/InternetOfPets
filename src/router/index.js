@@ -38,7 +38,7 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      component: home,
+      component: home
     },
     //登录，注册
     {
