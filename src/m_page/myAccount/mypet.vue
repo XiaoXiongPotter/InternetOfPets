@@ -145,6 +145,7 @@ export default {
 	position: absolute;
 	overflow: hidden;
 	width: 100%;
+	max-width: 720px;
 	top: 41px;
 	bottom: 0px;
 	touch-action: none;

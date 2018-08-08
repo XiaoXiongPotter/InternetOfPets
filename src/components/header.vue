@@ -28,7 +28,7 @@ export default {
   })
 };
 </script>
-<style scroped>
+<style scoped>
 
 .head_goback {
   float: left;

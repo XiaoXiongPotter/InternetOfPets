@@ -66,6 +66,7 @@
 import IScroll from 'iscroll/build/iscroll-probe'
 import footernav from '../../components/footernav'
 import userInformation from '../myAccount/userInformation'
+import {logout} from '../../api/index.js'
 export default {
   name: "account",
   data(){
@@ -113,6 +114,12 @@ export default {
   	out(){
   		this.$router.replace({ path: '/login' })
   		sessionStorage.removeItem('login')
+  		let params = sessionStorage.getItem('token')
+  		logout().then(res => {
+  			console.log(res)
+  		}).catch(error => {
+		console.log(error)
+	   })
   	}
   },
    components: {
@@ -145,6 +152,7 @@ export default {
 	bottom: 49px;
 	top: 40px;
 	width: 100%;
+	max-width: 720px;
 	touch-action: none;
 }
 .main-header{

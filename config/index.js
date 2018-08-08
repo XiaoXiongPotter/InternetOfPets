@@ -9,14 +9,17 @@ module.exports = {
         //axios跨域问题
         proxyTable: {
             '/api': {
-<<<<<<< HEAD
-                target: 'http://manager.dognessnetwork.com:8080/userserver',//设置你调用的接口域名和端口号 别忘了加http
-=======
                 target: 'http://manager.dognessnetwork.com:8080',//设置你调用的接口域名和端口号 别忘了加http
->>>>>>> 714474a49cc3818d94db1f909cf70249a95e3b96
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': '/'
+                }
+            },
+            '/ClientServerApi': {
+                target: 'http://manager.dognessnetwork.com:9860/ClientServer',//设置你调用的接口域名和端口号 别忘了加http
+                changeOrigin: true,
+                 pathRewrite: {
+                    '^/ClientServerApi': '/'
                 }
             }
         },

@@ -6,7 +6,7 @@
 			</el-header>
 			<el-main class="sign-msg">
 				<el-input
-					placeholder="用户名"
+					placeholder="手机/邮箱"
   					v-model="username"
   					clearable
   					class="username">
@@ -116,10 +116,18 @@ axios(
 ).then((res)=>{
 	console.log(res.data)
 	      if(res.data.header.status==1000){
-	      	sessionStorage.removeItem('imgcode')
-	      	this.loginsuccess=true
-		this.$router.replace({ path: '/myAccount' })
-		sessionStorage.setItem('login','1')
+	      sessionStorage.removeItem('imgcode')
+	      this.loginsuccess=true
+		  this.$router.replace({ path: '/myAccount' })
+		  sessionStorage.setItem('login','1')
+		  systemInit().then(res => {
+		  let data = res.headers["x-auth-token"];
+		  if(data!=undefined){
+		 	this.$store.commit('set_token', data);
+		  }        
+	   }).catch(error => {
+		console.log(error)
+	   })
 }
 	else{
 		this.$message({

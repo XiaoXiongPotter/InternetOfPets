@@ -35,11 +35,15 @@ export const submitpassword = (params) => {
 export const sendreset = (params) => {
 	return http.fetchPost('/api/send_reset_pass_link', params)
 }
-
+//获取touken
 export const systemInit = () => {
 	return http.fetchPost('/api/systemInit')
 }
 //图形验证码
 export const getimg = () => {
 	return http.fetchPost('/api/code/image?width=100')
+}
+//退出登录
+export const logout = (params) => {
+	return http.fetchPost('/api/logout', params)
 }
