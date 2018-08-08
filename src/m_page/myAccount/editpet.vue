@@ -5,12 +5,24 @@
  	<img src="../../image/back.png" class="back" @click="back"/>
     <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
  	</div>
- 	<div class="main" ref='wrapper'>
- 		<div>
- 			<div class="title">
- 				<img :src="list.img" v-if='list'@click="change"/>
+ 	 <div class="title">
+ 		<el-upload
+  			action="https://jsonplaceholder.typicode.com/posts/"
+  			:class="{disabled:showto}"
+  			:limit='1'
+  			list-type='picture-card'
+  			:file-list="fileList"
+  			:auto-upload="false"
+  			:on-change='change'
+  			:on-remove='remove'
+  			v-if='list'
+  		>
+  		<i class="el-icon-plus"></i>
+		</el-upload>
  				<p>点击头像可更换照片</p>
  			</div>
+ 	<div class="main" ref='wrapper'>
+ 		<div>
  			<div class="petmessage">
  				<div class="petname" v-if='list'>
  					<span>名称</span>
@@ -39,7 +51,15 @@
  				<div class="pet-msg">
  					<div class="birthday" v-if='list'>
  					<span>出生日期</span>
- 					<el-input v-model='birthday'  @blur='input5' @focus='focus' ></el-input>
+ 					<div class="block">
+    			<el-date-picker
+    				@blur='input5' 
+    				@focus='focus'
+      				v-model="birthday"
+      				type="date"
+      				>
+    			</el-date-picker>
+  				</div>
  					</div>
  					<div class="haircolor" v-if='list'> 
  					<span>毛色</span>
@@ -62,15 +82,6 @@
  			</div>
  		</div>
  	</div>
- 		 <transition name='fade'>
-    	<ul v-show="listshow" class="list">
-    		<li>从手机相册选择</li>
-    		<li @click="cancel">取消</li>
-    	</ul>
-    </transition>
-       <transition name="fade">
-      <div class="mask" v-show="listshow"></div>
-    </transition>
 	</div>
 	</transition>
 </template>
@@ -82,7 +93,7 @@
 		data(){
 			return{
 				showflag:false,
-				listshow:false,
+				showto:false,
 				changeflag:false,
 				petname:'',
 				petbelong:'',
@@ -91,23 +102,52 @@
 				weight:'',
 				birthday:'',
 				haircolor:'',
-				pettype:''
+				pettype:'',
+				core:1,
+				fileList:[]
 			}
 		},
 		 beforeUpdate(){
 	 	  this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true
+          click: true,
+          preventDefault: false,
+		  preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }
         })
+          if(this.core==1){
+				this.fileList.push({'url':this.list.img})
+				this.core=0
+			}
+          if(this.fileList.length>0){
+				this.showto=true
+			}
        })     
   },
   methods:{
-  	change(){
-  		this.listshow=true
+  	change(file, fileList){
+  			console.log(fileList)
+    		if(fileList.length==1){
+    		this.showto=true  			
+    		}
+    this.changeflag=true
+    this.imageUrl = URL.createObjectURL(file.raw);
+    var reader = new FileReader();
+    reader.readAsDataURL(file.raw);
+    reader.onload = function(e){ 
+        this.result // 这个就是base64编码了
+        this.imageUrl = this.result;
+        this.src=this.result.split(',')[1]
+    }
   	},
-  	cancel(){
-  		this.listshow=false
-  	},
+  	remove(file, fileList){
+    		clearInterval(this.time)
+    		this.fileList.splice(0,1)
+    		if(fileList.length==0){
+    			this.time=setInterval(()=>{
+    				this.showto=false
+    			},500)
+    		}
+    	},
   	back(){
   		if(this.changeflag==true){
   		  this.$message({
@@ -117,6 +157,7 @@
       })
   		}else{
   			this.showflag=false
+  			this.core=1
   		}
   		
   	},
@@ -185,6 +226,38 @@
   }
 </script>
 <style>
+	.el-upload--picture-card{
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+	line-height: 100px;
+	position: relative;
+	display: block;
+	margin: auto;
+}
+.el-upload--picture-card i{
+   position: absolute;
+   left: 37%;
+   top: 35%;
+  }
+.el-upload-list--picture-card .el-upload-list__item{
+	margin: auto;
+	display: block;
+	border: none;
+	width: 100px;
+	height: 100px;
+}
+.el-upload-list--picture-card .el-upload-list__item img{
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+}
+.disabled .el-upload--picture-card{
+    display: none;
+}
+.el-upload-list__item.is-success .el-upload-list__item-status-label{
+	display: none;
+}
 	.petmessage .el-input__inner{
 	padding: 0 0;
 	width: 90px;
@@ -198,6 +271,12 @@
 	border-top-color: white;
 	border-right-color: white;
 	border-left-color: white;
+}
+.editpet .el-date-editor.el-input, .el-date-editor.el-input__inner{
+	width: 90px;
+}
+.editpet .el-input__icon{
+	display: none;
 }
 .el-message{
 min-width: 50%;
@@ -251,7 +330,7 @@ min-width: 50%;
 }
 .main{
 	position: absolute;
-	top: 40px;
+	top: 169px;
 	bottom: 0px;
 	width: 100%;
 	overflow: hidden;
@@ -261,16 +340,6 @@ min-width: 50%;
 	text-align: center;
 	font-size: 14px;
 	padding-top: 5px;
-}
-.title img{
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
-	display: block;
-	margin: auto;
-}
-.petmessage{
-	margin-top: 30px;
 }
 
 .petname{
@@ -326,38 +395,5 @@ min-width: 50%;
 .binddevice{
 	margin-left: 15px;
 	margin-top: 30px;
-}
-.list{
-	position: absolute;
-	left: 0;
-	bottom: -82px;
- 	z-index: 100;
- 	width: 100%;
- 	text-align: center;
-  transition: all .4s;
-  transform: translateY(-100%);
-}
- .list.fade-enter, .list.fade-leave-to{
- 	transform: translateY(0);
- }
-.list li{
-	height: 40px;
-  line-height: 40px;
-	background-color: #f3f5f7;
-	border-bottom: solid 1px #DCDCDC;
-}
-.mask{
-	    position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(7, 17, 27, 0.6);
-      z-index: 10;
-      transition: all 0.4s;
-}
-.mask.fade-enter, .mask.fade-leave-to{
-	opacity: 0;
-	background-color: rgba(7, 17, 27, 0);
 }
 </style>

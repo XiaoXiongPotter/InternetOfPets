@@ -6,7 +6,7 @@
 			</el-header>
 			<el-main class="sign-msg">
 				<el-input
-					placeholder="用户名"
+					placeholder="手机/邮箱"
   					v-model="username"
   					clearable
   					class="username">
@@ -76,7 +76,7 @@ export default {
     "v-foot": footernav
   },
   mounted() {
-    console.log(sessionStorage.token)
+    console.log(sessionStorage.token);
     systemInit()
       .then(res => {
         let data = res.headers["x-auth-token"];
@@ -124,10 +124,41 @@ export default {
             this.loginsuccess = true;
             this.$router.replace({ path: "/myAccount" });
             sessionStorage.setItem("login", "1");
-           
-               
-                  this.$store.commit("set_token",res.headers["x-auth-token"]);
-             
+            this.$store.commit("set_token", res.headers["x-auth-token"]);
+              
+          } else {
+            this.$message({
+              message: res.data.header.message,
+              center: true,
+              type: "error"
+            });
+            if (res.data.data.hasImgCode) {
+              sessionStorage.setItem("imgcode", res.data.data.hasImgCode);
+            }
+            if (res.data.header.status == 3001) {
+              this.flag = true;
+              getimg()
+                .then(res => {
+                  this.img = "data:image/jpeg;base64," + res.data.data;
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            }
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .then(res => {
+          console.log(res.data);
+          if (res.data.header.status == 1000) {
+            sessionStorage.removeItem("imgcode");
+            this.loginsuccess = true;
+            this.$router.replace({ path: "/myAccount" });
+            sessionStorage.setItem("login", "1");
+
+            this.$store.commit("set_token", res.headers["x-auth-token"]);
           } else {
             this.$message({
               message: res.data.header.message,

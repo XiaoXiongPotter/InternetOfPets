@@ -4,7 +4,16 @@
  	<img src="../../image/back.png" class="back" @click="back"/>
     <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
    </div>
-   <div class="commonproblem-main" ref='wrapper'>
+   <div class="nav" ref='banner' style="touch-action: none;">
+   	<ul style="display: flex;flex-wrap: nowrap;width: 720px;text-align: center;">
+   		<li style="flex: 1;height: 40px;line-height: 40px;" :class="{active:flag5}" @click="changepage">智能宠物项圈</li>
+   		<li style="flex: 1;height: 40px;line-height: 40px;" :class="{active:flag6}" @click="changepage1">智能宠物机器狗</li>
+   		<li style="flex: 1;height: 40px;line-height: 40px;" :class="{active:flag7}" @click="changepage2">智能宠物投食器</li>
+   		<li style="flex: 1;height: 40px;line-height: 40px;" :class="{active:flag8}" @click="changepage3">智能宠物喂食器</li>
+   		<li style="flex: 1;height: 40px;line-height: 40px;" :class="{active:flag9}" @click="changepage4">智能宠物面包机</li>
+   	</ul>
+   </div>
+   <div class="commonproblem-main" ref='wrapper' v-show="flag5">
    	<div>
    	<div class="page1" v-show="flag1">
    		<h4>1、请问你们项圈和马背主机内置的SIM卡用的是2G、3G还是4G？定位时的刷新和上传速度如何，延迟大吗？</h4>
@@ -96,7 +105,67 @@
    	</div>
    	</div>
    </div>
-    <div class="foot-page">
+    <div class="foot-page" v-show="flag5">
+   	<el-pagination
+   	@current-change='page'
+  	background
+  	layout="prev, pager, next"
+  	:total="40"
+  	style='text-align: center;'
+  	>
+	</el-pagination>
+   	</div>
+   	<div class="commonproblem-main" v-show="flag6">
+   	<div>
+   		<p>智能宠物机器狗</p>
+   	</div>
+   	</div>
+   	<div class="foot-page" v-show="flag6">
+   	<el-pagination
+   	@current-change='page'
+  	background
+  	layout="prev, pager, next"
+  	:total="40"
+  	style='text-align: center;'
+  	>
+	</el-pagination>
+   	</div>
+   	<div class="commonproblem-main"  v-show="flag7">
+   	<div>
+   		<p>智能宠物投食器</p>
+   	</div>
+   	</div>
+   	<div class="foot-page" v-show="flag7">
+   	<el-pagination
+   	@current-change='page'
+  	background
+  	layout="prev, pager, next"
+  	:total="40"
+  	style='text-align: center;'
+  	>
+	</el-pagination>
+   	</div>
+   	<div class="commonproblem-main" v-show="flag8">
+   	<div>
+   		<p>智能宠物喂食器</p>
+   	</div>
+   	</div>
+   	<div class="foot-page" v-show="flag8">
+   	<el-pagination
+   	@current-change='page'
+  	background
+  	layout="prev, pager, next"
+  	:total="40"
+  	style='text-align: center;'
+  	>
+	</el-pagination>
+   	</div>
+   	<div class="commonproblem-main"  v-show="flag9">
+   	<div>
+   		<p>智能宠物面包机</p>
+   	</div>
+   	</div>
+   	<div class="foot-page" v-show="flag9">
    	<el-pagination
    	@current-change='page'
   	background
@@ -117,13 +186,23 @@
 				flag1:true,
 				flag2:false,
 				flag3:false,
-				flag4:false
+				flag4:false,
+				flag5:true,
+				flag6:false,
+				flag7:false,
+				flag8:false,
+				flag9:false
 			}
 		},
   	created(){
   	 this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
           click: true
+        })
+         this.newScroll = new IScroll(this.$refs.banner, {
+          click: true,
+          scrollX:true,
+          scrollY:false
         })
        })
   	},
@@ -153,11 +232,49 @@
 				}else{
 					this.flag4=false
 				}
+			},
+			changepage(){
+				this.flag5=true
+				this.flag6=false
+				this.flag7=false
+				this.flag8=false
+				this.flag9=false
+			},
+			changepage1(){
+				this.flag6=true
+				this.flag5=false
+				this.flag7=false
+				this.flag8=false
+				this.flag9=false
+			},
+			changepage2(){
+				this.flag7=true
+				this.flag5=false
+				this.flag6=false
+				this.flag8=false
+				this.flag9=false
+			},
+			changepage3(){
+				this.flag8=true
+				this.flag5=false
+				this.flag7=false
+				this.flag6=false
+				this.flag9=false
+			},
+			changepage4(){
+				this.flag9=true
+				this.flag5=false
+				this.flag7=false
+				this.flag8=false
+				this.flag6=false
 			}
 		}
 	}
 </script>
 <style scoped>
+.active{
+	border-bottom: 1px solid #409EFF;
+}
 .header .imgBox {
   width: 100px;
   margin: 0 auto;
@@ -184,7 +301,7 @@
 	position: absolute;
 	overflow: hidden;
 	width: 100%;
-	top: 42px;
+	top: 82px;
 	bottom: 40px;
 	touch-action: none;
 }

@@ -7,8 +7,19 @@
  </div>
  <div class="userInformation-main">
  		<div class="head-img">
-				<img :src="img" @click="change"/>
-				<p>点击头像可更换照片</p>
+		<el-upload
+  			action="https://jsonplaceholder.typicode.com/posts/"
+  			:class="{disabled:showto}"
+  			:limit='1'
+  			list-type='picture-card'
+  			:file-list="fileList"
+  			:auto-upload="false"
+  			:on-change='change'
+  			:on-remove='remove'
+  		>
+  		<i class="el-icon-plus"></i>
+		</el-upload>
+		<p>点击头像可删除更换</p>
 			</div>
 		<div style="height: 40px;line-height: 40px;border-bottom: solid 1px #DCDCDC;margin-top: 10px;display: flex;">
   		<div class="msg" style="flex: 2;"><p>昵称</p></div>
@@ -26,15 +37,6 @@
 		<el-button type="primary" round style='margin: auto;display: block;'>保存修改</el-button>
 		</div>
  </div>
-	 <transition name='fade'>
-    	<ul v-show="listshow" class="list">
-    		<li>从手机相册选择</li>
-    		<li @click="cancel">取消</li>
-    	</ul>
-    </transition>
-       <transition name="fade">
-      <div class="mask" v-show="listshow"></div>
-    </transition>
 	</div>
 	</transition>
 </template>
@@ -43,13 +45,15 @@
 		name:'releaseSearch',
 		data(){
 			return{
-				'img':require('../../image/man.jpg'),
+				src:'',
 				showflag:false,
-				listshow:false,
 				username:'',
 				flag:true,
 				changeflag:false,
+				showto:false,
+				fileList:[{'url':require('../../image/man.jpg')}],
 				user:'this.list[0].user',
+				time:0,
 				list:[{
 				'user':'尼古拉斯',
 				'phonenumber':'88888888',
@@ -62,7 +66,10 @@
 			this.$nextTick(() => {
 			if(this.flag==false){
           	this.$refs.inp.focus()
-          }
+         }
+			if(this.fileList.length>0){
+				this.showto=true
+			}
 			})	
 		},
 		methods:{
@@ -75,17 +82,38 @@
       })
   		}else{
   			this.showflag=false
+  			if(this.fileList.length==0){
+  				this.fileList.push({'url':require('../../image/man.jpg')})
+  			}		
   		}
   		},
   		show(){
   		this.showflag=true
   		},
-  		cancel(){
-  		this.listshow=false
+  		change(file, fileList){
+  		console.log(fileList)
+    		if(fileList.length==1){
+    				this.showto=true  			
+    		}
+    this.changeflag=true
+    this.imageUrl = URL.createObjectURL(file.raw);
+    var reader = new FileReader();
+    reader.readAsDataURL(file.raw);
+    reader.onload = function(e){ 
+        this.result // 这个就是base64编码了
+        this.imageUrl = this.result;
+        this.src=this.result.split(',')[1]
+    }
   		},
-  		change(){
-  		this.listshow=true
-  		},
+    	remove(file, fileList){
+    		clearInterval(this.time)
+    		this.fileList.splice(0,1)
+    		if(fileList.length==0){
+    			this.time=setInterval(()=>{
+    				this.showto=false
+    			},500)
+    		}
+    	},
   		edit(){
   		this.flag=false
   		this.username=this.list[0].user
@@ -114,6 +142,38 @@
 .el-message{
 min-width: 50%;
 }
+.el-upload--picture-card{
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+	line-height: 100px;
+	position: relative;
+	display: block;
+	margin: auto;
+}
+.el-upload--picture-card i{
+   position: absolute;
+   left: 37%;
+   top: 35%;
+  }
+.el-upload-list--picture-card .el-upload-list__item{
+	margin: auto;
+	display: block;
+	border: none;
+	width: 100px;
+	height: 100px;
+}
+.el-upload-list--picture-card .el-upload-list__item img{
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+}
+.disabled .el-upload--picture-card{
+    display: none;
+}
+.el-upload-list__item.is-success .el-upload-list__item-status-label{
+	display: none;
+}
 </style>
 <style scoped>
 .userInformation{
@@ -130,50 +190,9 @@ min-width: 50%;
 	      transform: translateX(100%);
 }
 .head-img p{
+	font-size: 13px;
 	text-align: center;
-	font-size: 14px;
-	padding-top: 5px;
-}
-.head-img img{
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
-	display: block;
-	margin: auto;
-	margin-top: 20px;
-}
-.list{
-	position: absolute;
-	left: 0;
-	bottom: -82px;
- 	z-index: 100;
- 	width: 100%;
- 	text-align: center;
-  transition: all .4s;
-  transform: translateY(-100%);
-}
- .list.fade-enter, .list.fade-leave-to{
- 	transform: translateY(0);
- }
-.list li{
-	height: 40px;
-  line-height: 40px;
-	background-color: #f3f5f7;
-	border-bottom: solid 1px #DCDCDC;
-}
-.mask{
-	  position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(7, 17, 27, 0.6);
-      z-index: 10;
-      transition: all 0.4s;
-}
-.mask.fade-enter, .mask.fade-leave-to{
-	opacity: 0;
-	background-color: rgba(7, 17, 27, 0);
+	margin-top: 10px;
 }
 .header span{
   width: 100%;
