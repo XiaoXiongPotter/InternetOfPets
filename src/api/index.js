@@ -43,3 +43,7 @@ export const systemInit = () => {
 export const getimg = () => {
 	return http.fetchPost('/api/code/image?width=100')
 }
+//获取用户名下所有设备列表
+export const getDevices = (params) => {
+	return http.fetchPost('/api/devices/listByLoginUser',params)
+}

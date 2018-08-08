@@ -50,211 +50,223 @@
 	</div>
 </template>
 <script>
-import {systemInit} from '../../api/index.js'
-import {getimg} from '../../api/index.js'
-import store from '../../store/store.js'
-import Qs from 'qs'
-import axios from 'axios'
-import footernav from '../../components/footernav'
+import { systemInit } from "../../api/index.js";
+import { getimg } from "../../api/index.js";
+import store from "../../store/store.js";
+import Qs from "qs";
+import axios from "axios";
+import footernav from "../../components/footernav";
 export default {
   name: "login",
   data() {
     return {
       username: "",
       password: "",
-      code:'',
-      count:0,
+      code: "",
+      count: 0,
       checked: false,
-      flag:false,
-      img:'',
+      flag: false,
+      img: "",
       num: 1,
-      loginsuccess:false,
-      loginshowflag:true
+      loginsuccess: false,
+      loginshowflag: true
     };
   },
-   components: {
-   'v-foot':footernav,
+  components: {
+    "v-foot": footernav
   },
   mounted() {
-  		systemInit().then(res => {
-		 let data = res.headers["x-auth-token"];
-		 if(data!=undefined){
-		 	this.$store.commit('set_token', data);
-		 }        
-	}).catch(error => {
-		console.log(error)
-	})
-	if(sessionStorage.getItem('imgcode')){
-		this.flag=true
-		getimg().then(res => {
-				this.img='data:image/jpeg;base64,'+res.data.data
-			}).catch(error => {
-				console.log(error)
-			})
-	}
-    if(localStorage){
-    	this.username=localStorage.getItem('username');
-    	this.password=localStorage.getItem('password');
+    console.log(sessionStorage.token)
+    systemInit()
+      .then(res => {
+        let data = res.headers["x-auth-token"];
+        if (data != undefined) {
+          this.$store.commit("set_token", data);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    if (sessionStorage.getItem("imgcode")) {
+      this.flag = true;
+      getimg()
+        .then(res => {
+          this.img = "data:image/jpeg;base64," + res.data.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+    if (localStorage) {
+      this.username = localStorage.getItem("username");
+      this.password = localStorage.getItem("password");
     }
   },
   methods: {
     login() {
-var data =  Qs.stringify({
-    	username: this.username,
+      var data = Qs.stringify({
+        username: this.username,
         password: this.password,
         imageCode: this.code
-})
-axios(
-{
-		method: 'post',
-      	url: '/api/authentication/login',
-		headers:{
-			 "Content-Type":'application/x-www-form-urlencoded; charset=UTF-8'
-		},
-		data
-	}
-).then((res)=>{
-	console.log(res.data)
-	      if(res.data.header.status==1000){
-	      	sessionStorage.removeItem('imgcode')
-	      	this.loginsuccess=true
-		this.$router.replace({ path: '/myAccount' })
-		sessionStorage.setItem('login','1')
-}
-	else{
-		this.$message({
-          message: res.data.header.message,
-          center: true,
-          type:'error',
+      });
+      axios({
+        method: "post",
+        url: "/api/authentication/login",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        data
       })
-		if(res.data.data.hasImgCode){
-			sessionStorage.setItem('imgcode',res.data.data.hasImgCode)
-		}
-			if(res.data.header.status==3001){
-			this.flag=true
-			getimg().then(res => {
-				this.img='data:image/jpeg;base64,'+res.data.data
-			}).catch(error => {
-				console.log(error)
-			})
-			}
-			}
-}).catch(error => {
-      	console.log(error)
-      })
-      if(this.checked==true){
-      	localStorage.setItem('username',this.username);
-      	localStorage.setItem('password',this.password);
+        .then(res => {
+          console.log(res.data);
+          if (res.data.header.status == 1000) {
+            sessionStorage.removeItem("imgcode");
+            this.loginsuccess = true;
+            this.$router.replace({ path: "/myAccount" });
+            sessionStorage.setItem("login", "1");
+           
+               
+                  this.$store.commit("set_token",res.headers["x-auth-token"]);
+             
+          } else {
+            this.$message({
+              message: res.data.header.message,
+              center: true,
+              type: "error"
+            });
+            if (res.data.data.hasImgCode) {
+              sessionStorage.setItem("imgcode", res.data.data.hasImgCode);
+            }
+            if (res.data.header.status == 3001) {
+              this.flag = true;
+              getimg()
+                .then(res => {
+                  this.img = "data:image/jpeg;base64," + res.data.data;
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            }
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      if (this.checked == true) {
+        localStorage.setItem("username", this.username);
+        localStorage.setItem("password", this.password);
       }
     },
-    change(){
-    	getimg().then(res => {
-				this.img='data:image/jpeg;base64,'+res.data.data
-			}).catch(error => {
-				console.log(error)
-			})
+    change() {
+      getimg()
+        .then(res => {
+          this.img = "data:image/jpeg;base64," + res.data.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
 </script>
 <style>
-.el-message{
-min-width: 60%;
+.el-message {
+  min-width: 60%;
 }
 </style>
 <style scoped>
-.sign-header{
-	text-align: center;
-	background-color: #0ca8e3;
-	color: white;
-	font-family: "微软雅黑";
-	font-size: 18px;
+.sign-header {
+  text-align: center;
+  background-color: #0ca8e3;
+  color: white;
+  font-family: "微软雅黑";
+  font-size: 18px;
 }
-.sign-header p{
-	padding-top: 15px;
-	font-weight: bold;
+.sign-header p {
+  padding-top: 15px;
+  font-weight: bold;
 }
-.el-input{
-	margin-top: 10px;
+.el-input {
+  margin-top: 10px;
 }
-.check{
-	margin-top: 10px;
+.check {
+  margin-top: 10px;
 }
-.forget{
-	position: absolute;
-	right: 15px;
+.forget {
+  position: absolute;
+  right: 15px;
 }
-.forget a{
-	color: #409EFF;
+.forget a {
+  color: #409eff;
 }
-.btn{
-	/*width: 160px;*/
-	height: 40px;
-	position: absolute;
-	left: 50%;
-	margin-top: 20px;
-	transform: translate(-50%);
+.btn {
+  /*width: 160px;*/
+  height: 40px;
+  position: absolute;
+  left: 50%;
+  margin-top: 20px;
+  transform: translate(-50%);
 }
-.sign-msg{
-	height: 300px;
+.sign-msg {
+  height: 300px;
 }
-.set a{
-	color: white;
+.set a {
+  color: white;
 }
-.Verification{
-	width: 50%;
+.Verification {
+  width: 50%;
 }
 .three {
-  	text-align: center;	
-  	color: #708090;
-  	position: relative;
+  text-align: center;
+  color: #708090;
+  position: relative;
 }
-.three:after{
-	content: '';
-	border-bottom: solid 1px #dcdcdc;
-	width: 35%;
-	display: block;
-	position: absolute;
-	top: 50%;
-	right: 0;
+.three:after {
+  content: "";
+  border-bottom: solid 1px #dcdcdc;
+  width: 35%;
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 0;
 }
-.three:before{
-	content: '';
-	border-bottom: solid 1px #dcdcdc;
-	width: 35%;
-	display: block;
-	position: absolute;
-	top: 50%;
-	left: 0;
+.three:before {
+  content: "";
+  border-bottom: solid 1px #dcdcdc;
+  width: 35%;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 0;
 }
-.footer ul{
-	display: flex;
-	margin-top: 50px;
+.footer ul {
+  display: flex;
+  margin-top: 50px;
 }
-.footer ul li{
-	flex: 1;
-	position: relative;
+.footer ul li {
+  flex: 1;
+  position: relative;
 }
-.footer ul li img{
-	width: 50px;
-	height: 50px;
-	position: absolute;
-	left: 50%;
-	transform: translate(-50%);
+.footer ul li img {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
 }
-.footer ul li p{
-	font-size: 15px;
-	text-align: center;
-	margin-top: 50px;
-	color: black;
+.footer ul li p {
+  font-size: 15px;
+  text-align: center;
+  margin-top: 50px;
+  color: black;
 }
-.ver{
-	position: relative;
+.ver {
+  position: relative;
 }
-.image{
-	position: absolute;
-	right: 0%;
-	top:70%;
-	transform: translate(0%,-70%);
+.image {
+  position: absolute;
+  right: 0%;
+  top: 70%;
+  transform: translate(0%, -70%);
 }
 </style>
