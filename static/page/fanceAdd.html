@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<!-- 声明文档使用的字符编码 -->
+<meta charset='utf-8'>
+<!-- 优先使用 IE 最新版本和 Chrome -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<!-- 页面描述 -->
+<meta name="description" content="不超过150个字符" />
+<!-- 页面关键词 -->
+<meta name="keywords" content="" />
+<!-- 网页作者 -->
+<meta name="author" content="name, email@gmail.com" />
+<!-- 搜索引擎抓取 -->
+<meta name="robots" content="index,follow" />
+<!-- 为移动设备添加 viewport -->
+<meta name="viewport"
+	content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+<!-- `width=device-width` 会导致 iPhone 5 添加到主屏后以 WebApp 全屏模式打开页面时出现黑边 http://bigc.at/ios-webapp-viewport-meta.orz -->
+
+<!-- iOS 设备 begin -->
+<meta name="apple-mobile-web-app-title" content="标题">
+<!-- 添加到主屏后的标题（iOS 6 新增） -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<!-- 是否启用 WebApp 全屏模式，删除苹果默认的工具栏和菜单栏 -->
+
+<meta name="apple-itunes-app"
+	content="app-id=myAppStoreID, affiliate-data=myAffiliateData, app-argument=myURL">
+<!-- 添加智能 App 广告条 Smart App Banner（iOS 6+ Safari） -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<!-- 设置苹果工具栏颜色 -->
+<meta name="format-detection" content="telphone=no, email=no" />
+<!-- 忽略页面中的数字识别为电话，忽略email识别 -->
+<!-- 启用360浏览器的极速模式(webkit) -->
+<meta name="renderer" content="webkit">
+<!-- 避免IE使用兼容模式 -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+<meta name="HandheldFriendly" content="true">
+<!-- 微软的老式浏览器 -->
+<meta name="MobileOptimized" content="320">
+<!-- uc强制竖屏 -->
+<meta name="screen-orientation" content="portrait">
+<!-- QQ强制竖屏 -->
+<meta name="x5-orientation" content="portrait">
+<!-- UC强制全屏 -->
+<meta name="full-screen" content="yes">
+<!-- QQ强制全屏 -->
+<meta name="x5-fullscreen" content="true">
+<!-- UC应用模式 -->
+<meta name="browsermode" content="application">
+<!-- QQ应用模式 -->
+<meta name="x5-page-mode" content="app">
+<!-- windows phone 点击无高光 -->
+<meta name="msapplication-tap-highlight" content="no">
+<!-- iOS 图标 begin -->
+<link rel="apple-touch-icon-precomposed"
+	href="/apple-touch-icon-57x57-precomposed.png" />
+<!-- iPhone 和 iTouch，默认 57x57 像素，必须有 -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114"
+	href="/apple-touch-icon-114x114-precomposed.png" />
+<!-- Retina iPhone 和 Retina iTouch，114x114 像素，可以没有，但推荐有 -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144"
+	href="/apple-touch-icon-144x144-precomposed.png" />
+<!-- Retina iPad，144x144 像素，可以没有，但推荐有 -->
+<!-- iOS 图标 end -->
+<!-- iOS 启动画面 begin -->
+<link rel="apple-touch-startup-image" sizes="768x1004"
+	href="/splash-screen-768x1004.png" />
+<!-- iPad 竖屏 768 x 1004（标准分辨率） -->
+<link rel="apple-touch-startup-image" sizes="1536x2008"
+	href="/splash-screen-1536x2008.png" />
+<!-- iPad 竖屏 1536x2008（Retina） -->
+<link rel="apple-touch-startup-image" sizes="1024x748"
+	href="/Default-Portrait-1024x748.png" />
+<!-- iPad 横屏 1024x748（标准分辨率） -->
+<link rel="apple-touch-startup-image" sizes="2048x1496"
+	href="/splash-screen-2048x1496.png" />
+<!-- iPad 横屏 2048x1496（Retina） -->
+
+<link rel="apple-touch-startup-image" href="/splash-screen-320x480.png" />
+<!-- iPhone/iPod Touch 竖屏 320x480 (标准分辨率) -->
+<link rel="apple-touch-startup-image" sizes="640x960"
+	href="/splash-screen-640x960.png" />
+<!-- iPhone/iPod Touch 竖屏 640x960 (Retina) -->
+<link rel="apple-touch-startup-image" sizes="640x1136"
+	href="/splash-screen-640x1136.png" />
+<!-- iPhone 5/iPod Touch 5 竖屏 640x1136 (Retina) -->
+<!-- iOS 启动画面 end -->
+
+<!-- iOS 设备 end -->
+<meta name="msapplication-TileColor" content="#000" />
+<!-- Windows 8 磁贴颜色 -->
+<meta name="msapplication-TileImage" content="icon.png" />
+<!-- Windows 8 磁贴图标 -->
+
+<link rel="alternate" type="application/rss+xml" title="RSS"
+	href="/rss.xml" />
+<!-- 添加 RSS 订阅 -->
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
+<!-- 添加 favicon icon -->
+<!--css重置-->
+<link rel="stylesheet" type="text/css" href="css/reset.css" />
+<!--css样式-->
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<style type="text/css">
+body, html, #allmap{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	margin: 0 auto;
+	font-family: "微软雅黑";
+}
+.mapBox{
+	position: relative;
+	
+	width:100%;
+	height: 100%;
+}
+.button{
+	width: 50px;
+	height: 30px;
+	top: 50px;
+	left: 10px;
+	position: absolute;
+	z-index: 9999;
+}
+</style>
+<title>围栏设置</title>
+</head>
+
+<body>
+
+	<div class="mapBox">
+		<div id="allmap" >
+			<input type="text" value="" hidden="">
+		</div>
+		<div id="button">
+		    <button value="保存" class='button'>保存</button>
+		</div>
+	</div>
+
+
+</body>
+<script type="text/javascript" src="../js/jquery-2.1.4.js"></script>
+<script type="text/javascript"
+	src="https://api.map.baidu.com/api?v=2.0&ak=0iNBiG0ofLhVcvQBf4alGldviDCQjQo4"></script>
+<script type="text/javascript"
+	src="https://api.map.baidu.com/library/LuShu/1.2/src/LuShu_min.js"></script>
+<!-- <script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBscRp6VhOxS1pQqPSMnU_QP2e-L-xofxI&signed_in=true"></script> -->
+<script type="text/javascript">
+	var map = new BMap.Map("allmap"); // 创建Map实例
+	var serverUrl = 'http://192.168.0.123/ClientServer';
+	var url = location.href;
+	//获取当前时间戳
+	var deviceId = url.substring(url.indexOf('imeiId=')+7, url.length);
+	var timestamp = new Date().getTime();
+	var imei = url.substring(url.indexOf('imei=')+5,  url.indexOf('&imeiId'));
+	var lon = url.substring(url.indexOf('lon=')+4, url.indexOf('&lat'));
+	var lat = url.substring(url.indexOf('lat=')+4, url.indexOf('&imei'));
+	//var socketUrl = 'wss://www.dognessnetwork.com/messageServer/chat';
+	var socketUrl = 'ws://localhost:8088/messageServer/chat';
+	var radius;
+	var point = new BMap.Point(lon,lat);
+	var fanceId;
+	var language = 'ZH'
+	var timeOut;
+	$(function() {
+		//h5接收网页推送
+		var room = "866557030061396";
+		//注册websocket
+		var socket = new WebSocket(socketUrl);
+		socket.onopen = function()
+	        {
+	            console.log("链接打开");
+	            //sessionId是用户登录时的sessionId，要传到soket服务器
+	            var message = {
+	        		       "sessionId": 789
+	        		     }
+	            socket.send(JSON.stringify(message) );
+	        };
+	        //收到的消息
+	        socket.onmessage = function (data)
+	        {
+				console.log('>>>>> ' + data);
+				var message = null;
+				//alert(data.body)
+				var json = JSON.parse(data.data);
+				console.log('json');
+				console.log(json);
+				var message = JSON.parse(json.data);
+				console.log('message');
+				console.log(message);
+				var type = json.type;
+				//推送的是什么命令
+				var cmd = message.cmd;
+				//操作状态
+				var msgId = message.msgId;
+				 console.log("message:");
+				console.log(message.cmd); 
+				if(type=='devReply'){//操作硬件回复
+					if(cmd=='rDevCfg'){
+						var tOrF = 't';
+						if(msgId.indexOf('.f')>0){
+							tOrF = 'f'
+						}
+						var on;
+						var off;
+						//开关轨迹
+						if(tOrF=='f'){
+							 on = msgId.indexOf('f.1');
+							 off = msgId.indexOf('f.0');
+							 console.log("on:"+on+'==off:'+off)
+							setTimeout(function(){
+								 window.location.href='/static/page/necklace_map.html?fanceId='+fanceId+'&imei='+imei
+							},10)
+						}//清除定时器
+						window.clearTimeout(timeOut);
+					}
+				}
+				
+	}
+		if (language == 'ZH') {
+			initMap();
+			exchange(point,1000);
+		} else {
+			initGogleMap()
+			//getPets();
+
+		}
+		//保存动作
+		$('#button').click(function(){
+			//先查询是否有围栏
+			$.ajax({
+				type:'POST',
+				headers:{x_auth_token: '123'},
+				url:serverUrl + '/necklace/info/listGeoFanceByDeviceId?deviceCode='+deviceId,
+				success:function(data){
+					console.log(data)
+					var num = data.data.length;
+					if(num>0){//更新围栏
+						fanceId = (data.data)[0].id;
+					console.log("fanceId:"+fanceId)
+						$.ajax({
+							type:'POST',
+							headers:{x_auth_token: '123'},
+							url:serverUrl + '/necklace/info/updateGeoFance?fanceId='+fanceId+'&fanceCenter='+lat+','+lon+'&radius=1700&status=0&name=updata',
+							success:function(data){
+								console.log("更新围栏")
+								console.log(data)
+								if(data.header.status=='1000'){
+									$.ajax({
+							    		type:'POST',
+							    		headers:{x_auth_token: '123'},
+							    		url:serverUrl+'/necklace/info/switchGeoFance?deviceCode='+deviceId+'&fanceId='+fanceId,
+							    		success:function(res){
+							    			console.log('选择围栏：')
+							    			console.log(res)
+							    			var status_=res.header.status;
+ 							    			if(status_=='1000'){
+							    				$.ajax({
+										    		type:'POST',
+										    		headers:{x_auth_token: '123'},
+										    		url:serverUrl+'/necklace/device/onoffFance?deviceCode='+deviceId+'&onoff=1&timestamp='+timestamp,
+										    		success:function(res){
+										    			timeOut = setTimeout(function(){
+										    				alert('网络异常')
+										    				window.location.href='/necklace_map.html?fanceId='+fanceId+'&imei='+imei;
+										    			},60000);
+										    			//setTimeout(function(){window.location.href='/necklace_map.html?fanceId='+fanceId+'&imei='+imei},600);
+										    		}		
+										    	})
+							    			}else{
+							    				alert('处理异常稍后重试')
+							    				console.log(res)
+							    			}
+							    			
+							    		}		
+							    	})
+								}
+							}
+						})
+					}else{//没有围栏增加围栏
+						 $.ajax({
+						type:'POST',
+						headers:{x_auth_token: '123'},
+						url:serverUrl + '/necklace/info/addGeoFance?deviceCode='+deviceId+'&name="newFance"&fanceCenter='+lat+','+lon+'&radius=500&status=0',
+					    success:function(data){
+					    	fanceId = data.data.id;
+					    	$.ajax({
+					    		type:'POST',
+					    		headers:{x_auth_token: '123'},
+					    		url:serverUrl+'/necklace/info/switchGeoFance?deviceCode='+deviceId+'&fanceId='+fanceId,
+					    		success:function(res){
+					    			var status_=res.header.status;
+					    			if(status_=='1000'){
+					    				$.ajax({
+								    		type:'POST',
+								    		headers:{x_auth_token: '123'},
+								    		url:serverUrl+'/necklace/device/onoffFance?deviceCode='+deviceId+'&onoff=1&timestamp='+timestamp,
+								    		success:function(res){
+								    			timeOut = setTimeout(function(){
+								    				alert('网络异常')
+								    				window.location.href='/necklace_map.html?fanceId='+fanceId+'&imei='+imei;
+								    			},6000);
+								    			//setTimeout(function(){window.location.href='/necklace_map.html?fanceId='+fanceId+'&imei='+imei},600);
+								    		}		
+								    	})
+					    			}else{
+					    				alert('处理异常稍后重试')
+					    				console.log(res)
+					    			}
+					    			
+					    		}		
+					    	})
+					    	
+					    }			
+					})
+					}
+				}		
+			})
+		})
+	})
+	/*************************************初始化谷歌地图************************************  */
+	function initGogleMap() {
+		googleMap = new google.maps.Map(document.getElementById('allmap'), {
+			center : {
+				lat : -34.397,
+				lng : 150.644
+			},
+			zoom : 6
+		});
+		infoWindow = new google.maps.InfoWindow;
+
+		// Try HTML5 geolocation.
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function(position) {
+				var pos = {
+					lat : position.coords.latitude,
+					lng : position.coords.longitude
+				};
+
+				infoWindow.setPosition(pos);
+				infoWindow.setContent('Location found.');
+				infoWindow.open(googleMap);
+				googleMap.setCenter(pos);
+			}, function() {
+				handleLocationError(true, infoWindow, googleMap.getCenter());
+			});
+		} else {
+			// Browser doesn't support Geolocation
+			handleLocationError(false, infoWindow, googleMap.getCenter());
+		}
+
+	}
+
+	function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+		console.log(map.getCenter())
+		infoWindow.setPosition(pos);
+		infoWindow
+				.setContent(browserHasGeolocation ? 'Error: The Geolocation service failed.'
+						: 'Error: Your browser doesn\'t support geolocation.');
+		infoWindow.open(googleMap);
+	}
+
+	/*************************************初始化百度地图************************************  */
+	function initMap() {
+		// 百度地图API功能
+		map.centerAndZoom(
+				new BMap.Point(113.70078476954622, 22.993264991320682), 17); // 初始化地图,设置中心点坐标和地图级别即比例尺
+		//添加地图类型控件
+		map.addControl(new BMap.MapTypeControl({
+			mapTypes : [ BMAP_NORMAL_MAP, BMAP_HYBRID_MAP ]
+		}));
+		map.setCurrentCity("北京"); // 设置地图显示的城市 此项是必须设置的
+		map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+
+		var point = new BMap.Point(113.700805049536780, 22.993251975396640);
+		map.centerAndZoom(point, 15); // 编写自定义函数，创建标注   
+	}
+
+	/******************************* **********************************************************************  */
+	function AddOver(points) {
+		var polyline = new BMap.Polyline(points, {
+			strokeColor : "#1869AD",
+			strokeWeight : 3,
+			strokeOpacity : 1
+		});
+		map.addOverlay(polyline);
+		//console.log(polyline)
+	}
+	/******************************* **********************************************************************  */
+	function exchange(ggPoint,radius) {
+
+		var convertor = new BMap.Convertor();
+		var pointArr = [];
+		pointArr.push(ggPoint);
+		convertor.translate(pointArr, 1, 5, function(data) {
+			if (data.status === 0) {
+				addCircle(data.points[0],radius)
+			}
+		})
+	}
+	function addCircle(mPoint,radius){
+		var circle = new BMap.Circle(mPoint,radius,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3,enableEditing:false});
+	    map.addOverlay(circle);
+	    map.panTo(mPoint);
+	}
+	//slide滑动时间
+	
+</script>
+
+</html>

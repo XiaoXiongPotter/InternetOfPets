@@ -278,9 +278,7 @@ height:40px;
 
 
 </body>
-<!-- <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
-<script src="/js/BMapLib.js"></script>
-<script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script> -->
+<script src="../js/BMapLib.js"></script>
 <script type="text/javascript" src="../js/jquery-2.1.4.js"></script>
 <script type="text/javascript"
 	src="https://api.map.baidu.com/api?v=2.0&ak=0iNBiG0ofLhVcvQBf4alGldviDCQjQo4"></script>
@@ -620,7 +618,7 @@ console.log('控制台打印信息');
 			if(fanceStatus=='1'){
 				clsoeFance();
 			}else{
-				window.location.href='/fanceAdd.html?lon='+lon+'&lat='+lat+'&'+imei+'&imeiId='+imeiId
+				window.location.href='/static/page/fanceAdd.html?lon='+lon+'&lat='+lat+'&'+imei+'&imeiId='+deviceId
 			}
 	    }else{
 	    	alert('请先链接设备')
