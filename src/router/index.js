@@ -38,7 +38,10 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      component: home
+      component: home,
+      // meta:{
+      //   requireAuth:true
+      // }
     },
     //登录，注册
     {

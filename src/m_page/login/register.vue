@@ -852,6 +852,9 @@ export default {
           				center: true,
           				type:'warning'
         				});	
+        				setInterval(()=>{
+        					this.$router.replace({ path: '/login' })
+        				},3000)
 					}else{
 						this.$message({
           				message: res.data.msg,

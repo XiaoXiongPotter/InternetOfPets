@@ -2,9 +2,10 @@
 <template>
 <div>
 <v-header :go-back='false' :add-devices='true'></v-header>
-    <div class="title">
+<div v-if="islogin">
+   <div class="title" >
         <i class="line"></i>
-        <span>Home</span>
+        <span></span>
         <i class="line"></i>
     </div>
     <ul class="device_box">
@@ -29,10 +30,15 @@
             </div>
         </li>
     </ul>
+    </div>
+   <div class="notlogin" v-else> 
+     亲，请先登录再查看您的设备 <router-link :to="{name:'login'}">去登录</router-link>
+    </div>
     <v-foot :loginsuccess='loginsuccess' :loginshowflag='loginshowflag'></v-foot>
 </div>
 </template>
 <script >
+import { getDevices } from "../../deviceApi/index.js";
 import header from "../../components/header";
 import footernav from "../../components/footernav";
 export default {
@@ -40,6 +46,7 @@ export default {
   data() {
     return {
       necklace: require("../../image/necklace.png"),
+      islogin: false,
       infos: [
         {
           type: "necklace",
@@ -54,17 +61,31 @@ export default {
           dogType: "阿拉斯加"
         }
       ],
-      loginsuccess:false,
-      loginshowflag:true
+      loginsuccess: false,
+      loginshowflag: true
     };
   },
-    created(){
-	 this.$nextTick(() => {
-       if(sessionStorage.getItem('login')){
-          	this.loginsuccess=true
-          	this.loginshowflag=false
-         }         
-       })     
+  mounted() {
+    console.log(sessionStorage);
+
+    if (sessionStorage.login == 1) {
+      this.islogin = sessionStorage.login;
+      
+
+      getDevices()
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {});
+    }
+  },
+  created() {
+    this.$nextTick(() => {
+      if (sessionStorage.getItem("login")) {
+        this.loginsuccess = true;
+        this.loginshowflag = false;
+      }
+    });
   },
   // computed: {
   //   deviceType:fucntion(type){
@@ -170,5 +191,7 @@ img {
 }
 .guanli {
   background-image: url(../../image/guanli.png);
+}
+.notlogin {
 }
 </style>

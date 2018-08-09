@@ -7,6 +7,9 @@ import ElementUI from 'element-ui'
 import VueResource from 'vue-resource'
 import axios from 'axios'
 import store from './store/store'
+ import VueI18n from 'vue-i18n'
+// import LangEn from '../static/lang/en'
+// import LangZhCHS from '../static/lang/zhCHS'
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.config.productionTip = false
@@ -47,14 +50,24 @@ axios.interceptors.response.use(
         }
         return Promise.reject(error.response.data)
     });
-
+//多语言
+// const i18n = new VueI18n({
+//     locale: 'en', 
+//     messages:{
+//       'en': LangEn,
+//       'zhCHS': LangZhCHS
+     
+//     }
+//   })
 /* eslint-disable no-new */
 Vue.use(VueResource)
 Vue.use(ElementUI)
+ Vue.use(VueI18n)
 new Vue({
     el: '#app',
     router,
     store,
+    // i18n,
     components: { App },
     template: '<App/>'
 })

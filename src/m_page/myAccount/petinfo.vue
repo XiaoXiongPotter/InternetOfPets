@@ -134,6 +134,7 @@
     top: 0;
     bottom: 0px;
 	width: 100%;
+	max-width: 720px;
     z-index: 30;
     background-color: #fff;
     transition: all .2s linear;
@@ -174,6 +175,7 @@
 	top: 40px;
 	bottom: 0px;
 	width: 100%;
+	max-width: 720px;
 	overflow: hidden;
 	touch-action: none;
 }

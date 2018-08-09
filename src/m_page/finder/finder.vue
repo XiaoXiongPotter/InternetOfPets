@@ -186,6 +186,7 @@
 	width: 100%;
 	overflow: hidden;
 	touch-action: none;
+	max-width: 720px;
 }
 .main-content ul li{
 	display: flex;

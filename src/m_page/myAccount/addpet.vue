@@ -4,12 +4,23 @@
  	<img src="../../image/back.png" class="back" @click="back"/>
  	<div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
  </div>
+  		<div class="title">
+ 		<el-upload
+  			action="https://jsonplaceholder.typicode.com/posts/"
+  			:class="{disabled:show}"
+  			:limit='1'
+  			list-type='picture-card'
+  			:file-list="fileList"
+  			:auto-upload="false"
+  			:on-change='change'
+  			:on-remove='remove'
+  		>
+  		<i class="el-icon-plus"></i>
+		</el-upload>
+ 				
+ 		</div>
  <div class="addpet-main" ref='wrapper'>
  	<div>
- 		<div class="title">
- 				<img :src="src" @click="change"/>
- 				<p>点击头像可更换照片</p>
- 			</div>
  		<div class="pet">
  			<div class="petname">
  				<span>名称</span>
@@ -38,42 +49,39 @@
  				<div class="pet-msg">
  				<div class="birthday">
  					<span>出生日期</span>
- 					<el-input v-model='birthday' placeholder='输入日期'></el-input>
+ 				<div class="block">
+    			<el-date-picker
+      				v-model="birthday"
+      				type="date"
+      				placeholder="选择日期">
+    			</el-date-picker>
+  				</div>
  				</div>
  				<div class="haircolor">
  					<span>毛色</span>
  					<el-input v-model='haircolor' placeholder='输入毛色'></el-input>
  				</div>
  				</div>
- 				<div class="pettype">
- 				<span>主人</span>
- 				<el-input v-model="pettype" placeholder='输入名字'></el-input>
+ 				<div class="character">
+ 				<span>性格</span>
+ 				<el-input v-model="character" placeholder='输入性格'></el-input>
  			</div>
  			<div class="save-btn" style="margin: 20px 0;">
- 				 <el-button type="primary" round style='margin: auto;display: block;'>确认添加</el-button>
+ 				 <el-button type="primary" round style='margin: auto;display: block;' @click='add'>确认添加</el-button>
  			</div>
  		</div>
  	</div>
  </div>
-  		 <transition name='fade'>
-    	<ul v-show="listshow" class="list">
-    		<li>从手机相册选择</li>
-    		<li @click="cancel">取消</li>
-    	</ul>
-    </transition>
-       <transition name="fade">
-      <div class="mask" v-show="listshow"></div>
-    </transition>
 	</div>
 </template>
 <script>
 	import IScroll from 'iscroll/build/iscroll-probe'
+	import {addPet} from '../../ClientServerApi/index.js'
 	export default {
 		name:'addpet',
 		data(){
 			return{
-				src:require('../../image/pet2.jpg'),
-				listshow:false,
+				src:'',
 				petname:'',
 				petbelong:'',
 				sex:'',
@@ -81,13 +89,19 @@
 				weight:'',
 				birthday:'',
 				haircolor:'',
-				pettype:''
+				pettype:'',
+				character:'',
+				fileList:[],
+        		show:false,
+        		time:0
 			}
 		},
-		 created(){
+		 mounted(){
 	 	  this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true
+          click: true,
+          preventDefault: false,
+		  preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }
         })
        })     
   },
@@ -98,13 +112,56 @@
 		cancel(){
 			this.listshow=false
 		},
-		change(){
-			this.listshow=true
+		change(file, fileList){
+    		console.log(fileList)
+    		if(fileList.length==1){
+    			clearInterval(this.time)
+    				this.show=true  			
+    		}
+    this.imageUrl = URL.createObjectURL(file.raw);
+    var reader = new FileReader();
+    reader.readAsDataURL(file.raw);
+    reader.onload = function(e){ 
+        this.result // 这个就是base64编码了
+        this.imageUrl = this.result;
+        this.src=this.result.split(',')[1]
+    }
+    	},
+    	remove(file, fileList){
+    		if(fileList.length==0){
+    			this.time=setInterval(()=>{
+    				this.show=false
+    			},500)
+    		}
+    	},
+		add(){
+			let params = {
+				name:this.petname,
+				height:this.height,
+				weight:this.weight,
+				birthTime:this.birthday,
+				petType:this.petbelong,
+				color:this.haircolor,
+				gender:this.sex,
+				portrait:this.src,
+				character:this.character
+			}
+			addPet(params).then(res => {
+				console.log(res)
+			}).catch(error => {
+				console.log(error)
+			})
 		}
 		}
 	}
 </script>
 <style>
+.pet .el-date-editor.el-input, .el-date-editor.el-input__inner{
+	width: 90px;
+}
+.pet .el-input__icon{
+	display: none;
+}
 .pet .el-input__inner{
 	padding: 0 0;
 	width: 90px;
@@ -119,8 +176,40 @@
 	border-right-color: white;
 	border-left-color: white;
 }
+.el-upload--picture-card{
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+	line-height: 100px;
+	position: relative;
+	display: block;
+	margin: auto;
+}
+.el-upload--picture-card i{
+   position: absolute;
+   left: 37%;
+   top: 35%;
+  }
+.el-upload-list--picture-card .el-upload-list__item{
+	margin: auto;
+	display: block;
+	border: none;
+	width: 100px;
+	height: 100px;
+}
+.el-upload-list--picture-card .el-upload-list__item img{
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+}
+.disabled .el-upload--picture-card{
+    display: none;
+}
 </style>
 <style scoped>
+.addpet{
+	width: 100%;
+}
 .header .imgBox {
   width: 100px;
   margin: 0 auto;
@@ -146,63 +235,19 @@
 }
 .addpet-main{
 	position: absolute;
-	top: 40px;
+	top: 150px;
 	bottom: 0;
 	width: 100%;
+	max-width: 720px;
 	overflow: hidden;
 	touch-action: none;
-}
-.title img{
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
-	display: block;
-	margin: auto;
-}
-.title p{
-	text-align: center;
-	font-size: 14px;
-	padding-top: 5px;
-}
-.list{
-	position: absolute;
-	left: 0;
-	bottom: -82px;
- 	z-index: 100;
- 	width: 100%;
- 	text-align: center;
-  	transition: all .4s;
-  	transform: translateY(-100%);
-}
- .list.fade-enter, .list.fade-leave-to{
- 	transform: translateY(0);
- }
-.list li{
-	height: 40px;
-  	line-height: 40px;
-	background-color: #f3f5f7;
-	border-bottom: solid 1px #DCDCDC;
-}
-.mask{
-	  position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(7, 17, 27, 0.6);
-      z-index: 10;
-      transition: all 0.4s;
-}
-.mask.fade-enter, .mask.fade-leave-to{
-	opacity: 0;
-	background-color: rgba(7, 17, 27, 0);
-}
-.pet{
-	margin-top: 40px;
 }
 .petname{
 	margin-left: 15px;
 	width: 50%;
+}
+.pet{
+	width: 100%;
 }
 .pet span{
 	font-size: 16px;
@@ -238,7 +283,7 @@
 	flex: 1;
 	margin-top: 40px;
 }
-.pettype{
+.character{
 	margin-top: 40px;
 	margin-left: 15px;
 	width: 50%;
