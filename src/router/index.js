@@ -27,7 +27,7 @@ import nextchangepassword from '../m_page/myAccount/nextchangepassword.vue'
 import commonproblem from '../m_page/myAccount/commonproblem.vue'
 import loginauthorization from '../m_page/myAccount/loginauthorization.vue'
 import store from '../store/store.js'
-
+//import collor from '../m_page/home/collor/necklace_map.html'
 Vue.use(Router)
 if (sessionStorage.getItem('token')) {
   store.commit('set_token', sessionStorage.getItem('token'))
@@ -67,6 +67,11 @@ const router = new Router({
       name: 'deviceManage',
       component: deviceManage
     },
+//    {
+//        path: '/collor/necklace_map.html',
+//        name: 'collor',
+//        component: collor
+//      },
     {
       path: '/necklaceManage',
       name: 'necklaceManage',
