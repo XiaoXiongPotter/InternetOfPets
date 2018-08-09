@@ -8,6 +8,7 @@ import VueResource from 'vue-resource'
 import axios from 'axios'
 import store from './store/store'
 import 'element-ui/lib/theme-chalk/index.css'
+
 Vue.config.productionTip = false
 
 
