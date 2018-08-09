@@ -22,7 +22,8 @@
                         <p>{{info.dogType}}</p>
                 </div>
                 <div class="btn_box">
-                     <router-link class="btn caozuo" to="/deviceManage"></router-link>
+                    <a class="btn caozuo" href ="../../static/page/necklace_map.html"></a>
+                    <!--<router-link class="btn caozuo" to="/deviceManage"></router-link>-->
                     <router-link class="btn guanli" to="/necklaceManage"></router-link>
                 </div>
             </div>
