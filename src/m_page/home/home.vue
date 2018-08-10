@@ -1,30 +1,31 @@
 
 <template>
-<div>
+<div class="home">
 <v-header :go-back='false' :add-devices='true'></v-header>
 <div v-if="islogin">
    <div class="title" >
         <i class="line"></i>
-        <span></span>
+        <span>HOME</span>
         <i class="line"></i>
     </div>
     <ul class="device_box">
         <li v-for="(info,index) in infos" :key="index">
-            <div class="device_box_l">
-                <img  :src="'../../../static/img/'+info.type+'.png'">
-                <span>{{info.type}}</span>
+            <div class="device_box_l" >
+                <img  :src="'../../../static/img/'+info.device.type +'.png'">
+                <span>{{info.device.type | infosCmputed}}</span>
             </div>
             <div class="device_box_r">
                 <div class="touxiang_box">
-                    <img src="../../image/dog-pic.jpg" alt="">
+                    <img :src="info.pet?info.pet.portrait:'../../../static/img/defaultpet.jpg'" alt="">
                 </div>
                 <div class="info_box">
-                        <p>{{info.name}}</p>
-                        <p>{{info.dogType}}</p>
+                        <p>{{info.device.devName}}</p>
+                        <p>{{info.pet?info.pet.name:'未绑定宠物'}}</p>
                 </div>
                 <div class="btn_box">
-                     <router-link class="btn caozuo" to="/deviceManage"></router-link>
-                    <router-link class="btn guanli" to="/necklaceManage"></router-link>
+                  <a class="btn caozuo" href ="../../static/page/necklace_map.html"></a>
+                     <!-- <router-link class="btn caozuo" to="/deviceManage"></router-link> -->
+                    <router-link class="btn guanli" :to="{path:'/necklaceManage',query:{deviceCode:info.device.deviceCode}}"></router-link>
                 </div>
             </div>
         </li>
@@ -40,26 +41,28 @@
 import { getDevices } from "../../deviceApi/index.js";
 import header from "../../components/header";
 import footernav from "../../components/footernav";
+
 export default {
   name: "home",
   data() {
     return {
       necklace: require("../../image/necklace.png"),
       islogin: false,
-      infos: [
-        {
-          type: "necklace",
-          touxiang: "../../image/dog-pic.jpg",
-          name: "大金毛",
-          dogType: "拉布拉多"
-        },
-        {
-          type: "pendant",
-          touxiang: "../../image/dog-pic.jpg",
-          name: "小金毛",
-          dogType: "阿拉斯加"
-        }
-      ],
+      // infos: [
+      //   {
+      //     type: "necklace",
+      //     touxiang: "../../image/dog-pic.jpg",
+      //     name: "大金毛",
+      //     dogType: "拉布拉多"
+      //   },
+      //   {
+      //     type: "pendant",
+      //     touxiang: "../../image/dog-pic.jpg",
+      //     name: "小金毛",
+      //     dogType: "阿拉斯加"
+      //   }
+      // ],
+      infos: "",
       loginsuccess: false,
       loginshowflag: true
     };
@@ -69,11 +72,10 @@ export default {
 
     if (sessionStorage.login == 1) {
       this.islogin = sessionStorage.login;
-      
-
       getDevices()
         .then(res => {
-          console.log(res);
+          this.infos = res.data.data;
+          console.log(res.data);
         })
         .catch(err => {});
     }
@@ -86,17 +88,31 @@ export default {
       }
     });
   },
+  computed: {},
+  filters: {
+    infosCmputed: function(value) {
+      if (value == "FEEDER") return "智能喂食器";
+      if (value == "BLUETOOTH") return "蓝牙计步器";
+        if (value == "ROBOT") return "宠物机器人";
+    },
+    lowercase:function(value){
+      return value.toLowerCase();
+    }
+  },
   // computed: {
   //   deviceType:fucntion(type){
   //   }
   // },
   components: {
     "v-header": header,
-    "v-foot": footernav
+    "v-foot": footernav,
   }
 };
 </script>
 <style scoped>
+.home{
+  width:100%
+}
 img {
   width: 100%;
 }
@@ -130,7 +146,8 @@ img {
 .device_box_l {
   float: left;
   width: 30%;
-  padding: 10px 15px;
+  padding: 0px 15px;
+ 
   box-sizing: border-box;
   border-right: 1px solid #ddd;
 }
@@ -153,6 +170,8 @@ img {
 }
 .touxiang_box img {
   border-radius: 5px;
+  width:100%;
+  height:100%
 }
 .info_box {
   float: left;
