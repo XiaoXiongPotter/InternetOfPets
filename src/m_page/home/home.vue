@@ -23,7 +23,8 @@
                         <p>{{info.pet?info.pet.name:'未绑定宠物'}}</p>
                 </div>
                 <div class="btn_box">
-                     <router-link class="btn caozuo" to="/deviceManage"></router-link>
+                  <a class="btn caozuo" href ="../../static/page/necklace_map.html"></a>
+                     <!-- <router-link class="btn caozuo" to="/deviceManage"></router-link> -->
                     <router-link class="btn guanli" :to="{path:'/necklaceManage',query:{deviceCode:info.device.deviceCode}}"></router-link>
                 </div>
             </div>

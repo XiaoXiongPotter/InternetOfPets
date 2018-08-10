@@ -12,6 +12,7 @@ import VueI18n from 'vue-i18n'
 // import LangZhCHS from '../static/lang/zhCHS'
 
 import 'element-ui/lib/theme-chalk/index.css'
+
 Vue.config.productionTip = false
 
 
