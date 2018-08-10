@@ -4,3 +4,7 @@ import http from '../api/public'
 export const getDevices = () => {
 	return http.fetchPost('/deviceApi/devices/listByLoginUser')
 }
+//通过Uid获取设备信息
+export const getDevicesInfo = (params) => {
+	return http.fetchPost('/ClientServerApi/devices/detail',params)
+}

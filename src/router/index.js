@@ -26,6 +26,8 @@ import changepassword from '../m_page/myAccount/changepassword.vue'
 import nextchangepassword from '../m_page/myAccount/nextchangepassword.vue'
 import commonproblem from '../m_page/myAccount/commonproblem.vue'
 import loginauthorization from '../m_page/myAccount/loginauthorization.vue'
+import guide from '../m_page/finder/guide.vue'
+
 import store from '../store/store.js'
 
 Vue.use(Router)
@@ -96,6 +98,10 @@ const router = new Router({
       path: '/finder',
       name: 'finder',
       component: finder
+    },{
+      path: '/guide',
+      name: 'guide',
+      component: guide
     },
     //我的
     {

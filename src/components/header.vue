@@ -46,6 +46,9 @@ export default {
   color: #0ca8e3;
   height: 40px;
   line-height: 40px;
+  /* position: fixed;
+  top:0;
+  z-index: 10; */
 }
 .header .imgBox {
   float: left;
