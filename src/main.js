@@ -63,7 +63,7 @@ axios.interceptors.response.use(
 /* eslint-disable no-new */
 Vue.use(VueResource)
 Vue.use(ElementUI)
-Vue.use(VueI18n)
+//Vue.use(VueI18n)
 new Vue({
     el: '#app',
     router,

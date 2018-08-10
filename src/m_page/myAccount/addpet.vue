@@ -76,101 +76,6 @@
 	</div>
 </template>
 <script>
-<<<<<<< HEAD
-	import IScroll from 'iscroll/build/iscroll-probe'
-	import axios from "axios";
-	import {getpet} from '../../ClientServerApi/index.js'
-	import Qs from "qs";
-	export default {
-		name:'addpet',
-		data(){
-			return{
-				src:'',
-				petname:'',
-				petbelong:'',
-				sex:'',
-				height:'',
-				weight:'',
-				birthday:'',
-				haircolor:'',
-				pettype:'',
-				character:'',
-				fileList:[],
-        		show:false,
-        		time:0
-			}
-		},
-		 mounted(){
-	 	  this.$nextTick(() => {
-          this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true,
-          preventDefault: false,
-		  preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }
-        })
-       })     
-  },
-		methods:{
-			
-		back(){
-  		this.$router.replace({ path: '/mypet' })
-  		sessionStorage.removeItem('base')
-  		},
-		cancel(){
-			this.listshow=false
-		},
-		change(file, fileList){
-    		console.log(fileList)
-    		if(fileList.length==1){
-    			clearInterval(this.time)
-    				this.show=true  			
-    		}
-    	var reader = new FileReader();
-    	reader.readAsDataURL(file.raw);    
-		reader.onload = function(e){ 
-        this.result // 这个就是base64编码了
-        this.src=this.result.split(',')[1]
-        sessionStorage.setItem('base',this.src)
-  }
-    	},
-    	remove(file, fileList){
-    		if(fileList.length==0){
-    			this.time=setInterval(()=>{
-    				this.show=false
-    			},500)
-    		}
-    	},
-		add(){
-		var data = Qs.stringify({
-        		name:this.petname,
-				height:this.height,
-				weight:this.weight,
-				birthTime:this.birthday,
-				petType:this.petbelong,
-				color:this.haircolor,
-				gender:this.sex,
-				portrait:sessionStorage.base,
-				character:this.character
-      })
-		axios({
-        method: "post",
-        url: "/ClientServerApi/pets/info/addPet",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        data
-      }).then(res =>{
-      	console.log(res)
-      	if(res.data.header.status==1000){
-      		sessionStorage.removeItem('base')
-      		this.$router.replace({ path: '/mypet' })
-      	}
-      }).catch(error => {
-      	console.log(error)
-      })
-		}
-		}
-	}
-=======
 import IScroll from "iscroll/build/iscroll-probe";
 import { addPet } from "../../ClientServerApi/index.js";
 export default {
@@ -254,7 +159,6 @@ export default {
     }
   }
 };
->>>>>>> 447af3ba2e07ebde21155cd4fa12b8489c04fe4e
 </script>
 <style>
 .pet .el-date-editor.el-input,
