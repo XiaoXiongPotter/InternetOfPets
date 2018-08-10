@@ -339,7 +339,7 @@ console.log('控制台打印信息');
 	//var socketUrl = 'http://dogness.imwork.net:9227/stomp';
 	//var socketUrl = 'https://www.dognessnetwork.com/socket/stomp/topic/chat/';
 	//var socketUrl = 'wss://www.dognessnetwork.com/messageServer/chat';
-	var socketUrl = 'ws://localhost:8088/messageServer/chat';
+	var socketUrl = 'ws://192.168.0.123:8088/messageServer/chat';
 	//当前定位
 	var nopoint = null;
 	//加载谷歌地图
@@ -365,6 +365,7 @@ console.log('控制台打印信息');
 	//正则
 	var regu = /^[1-9]\d*$/;
 	$(function() {
+		 var token= window.sessionStorage.getItem("token")
 		//h5接收网页推送
 		var room = "866557030061396";
 		// var socket = new SockJS('http://dogness.imwork.net:8082/stomp'); 
@@ -375,7 +376,8 @@ console.log('控制台打印信息');
 	            console.log("链接打开");
 	            //sessionId是用户登录时的sessionId，要传到soket服务器
 	            var message = {
-	        		       "sessionId": 789
+	        		       "sessionId": token,
+	        		       "deviceCode":deviceId
 	        		     }
 	            socket.send(JSON.stringify(message) );
 	        };
@@ -480,14 +482,6 @@ console.log('控制台打印信息');
 				} 
 	            
 	        }
-			//var stompClient = Stomp.over(socket);
-		 	/* stompClient.connect({}, function(frame) {
-				console.log('Connected: ' + frame);
-				stompClient.subscribe('/topic/chat/' + room, function(data) {
-					
-					
-				});
-			}); */
 		if (language == 'ZH') {
 			initMap()
 			getCurrentLocation(deviceId,timestamp);
@@ -531,7 +525,7 @@ console.log('控制台打印信息');
 			url : serverUrl + '/necklace/device/onoffTrack?deviceCode=' + deviceId + "&onoff="
 					+ status + "&timestamp=" + timestamp,
 			type : 'POST',
-			headers:{x_auth_token: '123'},
+			headers:{x_auth_token: token},
 			success : function(res) {
 				var data = res.header.status;
 				console.log(res)
@@ -554,7 +548,7 @@ console.log('控制台打印信息');
 				 $.ajax({
 						url : serverUrl+'/necklace/info/getTrackTime?deviceCode=' + deviceId,
 						type : 'POST',
-						headers:{x_auth_token: '123'},
+						headers:{x_auth_token: token},
 						success : function(data) {
 							console.log('注册轨迹回放：')
 							console.log(data)
@@ -569,7 +563,7 @@ console.log('控制台打印信息');
 								var startTime = data.data.trackTime[0].startTime;
 								 $.ajax({
 									type:'POST',
-									headers:{x_auth_token: '123'},
+									headers:{x_auth_token: token},
 									url:serverUrl+'/necklace/info/getTrackRecord?deviceCode=' + deviceId+'&startTime='+startTime,
 									success:function(data){
 										console.log('轨迹回放')
@@ -716,7 +710,7 @@ console.log('控制台打印信息');
 		$.ajax({
 					type : 'POST',
 					url : deviceUrl,
-					headers:{x_auth_token: '123'},
+					headers:{x_auth_token: token},
 					success : function(data) {
 						console.log('getPets')
 						console.log(data)
@@ -877,7 +871,7 @@ console.log('控制台打印信息');
 				url : serverUrl + '/necklace/device/controlLED?deviceCode=' + deviceId + "&status="
 						+ status + "&timestamp=" + timestamp,
 				type : 'POST',
-				headers:{x_auth_token: '123'},
+				headers:{x_auth_token: token},
 				success : function(res) {
 					console.log("led状态")
 					console.log(res)
@@ -892,7 +886,7 @@ console.log('控制台打印信息');
 		$.ajax({
 			url : serverUrl + '/necklace/device/getCurrentLocation?deviceCode=' + deviceId + "&timestamp=" + timestamp,
 			type : 'POST',
-			headers:{x_auth_token: '123'},
+			headers:{x_auth_token: token},
 			success : function(res) {
 				console.log('获得定位：')
 				console.log(res)
@@ -922,7 +916,7 @@ console.log('控制台打印信息');
 	function clsoeFance(){
 			$.ajax({
 	    		type:'POST',
-	    		headers:{x_auth_token: '123'},
+	    		headers:{x_auth_token: token},
 	    		url:serverUrl+'/necklace/device/onoffFance?deviceCode='+deviceId+'&onoff=0&timestamp='+timestamp,
 	    		success:function(res){
 	    			timeOut = setTimeout(function(){
@@ -935,7 +929,7 @@ console.log('控制台打印信息');
 	function getGeoFance(){
 		$.ajax({
 			type:'POST',
-			headers:{x_auth_token: '123'},
+			headers:{x_auth_token: token},
 			url: serverUrl+'/necklace/info/getGeoFance?fanceId='+fanceId,
 		    success:function(data){
 		    	console.log('围栏信息：')
@@ -1007,6 +1001,7 @@ console.log('控制台打印信息');
 	function initChr(chr,power){
 		
 	}
+	
 </script>
 
 </html>
