@@ -9,50 +9,50 @@
  	<div class="main" ref='wrapper'>
  		<div>
  			<div class="title">
- 				<img :src="list.img" v-if='list'/>
+ 				<img :src="list[index].portrait" v-if='list[index]'/>
  			</div>
  			<div class="petmessage">
- 				<div class="petname" v-if='list'>
+ 				<div class="petname" v-if='list[index]'>
  					<span>名称</span>
- 					<p>{{list.petname}}</p>
+ 					<p>{{list[index].name}}</p>
  				</div>
  				<div class="pet-msg">
- 				<div class="petbelong" v-if='list'>
+ 				<div class="petbelong" v-if='list[index]'>
  					<span>种类</span>
- 					<p>{{list.petbelong}}</p>
+ 					<p>{{list[index].petType}}</p>
  				</div>
- 				<div class="sex" v-if='list'>
+ 				<div class="sex" v-if='list[index]'>
  					<span>性别</span>
- 					<p>{{list.sex}}</p>
+ 					<p>{{list[index].gender}}</p>
  				</div>
  				</div>
  				<div class="pet-msg">
- 					<div class="height" v-if='list'>
+ 					<div class="height" v-if='list[index]'>
  					<span>身高(cm)</span>
- 					<p>{{list.height}}</p>
+ 					<p>{{list[index].height}}</p>
  					</div>
- 					<div class="weight" v-if='list'>
+ 					<div class="weight" v-if='list[index]'>
  					<span>体重(kg)</span>
- 					<p>{{list.weight}}</p>
+ 					<p>{{list[index].weight}}</p>
  					</div>
  				</div>
  				<div class="pet-msg">
- 					<div class="birthday" v-if='list'>
+ 					<div class="birthday" v-if='list[index]'>
  					<span>出生日期</span>
- 					<p>{{list.birthday}}</p>
+ 					<p>{{list[index].birthTime}}</p>
  					</div>
- 					<div class="haircolor" v-if='list'> 
+ 					<div class="haircolor" v-if='list[index]'> 
  					<span>毛色</span>
- 					<p>{{list.haircolor}}</p>
+ 					<p>{{list[index].color}}</p>
  					</div>
  				</div>
- 				<div class="pettype" v-if='list'>
- 					<span>主人</span>
- 					<p>{{list.pettype}}</p>
- 				</div>
- 				<div class="binddevice" v-if='list'>
+ 				<div class="character" v-if='list[index]'>
+ 					<span>性格</span>
+ 					<p>{{list[index].character}}</p>
+ 					</div>
+ 				<div class="binddevice" v-if='list[index]'>
  					<span>绑定设备</span>
- 					<p>{{list.binddevice}}</p>
+ 					<p>{{this.device}}</p>
  					</div>
  			</div>
  			<div>
@@ -65,13 +65,16 @@
  			</div>
  		</div>
  	</div>
- 	<editpet :list='list' ref='banner'></editpet>
+ 	<editpet :list='list[index]' ref='banner'></editpet>
 	</div>
 	</transition>
 </template>
 <script>
 	import IScroll from 'iscroll/build/iscroll-probe'
 	import editpet from '../myAccount/editpet'
+	import {getPetDevices} from'../../deviceApi/index.js'
+	import axios from "axios";
+	import Qs from "qs";
 	export default{
 		name: "petinfo",
 		props:['list','index'],
@@ -79,15 +82,8 @@
 			return{
 				showflag:false,
 				listshow:false,
-				changeflag:false,
-				petname:'',
-				petbelong:'',
-				sex:'',
-				height:'',
-				weight:'',
-				birthday:'',
-				haircolor:'',
-				pettype:''
+				id:'',
+				device:''
 			}
 		},
 		 beforeUpdate(){
@@ -95,7 +91,16 @@
           this.Scroll = new IScroll(this.$refs.wrapper, {
           click: true
         })
-       })     
+          this.id=this.list[this.index].id
+           let params = this.id
+			getPetDevices(params).then(res => {
+			if(res.data.header.status==1000){
+				this.device=res.data.data[0].devName
+				}
+     		}).catch(error => {
+     		console.log(error)
+     		})
+       	})
   },
   components: {
    		editpet
@@ -112,7 +117,6 @@
   	},
   	edit(){
   		this.$refs.banner.show()
-  		this.$refs.banner.focus()
   	},
   	show(){
   		this.showflag=true
@@ -121,12 +125,48 @@
   		this.$router.replace({ path: '/releaseSearch' })
   	},
   	remove(){
-		this.showflag=false
-		this.$emit('remove',this.index)
+		  this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+       var data = Qs.stringify({
+			petId:this.id
+      	})
+		axios({
+        method: "post",
+        url: "/ClientServerApi/pets/info/deletePet",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        data
+   }).then(res => {
+			if(res.data.header.status==1000){
+          this.showflag=false
+			this.$emit('remove',this.index)
+						}
+		}).catch(error => {
+			console.log(error)
+		})
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
   	}
 	}
   }
 </script>
+<style>
+.el-message-box{
+	width: 300px;
+}
+</style>
 <style scoped>
 .petinfo{
 	position: fixed;
@@ -246,6 +286,10 @@
 	width: 50%;
 }
 .binddevice{
+	margin-left: 15px;
+	margin-top: 30px;
+}
+.character{
 	margin-left: 15px;
 	margin-top: 30px;
 }

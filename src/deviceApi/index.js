@@ -4,3 +4,7 @@ import http from '../api/public'
 export const getDevices = () => {
 	return http.fetchPost('/deviceApi/devices/listByLoginUser')
 }
+//获取宠物设备
+export const getPetDevices = (params) => {
+	return http.fetchPost('/deviceApi/devices/listByPet/'+params)
+}

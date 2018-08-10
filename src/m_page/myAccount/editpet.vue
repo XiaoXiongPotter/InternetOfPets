@@ -14,7 +14,7 @@
   			:file-list="fileList"
   			:auto-upload="false"
   			:on-change='change'
-  			:on-remove='remove'
+  			:on-remove='removepic'
   			v-if='list'
   		>
   		<i class="el-icon-plus"></i>
@@ -26,26 +26,26 @@
  			<div class="petmessage">
  				<div class="petname" v-if='list'>
  					<span>名称</span>
- 					<el-input v-model='petname' @blur='input' @focus='focus' /></el-input>
+ 					<el-input  :value='petname' @input='change0'></el-input>
  				</div>
  				<div class="pet-msg">
  				<div class="petbelong" v-if='list'>
  					<span>种类</span>
- 					<el-input v-model='petbelong'  @blur='input1' @focus='focus'  ></el-input>
+ 					<el-input :value='petbelong'  @input='change1'></el-input>
  				</div>
  				<div class="sex" v-if='list'>
  					<span>性别</span>
- 					<el-input v-model='sex'  @blur='input2' @focus='focus'></el-input>
+ 					<el-input :value='sex'  @input='change2' ></el-input>
  				</div>
  				</div>
  				<div class="pet-msg">
  					<div class="height" v-if='list'>
  					<span>身高(cm)</span>
- 					<el-input v-model='height'   @blur='input3' @focus='focus'></el-input>
+ 					<el-input :value='height'  @input='change3'></el-input>
  					</div>
  					<div class="weight" v-if='list'>
  					<span>体重(kg)</span>
- 					<el-input v-model='weight'  @blur='input4'  @focus='focus'></el-input>
+ 					<el-input  :value='weight'  @input='change4'></el-input>
  					</div>
  				</div>
  				<div class="pet-msg">
@@ -53,31 +53,37 @@
  					<span>出生日期</span>
  					<div class="block">
     			<el-date-picker
-    				@blur='input5' 
-    				@focus='focus'
-      				v-model="birthday"
+      				value-format="yyyy-MM-dd"
       				type="date"
+      				v-model='birthday'
+      				 @input='change5'
       				>
     			</el-date-picker>
   				</div>
  					</div>
  					<div class="haircolor" v-if='list'> 
  					<span>毛色</span>
- 					<el-input v-model='haircolor'  @blur='input6' @focus='focus'></el-input>
+ 					<el-input :value='haircolor'  @input='change6'></el-input>
  					</div>
  				</div>
- 				<div class="pettype" v-if='list'>
- 					<span>主人</span>
- 					<el-input v-model='pettype'   @blur='input7' @focus='focus'></el-input>
+ 				<div class="character" v-if='list'>
+ 					<span>性格</span>
+ 					<el-input :value='character'  @input='change7'></el-input>
  				</div>
  				<div class="binddevice" v-if='list'>
  					<span>绑定设备</span>
- 					<p>{{list.binddevice}}</p>
+ 					<p>{{this.device}}</p>
  					</div>
  			</div>
  			<div>
  			<div class="save-btn" style="margin: 20px 0;">
- 				 <el-button type="primary" round style='margin: auto;display: block;'>保存修改</el-button>
+ 				 <el-button type="primary" round style='margin: auto;display: block;' @click='save'>保存修改</el-button>
+ 			</div>
+ 			<div class="delete-btn" style="margin: 20px 0;">
+ 				<el-button type="primary" round style='margin: auto;display: block;'@click='remove'>删除宠物</el-button>
+ 			</div>
+ 			<div class="search-btn" style="margin: 20px 0;">
+ 				<el-button type="primary" round style='margin: auto;display: block;'@click='search'>发布协寻</el-button>
  			</div>
  			</div>
  		</div>
@@ -87,9 +93,14 @@
 </template>
 <script>
 	import IScroll from 'iscroll/build/iscroll-probe'
+	import {getPetDevices} from'../../deviceApi/index.js'
+	import {updatePet} from '../../ClientServerApi/index.js'
+	import store from "../../store/store.js";
+	import axios from "axios";
+	import Qs from "qs";
 	export default{
 		name: "editpet",
-		props:['list'],
+		props:['list','index'],
 		data(){
 			return{
 				showflag:false,
@@ -102,9 +113,14 @@
 				weight:'',
 				birthday:'',
 				haircolor:'',
-				pettype:'',
+				character:'',
 				core:1,
-				fileList:[]
+				fileList:[],
+				id:'',
+				device:'',
+				editlist:'',
+				flag:true,
+				time:0
 			}
 		},
 		 beforeUpdate(){
@@ -115,17 +131,34 @@
 		  preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }
         })
           if(this.core==1){
-				this.fileList.push({'url':this.list.img})
+				this.fileList.push({'url':this.list[this.index].portrait})
 				this.core=0
 			}
           if(this.fileList.length>0){
 				this.showto=true
 			}
+          this.id=this.list[this.index].id
+            let params = this.id
+			getPetDevices(params).then(res => {
+			if(res.data.header.status==1000){
+				this.device=res.data.data[0].devName
+				}
+     		}).catch(error => {
+     		console.log(error)
+     		})
+     		this.petname=this.list[this.index].name
+			this.petbelong=this.list[this.index].petType
+			this.sex=this.list[this.index].gender
+			this.height=this.list[this.index].height
+			this.weight=this.list[this.index].weight
+			this.birthday=this.list[this.index].birthTime
+			this.haircolor=this.list[this.index].color
+			this.character=this.list[this.index].character  
        })     
   },
   methods:{
   	change(file, fileList){
-  			console.log(fileList)
+  		clearInterval(this.time)
     		if(fileList.length==1){
     		this.showto=true  			
     		}
@@ -137,9 +170,10 @@
         this.result // 这个就是base64编码了
         this.imageUrl = this.result;
         this.src=this.result.split(',')[1]
+        sessionStorage.setItem('base',this.src)
     }
   	},
-  	remove(file, fileList){
+  	removepic(file, fileList){
     		clearInterval(this.time)
     		this.fileList.splice(0,1)
     		if(fileList.length==0){
@@ -150,83 +184,134 @@
     	},
   	back(){
   		if(this.changeflag==true){
-  		  this.$message({
-          message: '请保存修改',
-          center: true,
-          type:'error'
-      })
+  		this.$confirm('是否放弃修改?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+       }).then(() => {
+       		sessionStorage.removeItem('base')
+			this.$emit('react')
+        }).catch(() => {          
+        });
   		}else{
-  			this.showflag=false
-  			this.core=1
+			this.showflag=false
   		}
   		
   	},
-  	focus(){
-  		this.petname=this.list.petname
-  		this.petbelong=this.list.petbelong
-  		this.sex=this.list.sex
-  		this.height=this.list.height
-  		this.weight=this.list.weight
-  		this.birthday=this.list.birthday
-  		this.haircolor=this.list.haircolor
-  		this.pettype=this.list.pettype
-  	},
+  	save(){
+		var data = Qs.stringify({
+        	name:this.list[this.index].name,
+			petId:this.id,
+			height:this.list[this.index].height,
+			weight:this.list[this.index].weight,
+			birthday:this.list[this.index].birthTime,
+			petType:this.list[this.index].petType,
+			portrait:sessionStorage.base,
+			color:this.list[this.index].color,
+			gender:this.list[this.index].gender,
+			character:this.list[this.index].character
+     })
+		axios({
+        method: "post",
+        url: "/ClientServerApi/pets/info/updatePet",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        data
+      }).then(res =>{
+      	console.log(res)
+      	if(res.data.header.status==1000){
+      	sessionStorage.removeItem('base')
+      	this.changeflag=false
+   		this.showflag=false
+   		this.$emit('react')
+      	}
+      }).catch(error => {
+      	console.log(error)
+      })
+  },
   	show(){
   		this.showflag=true
   	},
-  	input(){
-  		if(this.petname!=this.list.petname){
-		this.list.petname=this.petname
-  		this.changeflag=true
-  		}
+  	search(){
+  		this.$router.replace({ path: '/releaseSearch' })
   	},
-  	input1(){
-  		if(this.petbelong!=this.list.petbelong){
-  		this.list.petbelong=this.petbelong
-  		this.changeflag=true
-  		}
+  	remove(){
+		  this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+       var data = Qs.stringify({
+			petId:this.id
+      	})
+		axios({
+        method: "post",
+        url: "/ClientServerApi/pets/info/deletePet",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        data
+   }).then(res => {
+		if(res.data.header.status==1000){
+          this.showflag=false
+			this.$emit('remove',this.index)
+						}
+		}).catch(error => {
+			console.log(error)
+		})
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
   	},
-  	input2(){
-  		if(this.sex!=this.list.sex){
-  		this.list.sex=this.sex
+  	change0(e){
+		this.list[this.index].name=e
   		this.changeflag=true
-  		}
   	},
-  	input3(){
-  		if(this.height!=this.list.height){
-  			this.list.height=this.height
+  	change1(e){
+		this.list[this.index].petType=e
   		this.changeflag=true
-  		}
   	},
-  	input4(){
-  		if(this.weight!=this.list.weight){
-  			this.list.weight=this.weight
+  	change2(e){
+		this.list[this.index].gender=e
   		this.changeflag=true
-  		}
   	},
-  	input5(){
-  		if(this.birthday!=this.list.birthday){
-  			this.list.birthday=this.birthday
+  	change3(e){
+		this.list[this.index].height=e
   		this.changeflag=true
-  		}
   	},
-  	input6(){
-  		if(this.haircolor!=this.list.haircolor){
-  		this.list.haircolor=this.haircolor
+  	change4(e){
+		this.list[this.index].weight=e
   		this.changeflag=true
-  		}
   	},
-  	input7(){
-  		if(this.pettype!=this.list.pettype){
-  		this.list.pettype=this.pettype
+  	change5(e){
+		this.list[this.index].birthTime=e
+  		console.log(e)
   		this.changeflag=true
-  		}
+  	},
+  	change6(e){
+		this.list[this.index].color=e
+  		this.changeflag=true
+  	},
+  	change7(e){
+		this.list[this.index].character=e
+  		this.changeflag=true
   	}
 	}
   }
 </script>
 <style>
-	.el-upload--picture-card{
+.el-message-box{
+	width: 300px;
+}
+.editpet .el-upload--picture-card{
 	border-radius: 50%;
 	width: 100px;
 	height: 100px;
@@ -235,27 +320,27 @@
 	display: block;
 	margin: auto;
 }
-.el-upload--picture-card i{
+.editpet .el-upload--picture-card i{
    position: absolute;
    left: 37%;
    top: 35%;
   }
-.el-upload-list--picture-card .el-upload-list__item{
+.editpet .el-upload-list--picture-card .el-upload-list__item{
 	margin: auto;
 	display: block;
 	border: none;
 	width: 100px;
 	height: 100px;
 }
-.el-upload-list--picture-card .el-upload-list__item img{
+.editpet .el-upload-list--picture-card .el-upload-list__item img{
 	border-radius: 50%;
 	width: 100px;
 	height: 100px;
 }
-.disabled .el-upload--picture-card{
+.editpet .disabled .el-upload--picture-card{
     display: none;
 }
-.el-upload-list__item.is-success .el-upload-list__item-status-label{
+.editpet .el-upload-list__item.is-success .el-upload-list__item-status-label{
 	display: none;
 }
 	.petmessage .el-input__inner{
@@ -386,14 +471,13 @@ min-width: 50%;
 	flex: 1;
 	position: relative;
 }
-.pettype{
-	position: relative;
-	margin-left: 15px;
-	margin-top: 30px;
-	width: 50%;
-}
 .binddevice{
 	margin-left: 15px;
 	margin-top: 30px;
+}
+.character{
+	position: relative;
+	margin-left: 15px;
+	width: 50%;
 }
 </style>

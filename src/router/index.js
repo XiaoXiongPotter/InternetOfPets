@@ -26,6 +26,7 @@ import changepassword from '../m_page/myAccount/changepassword.vue'
 import nextchangepassword from '../m_page/myAccount/nextchangepassword.vue'
 import commonproblem from '../m_page/myAccount/commonproblem.vue'
 import loginauthorization from '../m_page/myAccount/loginauthorization.vue'
+import binddevice from '../components/binddevice.vue'
 import store from '../store/store.js'
 
 Vue.use(Router)
@@ -174,6 +175,11 @@ const router = new Router({
       path: '/loginauthorization',
       name: 'loginauthorization',
       component: loginauthorization
+    },
+     {
+      path: '/binddevice',
+      name: 'binddevice',
+      component: binddevice
     }
   ]
 })

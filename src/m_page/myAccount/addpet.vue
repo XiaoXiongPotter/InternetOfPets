@@ -53,6 +53,7 @@
     			<el-date-picker
       				v-model="birthday"
       				type="date"
+      				value-format="yyyy-MM-dd"
       				placeholder="选择日期">
     			</el-date-picker>
   				</div>
@@ -76,7 +77,9 @@
 </template>
 <script>
 	import IScroll from 'iscroll/build/iscroll-probe'
-	import {addPet} from '../../ClientServerApi/index.js'
+	import axios from "axios";
+	import {getpet} from '../../ClientServerApi/index.js'
+	import Qs from "qs";
 	export default {
 		name:'addpet',
 		data(){
@@ -106,8 +109,10 @@
        })     
   },
 		methods:{
+			
 		back(){
   		this.$router.replace({ path: '/mypet' })
+  		sessionStorage.removeItem('base')
   		},
 		cancel(){
 			this.listshow=false
@@ -118,14 +123,13 @@
     			clearInterval(this.time)
     				this.show=true  			
     		}
-    this.imageUrl = URL.createObjectURL(file.raw);
-    var reader = new FileReader();
-    reader.readAsDataURL(file.raw);
-    reader.onload = function(e){ 
+    	var reader = new FileReader();
+    	reader.readAsDataURL(file.raw);    
+		reader.onload = function(e){ 
         this.result // 这个就是base64编码了
-        this.imageUrl = this.result;
         this.src=this.result.split(',')[1]
-    }
+        sessionStorage.setItem('base',this.src)
+  }
     	},
     	remove(file, fileList){
     		if(fileList.length==0){
@@ -135,22 +139,33 @@
     		}
     	},
 		add(){
-			let params = {
-				name:this.petname,
+		var data = Qs.stringify({
+        		name:this.petname,
 				height:this.height,
 				weight:this.weight,
 				birthTime:this.birthday,
 				petType:this.petbelong,
 				color:this.haircolor,
 				gender:this.sex,
-				portrait:this.src,
+				portrait:sessionStorage.base,
 				character:this.character
-			}
-			addPet(params).then(res => {
-				console.log(res)
-			}).catch(error => {
-				console.log(error)
-			})
+      })
+		axios({
+        method: "post",
+        url: "/ClientServerApi/pets/info/addPet",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        data
+      }).then(res =>{
+      	console.log(res)
+      	if(res.data.header.status==1000){
+      		sessionStorage.removeItem('base')
+      		this.$router.replace({ path: '/mypet' })
+      	}
+      }).catch(error => {
+      	console.log(error)
+      })
 		}
 		}
 	}

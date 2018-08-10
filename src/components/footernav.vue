@@ -50,7 +50,7 @@ export default {
   width: 100%;
   font-size: 14px;
   color: #ffffff;
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 .nav li {
   width: 33.3%;

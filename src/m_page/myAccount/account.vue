@@ -3,18 +3,29 @@
 	<div class="header">
       <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
   </div>
-  <div ref="wrapper" class='main'>
-  	<div>
-  	<div class="main-header">
+    	<div class="main-header">
 			<span>My Account</span>
 		</div>
 			<div class="head-img">
-				<img :src="img" @click="changeimg"/>
+			<el-upload
+  			action="https://jsonplaceholder.typicode.com/posts/"
+  			:class="{disabled:showto}"
+  			:limit='1'
+  			list-type='picture-card'
+  			:file-list="fileList"
+  			:auto-upload="false"
+  			:on-change='change'
+  			:on-remove='remove'
+  			>
+  		<i class="el-icon-plus"></i>
+		</el-upload>
 			</div>
 		<div class="main-headportrait" v-for="(item,index) in message" :key='index'>
-			<p>{{item.user}}</p>
-			<p>{{item.username}}</p>
+			<div class="user"><span v-if="flag">{{item.username}}<img src="../../image/change.png" @click="edit"></span><el-input v-model='user' placeholder='输入昵称' v-else @blur='input' ref='inp'></el-input></div>
+			<p>{{item.mobile}}</p>
 		</div>
+  <div ref="wrapper" class='main'>
+  	<div>
 		<div class="main-content">
 			<div @click="mypet">
 			<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
@@ -34,10 +45,12 @@
   		<el-col :span="3"><div class="right"><img src="../../image/right.png"></div></el-col>
 			</el-row>
 			</div>
+			<a>
 			<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
   		<el-col :span="21"><div class="msg"><img src="../../image/Customer.png"><p>在线客服</p></div></el-col>
   		<el-col :span="3"><div class="right"><img src="../../image/right.png"></div></el-col>
 			</el-row>
+			</a>	
 			<div @click="commonproblem">
 			<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
   		<el-col :span="21"><div class="msg"><img src="../../image/help.png"><p>常见问题</p></div></el-col>
@@ -59,7 +72,6 @@
 </div>
   </div>
   <v-foot :loginsuccess='loginsuccess' :loginshowflag='loginshowflag'></v-foot>
-  <userInformation ref='user'></userInformation>
 </div>
 </template>
 <script>
@@ -67,40 +79,100 @@ import IScroll from 'iscroll/build/iscroll-probe'
 import footernav from '../../components/footernav'
 import userInformation from '../myAccount/userInformation'
 import {logout} from '../../api/index.js'
+import {updateUserInfo} from '../../api/index.js'
+import {getLoginUser} from '../../api/index.js'
 export default {
   name: "account",
   data(){
   	return{
-  		'img':require('../../image/man.jpg'),
   		message:[{
-  			'user':'尼古拉斯',
-  			'username':'88888888'
+  			'username':'',
+  			'mobile':''
   		}],
   		listshow:false,
   		loginsuccess:false,
-  		loginshowflag:true
+  		loginshowflag:true,
+  		flag:true,
+  		user:'',
+  		showto:false,
+  		fileList:[{'url':require('../../image/man.jpg')}]
   	}
   },
-    created(){
+    beforeUpdate(){
 	 this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true
+          click: true,
+          preventDefault: false
         })
           if(sessionStorage.getItem('login')){
           	this.loginsuccess=true
           	this.loginshowflag=false
           }
-       })     
+          if(this.flag==false){
+          	this.$refs.inp.focus()
+         }
+          if(this.fileList.length>0){
+				this.showto=true
+			}
+       })
+	 
+  },
+  mounted(){
+  	     getLoginUser().then(res => {
+          	console.log(res.data)
+          	this.message[0].username=res.data.username
+          	this.message[0].mobile=res.data.mobile
+          }).catch(error => {
+          	console.log(error)
+          })
   },
   methods:{
+  	change(file, fileList){
+  		clearInterval(this.time)
+    		if(fileList.length==1){
+    			this.showto=true
+    		}
+    this.imageUrl = URL.createObjectURL(file.raw);
+    var reader = new FileReader();
+    reader.readAsDataURL(file.raw);
+    reader.onload = function(e){ 
+        this.result // 这个就是base64编码了
+        this.imageUrl = this.result;
+        this.src=this.result.split(',')[1]
+        sessionStorage.setItem('base',this.src)
+    }
+    let params = {picImg:sessionStorage.base}
+    updateUserInfo(params).then(res => {
+    	console.log(res)
+//  	this,fileList.push({'url':this.picImg})
+    }).catch(error=>{
+    	console.log(error)
+    })
+  		},
+    	remove(file, fileList){
+    		clearInterval(this.time)
+    		this.fileList.splice(0,1)
+    		if(fileList.length==0){
+    			this.time=setInterval(()=>{
+    				this.showto=false
+    			},500)
+    		}
+    	},
+  	edit(){
+  		this.flag=false
+  		this.user=this.message[0].user
+  	},
+  	input(){
+  		this.flag=true
+  		if(this.user!=this.message[0].user){
+  			this.message[0].user=this.user
+  		}
+  		},
   	mypet(){
   		this.$router.replace({ path: '/mypet' })
   	},
   	mysearch(){
   		this.$router.replace({ path: '/mysearch' })
-  	},
-  	changeimg(){
-  		this.$refs.user.show()
   	},
   	changepassword(){
   		this.$router.replace({ path: '/changepassword' })
@@ -128,6 +200,54 @@ export default {
   }
 };
 </script>
+<style>
+.account .el-input__inner{
+	padding: 0 0;
+	width: 90px;
+	height: 30px;
+	line-height: 30px;
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.account .el-input__inner:hover{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.account .el-upload--picture-card{
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+	line-height: 100px;
+	position: relative;
+	display: block;
+	margin: auto;
+}
+.account .el-upload--picture-card i{
+   position: absolute;
+   left: 37%;
+   top: 35%;
+  }
+.account .el-upload-list--picture-card .el-upload-list__item{
+	margin: auto;
+	display: block;
+	border: none;
+	width: 100px;
+	height: 100px;
+}
+.account .el-upload-list--picture-card .el-upload-list__item img{
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+}
+.account .disabled .el-upload--picture-card{
+    display: none;
+}
+.account .el-upload-list__item.is-success .el-upload-list__item-status-label{
+	display: none;
+}
+</style>
 <style scoped>
 .header .imgBox {
   width: 100px;
@@ -146,11 +266,26 @@ export default {
   	line-height: 40px;
 	position: relative;
 }
+.user{
+	line-height: 30px;
+	height: 30px;
+	text-align: center;
+	position: relative;
+}
+.user span{
+	font-size: 15px;
+	
+}
+.user img{
+	position: absolute;
+	width: 28px;
+	height: 28px;
+}
 .main{
 	overflow: hidden;
 	position: absolute;
 	bottom: 49px;
-	top: 40px;
+	top: 210px;
 	width: 100%;
 	max-width: 720px;
 	touch-action: none;
@@ -181,14 +316,6 @@ export default {
 	position: absolute;
 	top: 50%;
 	right: 0;
-}
-.head-img img{
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
-	display: block;
-	margin: auto;
-	margin-top: 20px;
 }
 .main-headportrait p{
 	text-align: center;
