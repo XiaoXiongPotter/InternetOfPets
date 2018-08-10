@@ -27,8 +27,10 @@ import nextchangepassword from '../m_page/myAccount/nextchangepassword.vue'
 import commonproblem from '../m_page/myAccount/commonproblem.vue'
 import loginauthorization from '../m_page/myAccount/loginauthorization.vue'
 import binddevice from '../components/binddevice.vue'
+import guide from '../m_page/finder/guide.vue'
 import store from '../store/store.js'
 
+//import collor from '../m_page/home/collor/necklace_map.html'
 Vue.use(Router)
 if (sessionStorage.getItem('token')) {
   store.commit('set_token', sessionStorage.getItem('token'))
@@ -71,6 +73,11 @@ const router = new Router({
       name: 'deviceManage',
       component: deviceManage
     },
+//    {
+//        path: '/collor/necklace_map.html',
+//        name: 'collor',
+//        component: collor
+//      },
     {
       path: '/necklaceManage',
       name: 'necklaceManage',
@@ -97,6 +104,10 @@ const router = new Router({
       path: '/finder',
       name: 'finder',
       component: finder
+    },{
+      path: '/guide',
+      name: 'guide',
+      component: guide
     },
     //我的
     {
