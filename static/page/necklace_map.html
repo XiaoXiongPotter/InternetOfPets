@@ -345,7 +345,7 @@ console.log('控制台打印信息');
 	//加载谷歌地图
 	var googleMap, infoWindow;
 	//imei
-	var imei = url.substring(url.indexOf('imei'), url.length)
+	var imei = url.substring(url.indexOf('imei')+5, url.length)
 	//判断是在哪个国际
 	var language = 'ZH';
 	//围栏状态
@@ -359,13 +359,14 @@ console.log('控制台打印信息');
 	//围栏的id
 	var fanceId; //= url.substring(url.indexOf('fanceId=')+8, url.indexOf("&imei"));
 	//设备的主键
-	var deviceId = "1";
+	var deviceId = url.substring(url.indexOf('deviceId')+9, url.indexOf('&'));
 	//轨迹线段
 	var polyline;
 	//正则
 	var regu = /^[1-9]\d*$/;
+	var token = window.sessionStorage.getItem("token")
+	console.log("token:"+token+" imei:"+imei+' deviceId:'+deviceId)
 	$(function() {
-		 var token= window.sessionStorage.getItem("token")
 		//h5接收网页推送
 		var room = "866557030061396";
 		// var socket = new SockJS('http://dogness.imwork.net:8082/stomp'); 
@@ -376,7 +377,7 @@ console.log('控制台打印信息');
 	            console.log("链接打开");
 	            //sessionId是用户登录时的sessionId，要传到soket服务器
 	            var message = {
-	        		       "sessionId": token,
+	        		       "sessionId": imei,
 	        		       "deviceCode":deviceId
 	        		     }
 	            socket.send(JSON.stringify(message) );
@@ -612,7 +613,7 @@ console.log('控制台打印信息');
 			if(fanceStatus=='1'){
 				clsoeFance();
 			}else{
-				window.location.href='/static/page/fanceAdd.html?lon='+lon+'&lat='+lat+'&'+imei+'&imeiId='+deviceId
+				window.location.href='/static/page/fanceAdd.html?lon='+lon+'&lat='+lat+'&imei='+imei+'&imeiId='+deviceId
 			}
 	    }else{
 	    	alert('请先链接设备')
