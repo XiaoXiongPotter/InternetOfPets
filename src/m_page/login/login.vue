@@ -29,8 +29,10 @@
 				<img v-show="flag" :src="img" class="image" @click="change" ref="banner"/>
 				</div>
 			<br />
+			<div class="for-btn" style="max-width: 720px;">
 				<el-checkbox class="check" v-model="checked">记住密码</el-checkbox>
 				<el-button class="forget" type="text"><router-link to="/forgetpassword">忘记密码?</router-link></el-button>
+				</div>
 				<br/>
 				<div class="btn">
 				<el-button class="login" type="primary" @click="login">登录</el-button>
@@ -122,7 +124,7 @@ export default {
           if (res.data.header.status == 1000) {
             sessionStorage.removeItem("imgcode");
             this.loginsuccess = true;
-            this.$router.replace({ path: "/myAccount" });
+            this.$router.push({ name: "account",query:{username:res.data.data.username,mobile:res.data.data.mobile} });
             sessionStorage.setItem("login", "1");
             this.$store.commit("set_token", res.headers["x-auth-token"]);
               
@@ -226,6 +228,9 @@ export default {
 .forget {
   position: absolute;
   right: 15px;
+}
+.for-btn{
+	position: relative;
 }
 .forget a {
   color: #409eff;

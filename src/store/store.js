@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         token: '',
-        resetToken: ''
+        resetToken: '',
+        message:[]
     },
     mutations: {
         set_token(state, token) {
@@ -22,6 +23,10 @@ export default new Vuex.Store({
             sessionStorage.resetToken = resetToken
             state.token = ''
             sessionStorage.removeItem('token')
+        },
+        save_message(state,message){
+        	state.message = message
+        	sessionStorage.message = message
         }
     }
 })

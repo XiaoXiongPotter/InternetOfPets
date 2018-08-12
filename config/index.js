@@ -8,8 +8,12 @@ module.exports = {
         //axios跨域问题
         proxyTable: {
             '/api': {
+<<<<<<< HEAD
                 //target: 'http://manager.dognessnetwork.com:8080',//设置你调用的接口域名和端口号 别忘了加http 
             	target:"http://petnet.imwork.net:8808",
+=======
+                target: 'http://petnet.imwork.net:8808',//设置你调用的接口域名和端口号 别忘了加http 
+>>>>>>> branch 'master' of http://192.168.0.160:10101/r/~wanghaiyang/InternetOfPets.git
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': '/'
@@ -17,20 +21,20 @@ module.exports = {
             },
 
             '/deviceApi': {
-                target: 'http://manager.dognessnetwork.com/device',//设置你调用的接口域名和端口号 别忘了加http
+                target: 'http://petnet.imwork.net:8080/device',//设置你调用的接口域名和端口号 别忘了加http
                 changeOrigin: true,
                 pathRewrite: {
                     '^/deviceApi': '/'
                 }
             },
             '/ClientServerApi': {
-                target: 'http://manager.dognessnetwork.com:9860/ClientServer',//设置你调用的接口域名和端口号 别忘了加http
+                target: 'http://petnet.imwork.net:9860/ClientServer',//设置你调用的接口域名和端口号 别忘了加http
                 changeOrigin: true,
                 pathRewrite: {
                     '^/ClientServerApi': '/'
 
                 }
-            }
+            }   
 
         },
         // Paths

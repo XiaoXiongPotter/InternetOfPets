@@ -9,64 +9,61 @@
  </div>
  <div class="main" ref='wrapper'>
  	<ul>
- 	<li v-for="(item,index) in petlist" :key='index' class="petlist" @click="petinfos(index)">
- 		<div class="petimg"><img :src="item.img"/></div>
+ 	<li v-for="(item,index) in petlist[0]" :key='index' class="petlist" @click="petinfos(index)">
+ 		<div class="petimg"><img :src="item.portrait"/></div>
  		<div class="petmsg">
- 		<p class="petname">{{item.petname}}</p>
- 		<p class="petdevice">绑定设备:{{item.binddevice}}</p>
+ 		<p class="petname">{{item.name}}</p>
+ 		<binddevice :id='item.id'></binddevice>
  		</div>
  	</li>
  	</ul>
  </div>
- <petinfo ref='banner' :list='petlist[index]' :index='index' @remove='remove'></petinfo>
+ <editpet ref='banner' :list='petlist[0]' :index='index' @remove='remove' v-if='petlist[0]' @react='react'></editpet>
   </div>
 </template>
 <script>
 import IScroll from 'iscroll/build/iscroll-probe'
-import petinfo from '../myAccount/petinfo'
+import editpet from '../myAccount/editpet'
+import {getpet} from '../../ClientServerApi/index.js'
+import {getPetDevices} from'../../deviceApi/index.js'
+import binddevice from'../../components/binddevice'
+import axios from "axios";
+import Qs from "qs";
 export default {
   name: "mypet",
+  inject:['reload'],
   data(){
   	return{
-  		petlist:[{
-  			'img':require('../../image/pet2.jpg'),
-  			'petname':'蝴蝶',
-  			'binddevice':'蓝牙计步器',
-  			'petbelong':'蝴蝶犬',
-  			'sex':'女',
-  			'height':'30',
-  			'weight':'20',
-  			'birthday':'2018-02-28',
-  			'haircolor':'白色',
-  			'pettype':'尼古拉斯'
-  		},
-  		{
-  			'img':require('../../image/pet1.jpg'),
-  			'petname':'二哈',
-  			'binddevice':'蓝牙计步器',
-  			'petbelong':'哈士奇',
-  			'sex':'男',
-  			'height':'40',
-  			'weight':'30',
-  			'birthday':'2018-11-28',
-  			'haircolor':'黑白',
-  			'pettype':'尼古拉斯'
-  		}],
+  		petlist:[],
   		index:'',
-  		showflag:false
+  		showflag:false,
+  		binddevice:[]
   	}
   },
-  created(){
-  	 this.$nextTick(() => {
+  beforeUpdate(){
+  	  	 this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
           click: true
         })
-       })
-  },
+		 })
+  	  	 },
+  created(){
+          getpet().then(res =>{
+          	console.log(res)
+          	if(res.data.header.status==1000){
+          		this.petlist.push(res.data.data)
+          	}
+          }).catch(error => {
+          	console.log(error)
+          })
+ },
   methods:{
   	back(){
   		this.$router.replace({ path: '/myAccount' })
   	},
+	react(){
+		this.reload()
+	},
   	petinfos(index){
   		this.index=index
 		this.$refs.banner.show()
@@ -78,11 +75,20 @@ export default {
         this.$router.replace({ path: '/addpet' })
   	},
   	remove(index){
-  		this.petlist.splice(index,1)
+  		this.petlist[0].splice(index,1)
+  		 getpet().then(res =>{
+          	console.log(res)
+          	if(res.data.header.status==1000){
+          		this.petlist.push(res.data.data)
+          	}
+          }).catch(error => {
+          	console.log(error)
+          })
   	}
   },
   	components: {
-   		petinfo
+   		editpet,
+   		binddevice
   	}
 };
 </script>

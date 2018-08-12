@@ -47,3 +47,11 @@ export const getimg = () => {
 export const logout = (params) => {
 	return http.fetchPost('/api/logout', params)
 }
+//修改用户头像
+export const updateUserInfo = (params) => {
+	return http.fetchPost('/api/updateUserInfo', params)
+}
+//获取登陆后的用户信息
+export const getLoginUser = () => {
+	return http.fetchGet('/api/getLoginUser')
+}
