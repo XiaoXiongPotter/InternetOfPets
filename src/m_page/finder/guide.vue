@@ -1,6 +1,6 @@
 <template>
 <div class="guide"> 
-    <header-top></header-top>
+	<router-link to="/forgetpassword">11111111111</router-link>
     <div class="" ref="wrapper" >
   <img src="../../image/guide.jpg" alt="">
 <br>

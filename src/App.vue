@@ -32,7 +32,9 @@ export default {
   padding: 0;
   margin: 0;
 }
-
+.el-message-box{
+width: 300px;
+}
 #app {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", "微软雅黑", Arial, sans-serif;

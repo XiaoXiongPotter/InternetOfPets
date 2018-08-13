@@ -12,7 +12,7 @@
           <div class="triangle "></div>
           <div class="funBtn ">
             <p><router-link  to="/addDevice">添加设备</router-link></p>
-            <p>扫一扫</p>
+            <p>   <a href="../../static/page/scan.html"> 扫一扫</a></p>
           </div>
         </div>
        </transition>

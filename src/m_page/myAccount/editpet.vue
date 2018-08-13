@@ -307,10 +307,10 @@
 	}
   }
 </script>
-<style>
-.el-message-box{
+<style scoped>
+ .el-message-box{
 	width: 300px;
-}
+} 
 .editpet .el-upload--picture-card{
 	border-radius: 50%;
 	width: 100px;

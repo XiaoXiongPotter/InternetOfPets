@@ -162,10 +162,10 @@
 	}
   }
 </script>
-<style>
-.el-message-box{
+<style scoped>
+ .el-message-box{
 	width: 300px;
-}
+} 
 </style>
 <style scoped>
 .petinfo{

@@ -6,7 +6,11 @@
         <span>Add Device</span>
         <i class="line"></i>
     </div>
-    <p class="explain">请输入您要接入的设备</p>
+    <div ref="wrapper">
+
+   
+    <div>
+        <p class="explain">请输入您要接入的设备</p>
     <ul>   
         <li>
             <router-link to="/connectDevice">
@@ -26,15 +30,36 @@
                 <span>多尼斯智能面包机</span>
             </router-link>
         </li>
+        <li>
+            <router-link to="/connectDevice">
+                <img src="../../image/bread.jpg" alt="">
+                <span>多尼斯智能投食器</span>
+            </router-link>
+        </li>
+        <li>
+            <router-link to="/connectDevice">
+                <img src="../../image/bread.jpg" alt="">
+                <span>多尼斯协寻吊坠</span>
+            </router-link>
+        </li>
     </ul>
+    </div>
+     </div>
   </div>
 </template>
 <script>
 import header from "../../components/header";
+import IScroll from "iscroll/build/iscroll-probe";
 export default {
   name: "addDevice",
-  components:{
-    'v-header':header
+  components: {
+    "v-header": header
+  },
+  created() {
+    this.Scroll = new IScroll(this.$refs.wrapper, {
+      click: false,
+      preventDefault: true
+    });
   }
 };
 </script>

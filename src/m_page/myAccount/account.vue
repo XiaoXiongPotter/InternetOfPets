@@ -47,7 +47,7 @@
 			</div>
 			<a>
 			<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
-  		<el-col :span="21"><div class="msg"><img src="../../image/Customer.png"><p>在线客服</p></div></el-col>
+  		<el-col :span="21"><div class="msg"><img src="../../image/Customer.png"><p><a href="../../../static/page/userchat.html?username=111">在线客服</a></p></div></el-col>
   		<el-col :span="3"><div class="right"><img src="../../image/right.png"></div></el-col>
 			</el-row>
 			</a>	

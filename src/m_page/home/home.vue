@@ -25,7 +25,7 @@
                 <div class="btn_box">
                   <a class="btn caozuo" href ="../../static/page/necklace_map.html"></a>
                      <!-- <router-link class="btn caozuo" to="/deviceManage"></router-link> -->
-                    <router-link class="btn guanli" :to="{path:'/necklaceManage',query:{deviceCode:info.device.deviceCode}}"></router-link>
+                    <router-link class="btn guanli" :to="{path:'/necklaceManage',query:{deviceCode:info.device.deviceCode,binded:info.pet==null?'':info.pet.id}}"></router-link>
                 </div>
             </div>
         </li>
@@ -48,20 +48,6 @@ export default {
     return {
       necklace: require("../../image/necklace.png"),
       islogin: false,
-      // infos: [
-      //   {
-      //     type: "necklace",
-      //     touxiang: "../../image/dog-pic.jpg",
-      //     name: "大金毛",
-      //     dogType: "拉布拉多"
-      //   },
-      //   {
-      //     type: "pendant",
-      //     touxiang: "../../image/dog-pic.jpg",
-      //     name: "小金毛",
-      //     dogType: "阿拉斯加"
-      //   }
-      // ],
       infos: "",
       loginsuccess: false,
       loginshowflag: true

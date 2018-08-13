@@ -12,13 +12,14 @@ import finder from '../m_page/finder/finder.vue'
 import account from '../m_page/myAccount/account.vue'
 import deviceManage from '../m_page/home/deviceManage.vue'
 import addDevice from '../m_page/home/addDevice.vue'
+import createQrCode from '../m_page/home/createQrCode.vue'
 import connectDevice from '../m_page/home/connectDevice.vue'
 import mypet from '../m_page/myAccount/mypet.vue'
 import mysearch from '../m_page/myAccount/mysearch.vue'
 import releaseSearch from '../m_page/finder/releaseSearch.vue'
 import userInformation from '../m_page/myAccount/userInformation.vue'
 import necklaceManage from '../m_page/home/necklaceManage.vue'
-import changePet from "../components/changepet.vue";
+import changePet from "../components/changepet.vue"
 import petinfo from '../m_page/myAccount/petinfo.vue'
 import editpet from '../m_page/myAccount/editpet.vue'
 import addpet from '../m_page/myAccount/addpet.vue'
@@ -72,16 +73,13 @@ const router = new Router({
       name: 'deviceManage',
       component: deviceManage
     },
-//    {
-//        path: '/collor/necklace_map.html',
-//        name: 'collor',
-//        component: collor
-//      },
     {
       path: '/necklaceManage',
       name: 'necklaceManage',
       component: necklaceManage
-    },{
+    },
+    //设备切换绑定宠物
+    {
       path: '/changepet',
       name: 'changePet',
       component: changePet
@@ -131,36 +129,43 @@ const router = new Router({
       name: 'releaseSearch',
       component: releaseSearch
     },
+    //用户信息
     {
       path: '/userInformation',
       name: 'userInformation',
       component: userInformation
     },
+    //重置密码
     {
       path: '/resetpassword',
       name: 'resetpassword',
       component: resetpassword
     },
+    //重置成功
     {
       path: '/resetsuccess',
       name: 'resetsuccess',
       component: resetsuccess
     },
+    //注册失败
     {
       path: '/registerfalse',
       name: 'registerfalse',
       component: registerfalse
     },
+   // 宠物信息
      {
       path: '/petinfo',
       name: 'petinfo',
       component: petinfo
     },
+    //添加宠物
      {
       path: '/addpet',
       name: 'addpet',
       component: addpet
     },
+    //改密码
      {
       path: '/changepassword',
       name: 'changepassword',
@@ -171,11 +176,13 @@ const router = new Router({
       name: 'nextchangepassword',
       component: nextchangepassword
     },
+    //编辑宠物信息
      {
       path: '/editpet',
       name: 'editpet',
       component: editpet
     },
+    //常见问题
      {
       path: '/commonproblem',
       name: 'commonproblem',
@@ -186,10 +193,17 @@ const router = new Router({
       name: 'loginauthorization',
       component: loginauthorization
     },
+    //绑定设备
      {
       path: '/binddevice',
       name: 'binddevice',
       component: binddevice
+    },
+    //生成二维码
+    {
+      path: '/createQrCode',
+      name: 'createQrCode',
+      component: createQrCode
     }
   ]
 })

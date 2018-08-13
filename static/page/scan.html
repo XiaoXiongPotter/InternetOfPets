@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>HTML5 code Reader</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+  <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+</head>
+<!--<style type="text/css">  
+	html, body { height: 100%; width: 100%; text-align:center; position: relative;margin: 0;padding: 0;}    
+	#video{display: none;position: absolute;z-index: 2;left: 0;}
+	#support{display: none;position: absolute;z-index: 1;width: 100%;height: 600px;background: rgba(0,0,0,0.5);}
+	</style>  -->
+<script src="../js/jquery-2.1.4.js"></script>
+<script src="//cdn.jsdelivr.net/npm/eruda"></script>
+<script>
+  //这段代 主要是获取摄像头的视频流并显示在Video 签中    
+  var canvas = null,
+    context = null,
+    video = null;
+  window.addEventListener("DOMContentLoaded", function () {
+    try {
+      canvas = document.getElementById("canvas"); //获取id=canvas的元素
+      context = canvas.getContext("2d"); //描绘一个二维画面
+      video = document.getElementById("video"); //获取id=video的元素
+
+      var videoObj = {
+          "video": true,
+          audio: false
+        }, //播放视频和音频资源的标签
+        flag = true, //定义布尔型变量flag初始值为真
+
+        //无法启动摄像头的错误原因
+        MediaErr = function (error) {
+          console.log(error);
+          flag = false;
+          if (error.PERMISSION_DENIED) {
+            alert('用户拒绝了浏览器请求媒体的权限', '提示');
+          } else if (error.NOT_SUPPORTED_ERROR) {
+            alert('对不起，您的浏览器不支持拍照功能，请使用其他浏览器', '提示');
+          } else if (error.MANDATORY_UNSATISFIED_ERROR) {
+            alert('指定的媒体类型未接收到媒体流', '提示');
+          } else {
+            alert('系统未能获取到摄像头，请确保摄像头已正确安装。或尝试刷新页面，重试', '提示');
+          }
+        };
+
+      //获取媒体的兼容代码，目前只支持（Firefox,Chrome,Opera）  
+      if (navigator.getUserMedia) {
+        //qq浏览器不支持  
+        if (navigator.userAgent.indexOf('MQQBrowser') > -1) {
+          alert('对不起，您的浏览器不支持拍照功能，请使用其他浏览器', '提示');
+          return false;
+        }
+        navigator.getUserMedia(videoObj, function (stream) { //navigator.getUserMedia（）提醒用户需要使用音频（0或者1）和（0或者1）视频输入设备
+          video.src = window.URL.createObjectURL(stream);
+          video.play();
+        }, MediaErr);
+      } else if (navigator.webkitGetUserMedia) {
+        navigator.webkitGetUserMedia(videoObj, function (stream) {
+          video.src = window.webkitURL.createObjectURL(stream);
+          video.play();
+        }, MediaErr);
+      } else if (navigator.mozGetUserMedia) {
+        navigator.mozGetUserMedia(videoObj, function (stream) {
+          video.src = window.URL.createObjectURL(stream);
+          video.play();
+        }, MediaErr);
+      } else if (navigator.msGetUserMedia) {
+        navigator.msGetUserMedia(videoObj, function (stream) {
+          $(document).scrollTop($(window).height());
+          video.src = window.URL.createObjectURL(stream);
+          video.play();
+        }, MediaErr);
+      } else {
+        alert('对不起，您的浏览器不支持拍照功能，请使用其他浏览器');
+        return false;
+      }
+      if (flag) {
+        alert('为了获得更准确的测试结果，请尽量将二维码置于框中，然后进行拍摄、扫描。 请确保浏览器有权限使用摄像功能');
+      }
+      //触发扫描/拍照按钮的点击事件
+      $("#snap").click(function () {
+        startPat();
+        $("#video").css("display", "block");
+        $("#support").css("display", "block");
+        $("button").css("display", "none")
+      }).show();
+    } catch (e) { //try执行错误，e即是获取的错误信息
+      printHtml("浏览器不支持HTML5 CANVAS");
+    }
+  }, false);
+
+
+  //		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+  //打印内容到页面        
+  function printHtml(content) {
+    $(window.document.body).append(content + "<br/>");
+  }
+  //开始拍照/扫描
+  function startPat() {
+    setTimeout(function () { //防止调用过快
+      if (context) {
+
+        context.drawImage(video, 0, 0, 320, 320); //drawImage（）在画布上绘制图像、画布或视频 x=0 y=0 width=320 height=320 video是规定要使用的图像、画布或视频
+        CatchCode();
+      }
+    }, 200);
+  }
+  //抓屏获取图像流，并上传到服务器
+  function CatchCode() {
+    if (canvas != null) {
+      //以下开始编 数据   
+      var imgData = canvas.toDataURL();
+      //将图像转换为base64数据
+      var base64Data = imgData; //.substr(22); //在前端截取22位之后的字符串作为图像数据
+      //开始异步上
+      var data = base64Data.substr(base64Data.indexOf(',') + 1);
+      $.post("http://manager.dognessnetwork.com/document/IMG", {
+        "img": data
+      }, function (result) {
+		printHtml("解析结果：" + result.data);
+		console.log(result)
+        if (result.header.status == "1000" && result.data != "") {
+			alert('开始传值')
+          // printHtml("解析结果成功！");
+          // alert("解析成功！");
+          // $("#video").css("display","none");
+          // $("#support").css("display","none");
+		  // $("button").css("display","block")
+		  window.location.replace("http://petnet.imwork.net:8080/device/qr?id="+result.data);
+		  
+        } else {
+          startPat(); //如果没有解析出来则重新抓拍解析       
+        }
+      }, "json");
+    }
+  }
+
+  //开发者调试
+  eruda.init();
+  console.log('控制台打印信息');
+
+</script>
+<style>
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    margin: 0;
+    padding: 0;
+  }
+
+  #video {
+    display: none;
+    position: absolute;
+    z-index: 99;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #support {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #support img {
+    width: 100%;
+    height: 100%;
+  }
+
+</style>
+
+<body>
+  <div id="support">
+    <img src="../img/scan_video.gif" />
+  </div>
+  <div id="contentHolder">
+    <video id="video" autoplay></video>
+    <canvas style="display:none;" id="canvas" width="320" height="320"></canvas>
+    <br/>
+    <button id="snap" style="display:none; height:50px; width:120px;">扫一扫</button>
+  </div>
+</body>
+
+</html>

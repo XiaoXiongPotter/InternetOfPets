@@ -13,7 +13,7 @@
     <div class="configuration ">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum fugiat ab sint quod provident, assumenda numquam nihil. Totam optio beatae itaque, quod provident id expedita aspernatur ipsa? Magni, ipsa ullam.
     </div>
-    <router-link to="" class="next">下一步</router-link>
+    <router-link to="/createQrCode" class="next">下一步</router-link>
   </div>
 </template>
 <script>
