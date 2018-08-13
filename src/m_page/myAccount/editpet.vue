@@ -295,7 +295,7 @@
 	}
   }
 </script>
-<style scoped>
+<style >
  .el-message-box{
 	width: 300px;
 } 
