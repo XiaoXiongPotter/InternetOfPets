@@ -151,16 +151,16 @@ export default {
     	console.log(error)
     })
   		},
-	// 	beforeremove(file, fileList){
-	// 	  this.$confirm('是否修改头像?', '提示', {
-    //       confirmButtonText: '确定',
-    //       cancelButtonText: '取消',
-    //       type: 'warning'
-    //     }).then(() => {  
-    //     	this.deletefalg=false
-    //     }).catch(() => {
-    //    });
-	// 	},
+		beforeremove(file, fileList){
+		  this.$confirm('是否修改头像?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {  
+        	this.deletefalg=false
+        }).catch(() => {
+       });
+		},
   		remove(file, fileList){
         	clearInterval(this.time)
 			this.fileList.splice(0,1)
