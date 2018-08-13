@@ -5,10 +5,6 @@ import http from '../api/public'
 export const getDevices = () => {
 	return http.fetchPost('/ClientServerApi/devices/listByLoginUser')
 }
-//获取宠物设备
-export const getPetDevices = (params) => {
-	return http.fetchPost('/ClientServerApi/devices/listByPet',params)
-}
 //通过获取设备详细信息
 export const getDevicesInfo = (params) => {
 	return http.fetchPost('/ClientServerApi/devices/detail',params)

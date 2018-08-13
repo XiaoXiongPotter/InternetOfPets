@@ -4,7 +4,7 @@
 	</div>
 </template>
 <script>
-import {getPetDevices} from'../deviceApi/index.js'
+import {getPetDevices} from'../ClientServerApi/index.js'
 import Qs from "qs";
 export default {
 	name:'binddevice',
@@ -17,9 +17,8 @@ export default {
 	mounted(){
 		 let params = Qs.stringify({petId:this.id})
 			getPetDevices(params).then(res => {
-				console.log(res)
 				if(res.data.header.status==1000){
-					this.device=res.data.data[0].devName
+					this.device=res.data.data[0].device.type
 				}
      		}).catch(error => {
      		console.log(error)

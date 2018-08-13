@@ -20,7 +20,6 @@ import releaseSearch from '../m_page/finder/releaseSearch.vue'
 import userInformation from '../m_page/myAccount/userInformation.vue'
 import necklaceManage from '../m_page/home/necklaceManage.vue'
 import changePet from "../components/changepet.vue"
-import petinfo from '../m_page/myAccount/petinfo.vue'
 import editpet from '../m_page/myAccount/editpet.vue'
 import changepassword from '../m_page/myAccount/changepassword.vue'
 import nextchangepassword from '../m_page/myAccount/nextchangepassword.vue'
@@ -151,12 +150,6 @@ const router = new Router({
       path: '/registerfalse',
       name: 'registerfalse',
       component: registerfalse
-    },
-   // 宠物信息
-     {
-      path: '/petinfo',
-      name: 'petinfo',
-      component: petinfo
     },
     //添加宠物
      {

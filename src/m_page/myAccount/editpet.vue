@@ -93,7 +93,7 @@
 </template>
 <script>
 	import IScroll from 'iscroll/build/iscroll-probe'
-	import {getPetDevices} from'../../deviceApi/index.js'
+	import {getPetDevices} from'../../ClientServerApi/index.js'
 	import {updatePet} from '../../ClientServerApi/index.js'
 	import {deletepet} from '../../ClientServerApi/index.js'
 	import store from "../../store/store.js";
@@ -139,10 +139,10 @@
 				this.showto=true
 			}
           this.id=this.list[this.index].id
-            let params = this.id
+   		 let params = Qs.stringify({petId:this.id})
 			getPetDevices(params).then(res => {
-			if(res.data.header.status==1000){
-				this.device=res.data.data[0].devName
+				if(res.data.header.status==1000){
+					this.device=res.data.data[0].device.type
 				}
      		}).catch(error => {
      		console.log(error)
