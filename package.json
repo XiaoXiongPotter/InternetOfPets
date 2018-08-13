@@ -5,11 +5,7 @@
   "author": "wanghaiyang <619747158@qq.com>",
   "private": true,
   "scripts": {
-<<<<<<< HEAD
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 192.168.0.136",
-=======
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 192.168.0.123",
->>>>>>> a8e7a129693276550d5363fa63c4779d4aa7dce6
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 192.168.0.219",
     "start": "npm run dev",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "e2e": "node test/e2e/runner.js",
@@ -28,7 +24,6 @@
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
     "webpack-dev-server": "^2.9.1"
-    
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -7,7 +7,7 @@ export const getDevices = () => {
 }
 //获取宠物设备
 export const getPetDevices = (params) => {
-	return http.fetchPost('/ClientServerApi/devices/listByPet/'+params)
+	return http.fetchPost('/ClientServerApi/devices/listByPet',params)
 }
 //通过获取设备详细信息
 export const getDevicesInfo = (params) => {

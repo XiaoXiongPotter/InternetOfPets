@@ -5,6 +5,7 @@
 </template>
 <script>
 import {getPetDevices} from'../deviceApi/index.js'
+import Qs from "qs";
 export default {
 	name:'binddevice',
 	props:['id'],
@@ -14,8 +15,9 @@ export default {
 		}
 	},
 	mounted(){
-		 let params = this.id
+		 let params = Qs.stringify({petId:this.id})
 			getPetDevices(params).then(res => {
+				console.log(res)
 				if(res.data.header.status==1000){
 					this.device=res.data.data[0].devName
 				}

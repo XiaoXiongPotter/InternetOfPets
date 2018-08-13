@@ -295,7 +295,7 @@
 	}
   }
 </script>
-<style scoped>
+<style>
  .el-message-box{
 	width: 300px;
 } 
@@ -331,7 +331,7 @@
 .editpet .el-upload-list__item.is-success .el-upload-list__item-status-label{
 	display: none;
 }
-	.petmessage .el-input__inner{
+.petmessage .el-input__inner{
 	padding: 0 0;
 	width: 90px;
 	height: 30px;
@@ -340,7 +340,7 @@
 	border-right-color: white;
 	border-left-color: white;
 }
-	.petmessage .el-input__inner:hover{
+.petmessage .el-input__inner:hover{
 	border-top-color: white;
 	border-right-color: white;
 	border-left-color: white;
