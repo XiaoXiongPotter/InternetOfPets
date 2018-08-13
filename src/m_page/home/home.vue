@@ -1,4 +1,3 @@
-
 <template>
 <div class="home">
 <v-header :go-back='false' :add-devices='true'></v-header>

@@ -22,7 +22,6 @@ import necklaceManage from '../m_page/home/necklaceManage.vue'
 import changePet from "../components/changepet.vue"
 import petinfo from '../m_page/myAccount/petinfo.vue'
 import editpet from '../m_page/myAccount/editpet.vue'
-import addpet from '../m_page/myAccount/addpet.vue'
 import changepassword from '../m_page/myAccount/changepassword.vue'
 import nextchangepassword from '../m_page/myAccount/nextchangepassword.vue'
 import commonproblem from '../m_page/myAccount/commonproblem.vue'
@@ -160,12 +159,6 @@ const router = new Router({
       component: petinfo
     },
     //添加宠物
-     {
-      path: '/addpet',
-      name: 'addpet',
-      component: addpet
-    },
-    //改密码
      {
       path: '/changepassword',
       name: 'changepassword',

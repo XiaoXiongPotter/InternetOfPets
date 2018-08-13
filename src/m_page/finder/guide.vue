@@ -38,4 +38,5 @@ export default {
 .guide img {
   width: 100%;
 }
+
 </style> 

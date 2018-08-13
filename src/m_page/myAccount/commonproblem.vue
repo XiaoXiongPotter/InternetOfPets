@@ -5,12 +5,12 @@
     <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
    </div>
    <div class="nav" ref='banner' style="touch-action: none;">
-   	<ul style="display: flex;flex-wrap: nowrap;width: 720px;text-align: center;">
-   		<li style="flex: 1;height: 40px;line-height: 40px;" :class="{active:flag5}" @click="changepage">智能宠物项圈</li>
-   		<li style="flex: 1;height: 40px;line-height: 40px;" :class="{active:flag6}" @click="changepage1">智能宠物机器狗</li>
-   		<li style="flex: 1;height: 40px;line-height: 40px;" :class="{active:flag7}" @click="changepage2">智能宠物投食器</li>
-   		<li style="flex: 1;height: 40px;line-height: 40px;" :class="{active:flag8}" @click="changepage3">智能宠物喂食器</li>
-   		<li style="flex: 1;height: 40px;line-height: 40px;" :class="{active:flag9}" @click="changepage4">智能宠物面包机</li>
+   	<ul>
+   		<li  :class="{active:flag5}" @click="changepage">智能宠物项圈</li>
+   		<li :class="{active:flag6}" @click="changepage1">智能宠物机器狗</li>
+   		<li :class="{active:flag7}" @click="changepage2">智能宠物投食器</li>
+   		<li :class="{active:flag8}" @click="changepage3">智能宠物喂食器</li>
+   		<li :class="{active:flag9}" @click="changepage4">智能宠物面包机</li>
    	</ul>
    </div>
    <div class="commonproblem-main" ref='wrapper' v-show="flag5">
@@ -296,6 +296,17 @@
 	height: 22px;
 	position: absolute;
 	top: 18%;
+}
+.nav ul{
+	display: flex;
+	flex-wrap: nowrap;
+	width: 720px;
+	text-align: center;
+}
+.nav li{
+	flex: 1;
+	height: 40px;
+	line-height: 40px;
 }
 .commonproblem-main{
 	position: absolute;

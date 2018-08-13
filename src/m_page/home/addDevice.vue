@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <template>
   <div class="addDevice">
     <v-header :go-back='true' ></v-header>

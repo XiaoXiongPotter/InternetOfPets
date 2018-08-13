@@ -16,6 +16,7 @@
   			:auto-upload="false"
   			:on-change='change'
   			:on-remove='remove'
+  			:before-remove='beforeremove'
   			>
   		<i class="el-icon-plus"></i>
 		</el-upload>
@@ -81,6 +82,7 @@ import userInformation from '../myAccount/userInformation'
 import {logout} from '../../api/index.js'
 import {updateUserInfo} from '../../api/index.js'
 import {getLoginUser} from '../../api/index.js'
+import Qs from "qs";
 export default {
   name: "account",
   data(){
@@ -95,22 +97,19 @@ export default {
   		flag:true,
   		user:'',
   		showto:false,
-  		fileList:[{'url':require('../../image/man.jpg')}]
+  		fileList:[],
+  		deleteflag:true
   	}
   },
     beforeUpdate(){
 	 this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true,
-          preventDefault: false
+          click: true
         })
           if(sessionStorage.getItem('login')){
           	this.loginsuccess=true
           	this.loginshowflag=false
           }
-          if(this.flag==false){
-          	this.$refs.inp.focus()
-         }
           if(this.fileList.length>0){
 				this.showto=true
 			}
@@ -122,6 +121,7 @@ export default {
           	console.log(res.data)
           	this.message[0].username=res.data.username
           	this.message[0].mobile=res.data.mobile
+          	this.fileList.push({'url':res.data.photoUrl})
           }).catch(error => {
           	console.log(error)
           })
@@ -141,31 +141,49 @@ export default {
         this.src=this.result.split(',')[1]
         sessionStorage.setItem('base',this.src)
     }
-    let params = {picImg:sessionStorage.base}
+    let params = Qs.stringify({picImg:sessionStorage.base})
     updateUserInfo(params).then(res => {
+    	if(res.data.header.status==1000){
+    		sessionStorage.removeItem('base')
+    	}
     	console.log(res)
-//  	this,fileList.push({'url':this.picImg})
     }).catch(error=>{
     	console.log(error)
     })
   		},
-    	remove(file, fileList){
-    		clearInterval(this.time)
-    		this.fileList.splice(0,1)
+	// 	beforeremove(file, fileList){
+	// 	  this.$confirm('是否修改头像?', '提示', {
+    //       confirmButtonText: '确定',
+    //       cancelButtonText: '取消',
+    //       type: 'warning'
+    //     }).then(() => {  
+    //     	this.deletefalg=false
+    //     }).catch(() => {
+    //    });
+	// 	},
+  		remove(file, fileList){
+        	clearInterval(this.time)
+			this.fileList.splice(0,1)
     		if(fileList.length==0){
     			this.time=setInterval(()=>{
     				this.showto=false
     			},500)
-    		}
+    		} 	   	
     	},
   	edit(){
   		this.flag=false
-  		this.user=this.message[0].user
+  		this.user=this.message[0].username
   	},
   	input(){
   		this.flag=true
   		if(this.user!=this.message[0].user){
-  			this.message[0].user=this.user
+  			this.message[0].username=this.user
+  			 let params = Qs.stringify({nickname:this.message[0].username})
+   		 	updateUserInfo(params).then(res => {
+    		console.log(res)
+    		}).catch(error=>{
+    		console.log(error)
+    		})
   		}
   		},
   	mypet(){
@@ -201,6 +219,9 @@ export default {
 };
 </script>
 <style>
+.account .el-message-box{
+	width: 300px;
+}
 .account .el-input__inner{
 	padding: 0 0;
 	width: 90px;

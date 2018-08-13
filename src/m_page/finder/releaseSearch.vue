@@ -4,6 +4,19 @@
  	<img src="../../image/back.png" class="back" @click="back"/>
       <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
   </div>
+   	<div class="petphoto">
+ 		<p>宠物照片</p>
+ 		 <el-upload
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :limit='1'
+              list-type='picture-card'
+              :file-list="fileList"
+              :auto-upload="false"
+              :on-change='change'
+          >
+          <i class="el-icon-plus"></i>
+        </el-upload>
+ 	</div>
  <div class="main" ref='wrapper'>
  	<div>
  	<div class="losepet">
@@ -20,15 +33,18 @@
  	</div>
  	 	<div class="losttime">
  		<p>走失时间</p>
- 		<el-input v-model="time" placeholder="请填写走失时间"></el-input>
- 	</div>
- 	<div class="petphoto">
- 		<p>宠物照片</p>
- 		<img src="../../image/addpet.png"/>
+ 		   <div class="block">
+                <el-date-picker
+                      v-model="losttime"
+                      type="date"
+                      value-format="yyyy-MM-dd"
+                      placeholder="选择日期">
+                </el-date-picker>
+          </div>
  	</div>
  	 	<div class="place">
  		<p>走失地点</p>
- 		<el-input v-model="time" placeholder="宝贝在哪里走丢的呢?"></el-input>
+ 		<el-input v-model="losttime" placeholder="宝贝在哪里走丢的呢?"></el-input>
  	</div>
  	<div class="release-btn">
  		 	<el-button type="primary" round style="margin: auto;display: block;margin-top: 15px;">确认发布</el-button>
@@ -47,20 +63,39 @@ import IScroll from 'iscroll/build/iscroll-probe'
 					petname:'',
 					money:'',
 					introduction:'',
-					time:''
+					losttime:'',
+					fileList:[],
+					show:false
 				}
 			},
 			mounted(){
 	 	  this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true
+          click: true,
+          preventDefault: false,
+          tap:true,
+          preventDefaultException: {tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/}
         })
        })     
   },
 		methods:{
   		back(){
   		this.$router.replace({ path: '/mypet' })
+  		},
+ 		change(file, fileList){
+            console.log(fileList)
+//          if(fileList.length==1){
+//              clearInterval(this.time)
+//                  this.show=true              
+//          }
+        var reader = new FileReader();
+        reader.readAsDataURL(file.raw);    
+        reader.onload = function(e){ 
+        this.result // 这个就是base64编码了
+        this.src=this.result.split(',')[1]
+        sessionStorage.setItem('base',this.src)
   		}
+        }
   		}
 		}
 </script>
@@ -108,6 +143,33 @@ import IScroll from 'iscroll/build/iscroll-probe'
 .synopsis .el-input__inner{
 	height: 80px;
 }
+.el-upload--picture-card{
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    position: relative;
+    display: block;
+	margin-left: 10px;
+}
+.el-upload--picture-card i{
+   position: absolute;
+   left: 37%;
+   top: 35%;
+  }
+  .el-upload-list--picture-card .el-upload-list__item{
+    display: block;
+    border: none;
+    width: 100px;
+    height: 100px;
+    margin-left: 10px;
+}
+.el-upload-list--picture-card .el-upload-list__item img{
+    width: 100px;
+    height: 100px;
+}
+.disabled .el-upload--picture-card{
+    display: none;
+}
 </style>
 <style scoped>
 .header .imgBox {
@@ -135,7 +197,7 @@ import IScroll from 'iscroll/build/iscroll-probe'
 }
 .main{
 	position: absolute;
-	top: 40px;
+	top: 170px;
 	bottom: 0;
 	width: 100%;
 	overflow: hidden;
@@ -160,9 +222,9 @@ import IScroll from 'iscroll/build/iscroll-probe'
 .petphoto{
 	margin-top: 15px;
 }
-.petphoto img{
-	margin-left: 10px;
-	margin-top: 10px;
+.petphoto p{
+	padding-left: 10px;
+	font-size: 13px;
 }
 .place{
 	margin-top: 15px;
