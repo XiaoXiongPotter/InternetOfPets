@@ -4,7 +4,7 @@
  	<img src="../../image/back.png" class="back" @click="back"/>
     <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
    </div>
-   <div class="nav" ref='banner' style="touch-action: none;">
+   <div class="head-nav" ref='banner' style="touch-action: none;">
    	<ul>
    		<li  :class="{active:flag5}" @click="changepage">智能宠物项圈</li>
    		<li :class="{active:flag6}" @click="changepage1">智能宠物机器狗</li>
@@ -297,13 +297,13 @@
 	position: absolute;
 	top: 18%;
 }
-.nav ul{
+.head-nav ul{
 	display: flex;
 	flex-wrap: nowrap;
 	width: 720px;
 	text-align: center;
 }
-.nav li{
+.head-nav li{
 	flex: 1;
 	height: 40px;
 	line-height: 40px;

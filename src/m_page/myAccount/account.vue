@@ -46,9 +46,9 @@
   		<el-col :span="3"><div class="right"><img src="../../image/right.png"></div></el-col>
 			</el-row>
 			</div>
-			<a>
+			<a href="../../../static/page/userchat.html?username=111">
 			<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
-  		<el-col :span="21"><div class="msg"><img src="../../image/Customer.png"><p><a href="../../../static/page/userchat.html?username=111">在线客服</a></p></div></el-col>
+  		<el-col :span="21"><div class="msg"><img src="../../image/Customer.png"><p>在线客服</p></div></el-col>
   		<el-col :span="3"><div class="right"><img src="../../image/right.png"></div></el-col>
 			</el-row>
 			</a>	
@@ -152,14 +152,6 @@ export default {
     })
   		},
 		beforeremove(file, fileList){
-		  this.$confirm('是否修改头像?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {  
-        	this.deletefalg=false
-        }).catch(() => {
-       });
 		},
   		remove(file, fileList){
         	clearInterval(this.time)
@@ -270,6 +262,9 @@ export default {
 }
 </style>
 <style scoped>
+	a{
+		color: black;
+	}
 .header .imgBox {
   width: 100px;
   margin: 0 auto;

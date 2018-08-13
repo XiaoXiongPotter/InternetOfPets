@@ -93,7 +93,7 @@
 </template>
 <script>
 	import IScroll from 'iscroll/build/iscroll-probe'
-	import {getPetDevices} from'../../deviceApi/index.js'
+	import {getPetDevices} from'../../ClientServerApi/index.js'
 	import {updatePet} from '../../ClientServerApi/index.js'
 	import {deletepet} from '../../ClientServerApi/index.js'
 	import store from "../../store/store.js";
@@ -139,10 +139,10 @@
 				this.showto=true
 			}
           this.id=this.list[this.index].id
-            let params = this.id
+   		 let params = Qs.stringify({petId:this.id})
 			getPetDevices(params).then(res => {
-			if(res.data.header.status==1000){
-				this.device=res.data.data[0].devName
+				if(res.data.header.status==1000){
+					this.device=res.data.data[0].device.type
 				}
      		}).catch(error => {
      		console.log(error)
@@ -295,7 +295,8 @@
 	}
   }
 </script>
-<style >
+
+<style>
  .el-message-box{
 	width: 300px;
 } 
@@ -331,7 +332,7 @@
 .editpet .el-upload-list__item.is-success .el-upload-list__item-status-label{
 	display: none;
 }
-	.petmessage .el-input__inner{
+.petmessage .el-input__inner{
 	padding: 0 0;
 	width: 90px;
 	height: 30px;
@@ -340,7 +341,7 @@
 	border-right-color: white;
 	border-left-color: white;
 }
-	.petmessage .el-input__inner:hover{
+.petmessage .el-input__inner:hover{
 	border-top-color: white;
 	border-right-color: white;
 	border-left-color: white;
