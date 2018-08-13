@@ -15,3 +15,7 @@ export const addPet = (params) => {
 export const updatePet = (params) => {
 	return http.fetchPost('/ClientServerApi/pets/info/updatePet',params)
 }
+//获取协寻列表
+export const qrMsg = (params) => {
+	return http.fetchPost('/ClientServer/qr/qrMsg',params)
+}

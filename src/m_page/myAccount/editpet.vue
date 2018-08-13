@@ -53,8 +53,8 @@
  					<span>出生日期</span>
  					<div class="block">
     			<el-date-picker
-      				value-format="yyyy-MM-dd"
       				type="date"
+      				value-format="yyyy-MM-dd"
       				v-model='birthday'
       				 @input='change5'
       				>
@@ -206,13 +206,13 @@
 			petId:this.id,
 			height:this.list[this.index].height,
 			weight:this.list[this.index].weight,
-			birthday:this.list[this.index].birthTime,
+			birthTime:this.list[this.index].birthTime,
 			petType:this.list[this.index].petType,
 			portrait:sessionStorage.base,
 			color:this.list[this.index].color,
 			gender:this.list[this.index].gender,
 			character:this.list[this.index].character
-     })
+    })
 		updatePet(params).then(res =>{
       	console.log(res)
       	if(res.data.header.status==1000){
@@ -281,7 +281,7 @@
   	},
   	change5(e){
 		this.list[this.index].birthTime=e
-  		console.log(e)
+		console.log(this.list[this.index].birthTime)
   		this.changeflag=true
   	},
   	change6(e){
