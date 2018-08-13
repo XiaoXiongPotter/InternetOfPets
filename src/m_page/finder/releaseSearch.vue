@@ -6,16 +6,10 @@
   </div>
    	<div class="petphoto">
  		<p>宠物照片</p>
- 		 <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :limit='1'
-              list-type='picture-card'
-              :file-list="fileList"
-              :auto-upload="false"
-              :on-change='change'
-          >
-          <i class="el-icon-plus"></i>
-        </el-upload>
+ 		<div class="head_img">
+       	<img :src="imgflag?avatar:avatar1"  @click.stop="uploadHeadImg" style="margin-left:10px;margin-top: 10px;"/>
+    	 </div>
+     	<input type="file" accept="image/*" @change="handleFile" class="hiddenInput"/>
  	</div>
  <div class="main" ref='wrapper'>
  	<div>
@@ -64,38 +58,41 @@ import IScroll from 'iscroll/build/iscroll-probe'
 					money:'',
 					introduction:'',
 					losttime:'',
-					fileList:[],
-					show:false
+					avatar:'',
+					avatar1:require('../../image/addpet.png'),
+					imgflag:false
 				}
 			},
 			mounted(){
 	 	  this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
           click: true,
-          preventDefault: false,
-          tap:true,
-          preventDefaultException: {tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/}
+          preventDefault: false
         })
        })     
   },
 		methods:{
+		  	  	    // 打开图片上传
+    uploadHeadImg: function () {
+       	this.$el.querySelector('.hiddenInput').click()
+    },
+    // 将头像显示
+    handleFile: function (e) {
+      this.imgflag=true
+      let $target = e.target || e.srcElement
+      let file = $target.files[0]
+    var reader = new FileReader()
+    reader.readAsDataURL(file)
+    this.changeflag=true
+    reader.onload = (data) => { 
+        let res = data.target || data.srcElement
+        this.avatar = res.result
+        sessionStorage.setItem('base',data.target.result.split(',')[1])
+    }
+    },
   		back(){
   		this.$router.replace({ path: '/mypet' })
-  		},
- 		change(file, fileList){
-            console.log(fileList)
-//          if(fileList.length==1){
-//              clearInterval(this.time)
-//                  this.show=true              
-//          }
-        var reader = new FileReader();
-        reader.readAsDataURL(file.raw);    
-        reader.onload = function(e){ 
-        this.result // 这个就是base64编码了
-        this.src=this.result.split(',')[1]
-        sessionStorage.setItem('base',this.src)
   		}
-        }
   		}
 		}
 </script>
@@ -143,35 +140,15 @@ import IScroll from 'iscroll/build/iscroll-probe'
 .synopsis .el-input__inner{
 	height: 80px;
 }
-.el-upload--picture-card{
-    width: 100px;
-    height: 100px;
-    line-height: 100px;
-    position: relative;
-    display: block;
-	margin-left: 10px;
-}
-.el-upload--picture-card i{
-   position: absolute;
-   left: 37%;
-   top: 35%;
-  }
-  .el-upload-list--picture-card .el-upload-list__item{
-    display: block;
-    border: none;
-    width: 100px;
-    height: 100px;
-    margin-left: 10px;
-}
-.el-upload-list--picture-card .el-upload-list__item img{
-    width: 100px;
-    height: 100px;
-}
-.disabled .el-upload--picture-card{
-    display: none;
-}
 </style>
 <style scoped>
+.head_img img{
+  width:60px;
+  height:60px;
+}
+.hiddenInput{
+  display: none;
+}
 .header .imgBox {
   width: 100px;
   margin: 0 auto;
@@ -183,10 +160,10 @@ import IScroll from 'iscroll/build/iscroll-probe'
 .header{
 	display: flex;
 	width: 100%;
-  background: #fff;
-  color: #0ca8e3;
-  height: 40px;
-  line-height: 40px;
+  	background: #fff;
+  	color: #0ca8e3;
+  	height: 40px;
+  	line-height: 40px;
 	position: relative;
 }
 .back{
@@ -197,7 +174,7 @@ import IScroll from 'iscroll/build/iscroll-probe'
 }
 .main{
 	position: absolute;
-	top: 170px;
+	top: 150px;
 	bottom: 0;
 	width: 100%;
 	overflow: hidden;
