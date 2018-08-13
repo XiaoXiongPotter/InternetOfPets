@@ -23,7 +23,7 @@ module.exports = {
                 }
             },
             '/ClientServerApi': {
-                target: 'http://192.168.0.45:9860/ClientServer',//设置你调用的接口域名和端口号 别忘了加http
+                target: 'http://petnet.imwork.net:9860/ClientServer',//设置你调用的接口域名和端口号 别忘了加http
                 changeOrigin: true,
                 pathRewrite: {
                     '^/ClientServerApi': '/'
