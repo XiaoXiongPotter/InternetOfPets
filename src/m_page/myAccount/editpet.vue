@@ -95,6 +95,7 @@
 	import IScroll from 'iscroll/build/iscroll-probe'
 	import {getPetDevices} from'../../deviceApi/index.js'
 	import {updatePet} from '../../ClientServerApi/index.js'
+	import {deletepet} from '../../ClientServerApi/index.js'
 	import store from "../../store/store.js";
 	import axios from "axios";
 	import Qs from "qs";
@@ -153,7 +154,8 @@
 			this.weight=this.list[this.index].weight
 			this.birthday=this.list[this.index].birthTime
 			this.haircolor=this.list[this.index].color
-			this.character=this.list[this.index].character  
+			this.character=this.list[this.index].character
+			this.fileList[0].url=this.list[this.index].portrait
        })     
   },
   methods:{
@@ -188,9 +190,9 @@
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-       }).then(() => {
-       		sessionStorage.removeItem('base')
+        }).then(() => {
 			this.$emit('react')
+			sessionStorage.removeItem('base')
         }).catch(() => {          
         });
   		}else{
@@ -199,7 +201,7 @@
   		
   	},
   	save(){
-		var data = Qs.stringify({
+		var params = Qs.stringify({
         	name:this.list[this.index].name,
 			petId:this.id,
 			height:this.list[this.index].height,
@@ -211,14 +213,7 @@
 			gender:this.list[this.index].gender,
 			character:this.list[this.index].character
      })
-		axios({
-        method: "post",
-        url: "/ClientServerApi/pets/info/updatePet",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        data
-      }).then(res =>{
+		updatePet(params).then(res =>{
       	console.log(res)
       	if(res.data.header.status==1000){
       	sessionStorage.removeItem('base')
@@ -246,17 +241,10 @@
             type: 'success',
             message: '删除成功!'
           });
-       var data = Qs.stringify({
+       var params = Qs.stringify({
 			petId:this.id
       	})
-		axios({
-        method: "post",
-        url: "/ClientServerApi/pets/info/deletePet",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        data
-   }).then(res => {
+	deletepet(params).then(res => {
 		if(res.data.header.status==1000){
           this.showflag=false
 			this.$emit('remove',this.index)

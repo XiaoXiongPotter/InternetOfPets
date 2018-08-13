@@ -79,6 +79,7 @@
     import IScroll from 'iscroll/build/iscroll-probe'
     import axios from "axios";
     import {getpet} from '../../ClientServerApi/index.js'
+    import {addPet} from '../../ClientServerApi/index.js'
     import Qs from "qs";
     export default {
         name:'addpet',
@@ -139,7 +140,7 @@
             }
         },
         add(){
-        var data = Qs.stringify({
+        var params = Qs.stringify({
                 name:this.petname,
                 height:this.height,
                 weight:this.weight,
@@ -150,14 +151,7 @@
                 portrait:sessionStorage.base,
                 character:this.character
       })
-        axios({
-        method: "post",
-        url: "/ClientServerApi/pets/info/addPet",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        data
-      }).then(res =>{
+      addPet(params).then(res =>{
           console.log(res)
           if(res.data.header.status==1000){
               sessionStorage.removeItem('base')

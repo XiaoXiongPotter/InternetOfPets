@@ -63,12 +63,17 @@
   			this.flag4=false
   		}
 		if(this.flag==false&&this.flag2==false&&this.flag3==false&&this.flag4==false){
-			let params = {
+			let params = Qs.stringify({
 				oldPassword:this.oldpassword,
 				newPassword:this.newpassword
-			}
+			})
 			updateUserInfo(params).then(res=> {
 					console.log(res)
+					if(res.data.header.status==1000){
+						this.$router.replace({ path: '/myAccount' })
+					}else{
+						this.flag1=true
+					}
 				}
 			).catch(error => {
 				console.log(error)

@@ -7,6 +7,10 @@ export const getpet = () => {
 export const deletepet = (params) => {
 	return http.fetchPost('/ClientServerApi/pets/info/deletePet',params)
 }
+//添加宠物
+export const addPet = (params) => {
+	return http.fetchPost('/ClientServerApi/pets/info/addPet',params)
+}
 //修改宠物
 export const updatePet = (params) => {
 	return http.fetchPost('/ClientServerApi/pets/info/updatePet',params)

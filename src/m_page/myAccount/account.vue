@@ -81,6 +81,7 @@ import userInformation from '../myAccount/userInformation'
 import {logout} from '../../api/index.js'
 import {updateUserInfo} from '../../api/index.js'
 import {getLoginUser} from '../../api/index.js'
+import Qs from "qs";
 export default {
   name: "account",
   data(){
@@ -95,7 +96,7 @@ export default {
   		flag:true,
   		user:'',
   		showto:false,
-  		fileList:[{'url':require('../../image/man.jpg')}]
+  		fileList:[]
   	}
   },
     beforeUpdate(){
@@ -108,9 +109,6 @@ export default {
           	this.loginsuccess=true
           	this.loginshowflag=false
           }
-          if(this.flag==false){
-          	this.$refs.inp.focus()
-         }
           if(this.fileList.length>0){
 				this.showto=true
 			}
@@ -120,8 +118,9 @@ export default {
   mounted(){
   	     getLoginUser().then(res => {
           	console.log(res.data)
-          	this.message[0].username=res.data.username
-          	this.message[0].mobile=res.data.mobile
+          	this.message[0].username=res.data.data.username
+          	this.message[0].mobile=res.data.data.mobile
+          	this.fileList.push({'url':res.data.data.photoUrl})
           }).catch(error => {
           	console.log(error)
           })
@@ -141,10 +140,12 @@ export default {
         this.src=this.result.split(',')[1]
         sessionStorage.setItem('base',this.src)
     }
-    let params = {picImg:sessionStorage.base}
+    let params = Qs.stringify({picImg:sessionStorage.base})
     updateUserInfo(params).then(res => {
+    	if(res.data.header.status==1000){
+    		sessionStorage.removeItem('base')
+    	}
     	console.log(res)
-//  	this,fileList.push({'url':this.picImg})
     }).catch(error=>{
     	console.log(error)
     })
@@ -160,12 +161,18 @@ export default {
     	},
   	edit(){
   		this.flag=false
-  		this.user=this.message[0].user
+  		this.user=this.message[0].username
   	},
   	input(){
   		this.flag=true
   		if(this.user!=this.message[0].user){
-  			this.message[0].user=this.user
+  			this.message[0].username=this.user
+  			 let params = Qs.stringify({nickname:this.message[0].username})
+   		 	updateUserInfo(params).then(res => {
+    		console.log(res)
+    		}).catch(error=>{
+    		console.log(error)
+    		})
   		}
   		},
   	mypet(){
