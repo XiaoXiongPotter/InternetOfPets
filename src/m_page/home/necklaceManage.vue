@@ -24,34 +24,14 @@
     </div>
     <div class="btnGroup">
         <router-link class="btn" to='/changepet'>更改绑定宠物</router-link>
-         <router-link class="btn" to=''>发布协寻信息</router-link>
        <button class="btn">设备解绑</button>
     </div>
 </div>
 </template>
 <script>
 import headerTop from "../../components/header";
-import Qs from "qs";
-import { getDevicesInfo } from "../../deviceApi/index.js";
 export default {
   name: "necklaceManage",
-  data() {
-    return {
-      deviceInfo:''
-    };
-  },
-  created() {
-    let params = Qs.stringify({
-     deviceCode: this.$route.query.deviceCode
-    });
-    console.log(params);
-    getDevicesInfo(params)
-      .then(res => {
-       this.deviceInfo = res
-        console.log(res.data);
-      })
-      .catch(err => {});
-  },
   components: {
     headerTop
   }
@@ -77,18 +57,18 @@ img {
   position: relative;
   top: -4px;
 }
-.device-info li {
-  padding: 10px;
+.device-info li{
+  padding:10px;
 }
-.device-info span {
+.device-info span{
   font-size: 14px;
-  color: #0ca8e3;
+  color:#0ca8e3
 }
-.device-info p {
-  color: #666;
-  margin-top: 10px;
+.device-info p{
+  color:#666;
+  margin-top:10px;
 }
-.btnGroup .btn {
+.btnGroup .btn{
   display: block;
   width: 80%;
   margin: 0 auto;
@@ -98,8 +78,9 @@ img {
   color: #fff;
   font-size: 16px;
   border-radius: 50px;
-  padding: 10px;
+  padding:10px;
   text-align: center;
   box-sizing: border-box;
 }
+
 </style>
