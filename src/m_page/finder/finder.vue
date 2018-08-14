@@ -13,17 +13,17 @@
 		</div>
 		<div class="main-content" ref="wrapper">
 			<ul>
-				<li v-for="(item,index) in list" :key='index'>
-					<img :src='item.img'>
+				<li v-for="(item,index) in list" :key='index' @click="inquire(index)">
+					<img :src='item[index].portrait'>
 					<div class="message">
-						<p class="petname">{{item.petname}}</p>
-						<span>{{item.petvariety}}</span>,<span>{{item.time}}</span>
-						<p class="place">{{item.place}}</p>
+						<p class="petname">{{item[index].petName}}</p>
+						<span>{{item[index].loseTime}}</span>
+						<p class="place">{{item[index].lostPlace}}</p>
 					</div>
 					<div class="reward">
 						<div class="reward-title"><span>赏金</span></div>
-						<p>{{item.money}}</p>
-						<div class="reward-btn"><el-button size="mini" style="color: #FF8C00;padding: 3px 3px;position: absolute;left: 15%;">联系主人</el-button></div>
+						<p>￥{{item[index].bounty}}</p>
+						<div class="reward-btn"><el-button size="mini" style="color: #FF8C00;padding: 3px 3px;position: absolute;left: 15%;"><a href="tel:item[index].mobile">联系主人</a></el-button></div>
 					</div>
 				</li>
 			</ul>
@@ -41,24 +41,7 @@
 		name: "finder",
 		data(){
 			return{
-				list:[
-				{
-				 'img':require('../../image/pet1.jpg'),
-				 'petname':'二哈',
-				 'petvariety':'哈士奇',
-				 'time':'2018-06-03',
-				 'place':'东莞市南城汽车站附近走失',
-				 'money':'￥500'
-				},
-				{
-				 'img':require('../../image/pet2.jpg'),
-				 'petname':'蝴蝶',
-				 'petvariety':'蝴蝶犬',
-				 'time':'2018-06-10',
-				 'place':'东莞市南城汽车站附近走失',
-				 'money':'￥500'
-				}
-				],
+				list:[],
 				src1:require('../../image/icon-up.png'),
 				srcchange1:false,
 				src2:require('../../image/icon-up.png'),
@@ -76,15 +59,16 @@
           	this.loginsuccess=true
           	this.loginshowflag=false
          }
-//     let params = Qs.stringify({
-//     	lat:'',
-//     	lon:''
-//     })
-//     nearSearch(params).then(res => {
-//     	console.log(res)
-//     }).catch(error => {
-//     	console.log(error)
-//     })
+       let params = Qs.stringify({
+       	lat:31.1882600000,
+		lon:121.4368700000
+       })
+       nearSearch(params).then(res => {
+       	console.log(res)
+       	this.list.push(res.data.data)
+       }).catch(error => {
+       	console.log(error)
+       })
        })  
   },
 		methods:{
@@ -103,6 +87,20 @@
 				}else{
 					this.src2=require('../../image/icon-up.png')
 				}
+			},
+			inquire(index){
+//				console.log(this.list[index][index])
+				this.$router.push({ name: "petDetails",query:{
+					featurePhoto:this.list[index][index].featurePhoto,
+					petName:this.list[index][index].petName,
+					petType:this.list[index][index].petType,
+					bounty:this.list[index][index].bounty,
+					loseTime:this.list[index][index].loseTime,
+					lostPlace:this.list[index][index].lostPlace,
+					content:this.list[index][index].content,
+					mobile:this.list[index][index].mobile,
+					email:this.list[index][index].email
+				} })
 			}
 		},
 		 components: {
@@ -111,6 +109,9 @@
 	}
 </script>
 <style scoped>
+a{
+	color: #FF8C00;
+}
 .header .imgBox {
   width: 100px;
   margin: 0 auto;

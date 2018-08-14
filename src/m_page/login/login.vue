@@ -57,6 +57,7 @@ import Qs from "qs";
 import axios from "axios";
 import footernav from "../../components/footernav";
 export default {
+
     name: "login",
     data() {
         return {
@@ -90,6 +91,7 @@ export default {
             })
             .catch(error => {
                 console.log(error);
+
             });
     },
     mounted() {

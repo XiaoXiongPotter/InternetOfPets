@@ -88,7 +88,7 @@
 	import {updatePet} from '../../ClientServerApi/index.js'
 	import {deletepet} from '../../ClientServerApi/index.js'
 	import store from "../../store/store.js";
-	import axios from "axios";
+	import Bus from '../../components/bus.js'
 	import Qs from "qs";
 	export default{
 		name: "editpet",
@@ -211,6 +211,8 @@
   	},
   	search(){
   		this.$router.replace({ path: '/releaseSearch' })
+  		Bus.$emit('id', this.id)
+  		Bus.$emit('petname', this.petname)
   	},
   	remove(){
 		  this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
@@ -282,7 +284,7 @@
 }
 .petmessage .el-input__inner{
 	padding: 0 0;
-	width: 90px;
+	width: 100px;
 	height: 30px;
 	line-height: 30px;
 	border-top-color: white;
@@ -295,7 +297,7 @@
 	border-left-color: white;
 }
 .editpet .el-date-editor.el-input, .el-date-editor.el-input__inner{
-	width: 90px;
+	width: 100px;
 }
 .editpet .el-input__icon{
 	display: none;
