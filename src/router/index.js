@@ -22,7 +22,6 @@ import necklaceManage from '../m_page/home/necklaceManage.vue'
 import changePet from "../components/changepet.vue"
 import editpet from '../m_page/myAccount/editpet.vue'
 import changepassword from '../m_page/myAccount/changepassword.vue'
-import nextchangepassword from '../m_page/myAccount/nextchangepassword.vue'
 import commonproblem from '../m_page/myAccount/commonproblem.vue'
 import loginauthorization from '../m_page/myAccount/loginauthorization.vue'
 import binddevice from '../components/binddevice.vue'
@@ -167,11 +166,6 @@ const router = new Router({
       path: '/changepassword',
       name: 'changepassword',
       component: changepassword
-    },
-     {
-      path: '/nextchangepassword',
-      name: 'nextchangepassword',
-      component: nextchangepassword
     },
     //编辑宠物信息
      {

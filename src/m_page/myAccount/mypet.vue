@@ -1,22 +1,22 @@
 <template>
 <div class="mypet">
  <div class="header">
- 	<img src="../../image/back.png" class="back" @click="back"/>
+     <img src="../../image/back.png" class="back" @click="back"/>
     <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
     <img src="../../image/add.png" class="add" @click="addpet"/>
     <i v-show="showflag"></i>
     <p v-show="showflag" @click="addpetto">添加宠物</p>
  </div>
  <div class="main" ref='wrapper'>
- 	<ul>
- 	<li v-for="(item,index) in petlist[0]" :key='index' class="petlist" @click="petinfos(index)">
- 		<div class="petimg"><img :src="item.portrait"/></div>
- 		<div class="petmsg">
- 		<p class="petname">{{item.name}}</p>
- 		<binddevice :id='item.id'></binddevice>
- 		</div>
- 	</li>
- 	</ul>
+     <ul>
+     <li v-for="(item,index) in petlist[0]" :key='index' class="petlist" @click="petinfos(index)">
+         <div class="petimg"><img :src="item.portrait"/></div>
+         <div class="petmsg">
+         <p class="petname">{{item.name}}</p>
+         <binddevice :id='item.id'></binddevice>
+         </div>
+     </li>
+     </ul>
  </div>
  <editpet ref='banner' :list='petlist[0]' :index='index' @remove='remove' v-if='petlist[0]' @react='react'></editpet>
   </div>
@@ -33,63 +33,63 @@ export default {
   name: "mypet",
   inject:['reload'],
   data(){
-  	return{
-  		petlist:[],
-  		index:'',
-  		showflag:false,
-  		binddevice:[]
-  	}
+      return{
+          petlist:[],
+          index:'',
+          showflag:false,
+          binddevice:[]
+      }
   },
   beforeUpdate(){
-  	  	 this.$nextTick(() => {
+             this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
           click: true
         })
-		 })
-  	  	 },
+         })
+             },
   created(){
           getpet().then(res =>{
-          	console.log(res)
-          	if(res.data.header.status==1000){
-          		this.petlist.push(res.data.data)
-          	}
+              console.log(res)
+              if(res.data.header.status==1000){
+                  this.petlist.push(res.data.data)
+              }
           }).catch(error => {
-          	console.log(error)
+              console.log(error)
           })
  },
   methods:{
-  	back(){
-  		this.$router.replace({ path: '/myAccount' })
-  	},
-	react(){
-		this.reload()
-	},
-  	petinfos(index){
-  		this.index=index
-		this.$refs.banner.show()
-  	},
-  	addpet(){
-		this.showflag=!this.showflag
-  	},
-  	addpetto(){
+      back(){
+          this.$router.replace({ path: '/myAccount' })
+      },
+    react(){
+        this.reload()
+    },
+      petinfos(index){
+          this.index=index
+        this.$refs.banner.show()
+      },
+      addpet(){
+        this.showflag=!this.showflag
+      },
+      addpetto(){
         this.$router.replace({ path: '/addpet' })
-  	},
-  	remove(index){
-  		this.petlist[0].splice(index,1)
-  		 getpet().then(res =>{
-          	console.log(res)
-          	if(res.data.header.status==1000){
-          		this.petlist.push(res.data.data)
-          	}
+      },
+      remove(index){
+          this.petlist[0].splice(index,1)
+           getpet().then(res =>{
+              console.log(res)
+              if(res.data.header.status==1000){
+                  this.petlist.push(res.data.data)
+              }
           }).catch(error => {
-          	console.log(error)
+              console.log(error)
           })
-  	}
+      }
   },
-  	components: {
-   		editpet,
-   		binddevice
-  	}
+      components: {
+           editpet,
+           binddevice
+      }
 };
 </script>
 <style scoped>
@@ -102,16 +102,16 @@ export default {
   vertical-align: middle;
 }
 .header{
-	display: flex;
-	position: relative;
-	border-bottom: solid 1px #DCDCDC;
-	width: 100%;
- 	background: #fff;
-  	height: 40px;
-  	line-height: 40px;
+    display: flex;
+    position: relative;
+    border-bottom: solid 1px #DCDCDC;
+    width: 100%;
+     background: #fff;
+      height: 40px;
+      line-height: 40px;
 }
 .header i{
-	width: 0;
+    width: 0;
     height: 0;
     border-bottom: 20px solid black;
     border-left: 20px solid transparent;
@@ -122,65 +122,65 @@ export default {
     
 }
 .header p{
-	z-index: 10;
-	background-color: black;
-	color: white;
-	font-size: 13px;
-	line-height: 30px;
-	width: 80px;
-	text-align: center;
-	height: 30px;
-	position: absolute;
-	top: 42px;
-	right: 5px;
+    z-index: 10;
+    background-color: black;
+    color: white;
+    font-size: 13px;
+    line-height: 30px;
+    width: 80px;
+    text-align: center;
+    height: 30px;
+    position: absolute;
+    top: 42px;
+    right: 5px;
 }
 .back{
-	width: 22px;
-	height: 22px;
-	position: absolute;
-	top: 18%;
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    top: 18%;
 }
 .add{
-	width: 22px;
-	height: 22px;
-	position: absolute;
-	top: 18%;
-	right: 0;
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    top: 18%;
+    right: 0;
 }
 .main{
-	position: absolute;
-	overflow: hidden;
-	width: 100%;
-	max-width: 720px;
-	top: 41px;
-	bottom: 0px;
-	touch-action: none;
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    max-width: 720px;
+    top: 41px;
+    bottom: 0px;
+    touch-action: none;
 }
 .petlist{
-	display: flex;
-	border-bottom: solid 1px #DCDCDC;
+    display: flex;
+    border-bottom: solid 1px #DCDCDC;
 }
 .petimg{
-	flex: 1;
+    flex: 1;
 }
 .petimg img{
-	width: 70px;
-	height: 70px;
-	padding: 15px 10px;
+    width: 70px;
+    height: 70px;
+    padding: 15px 10px;
 }
 .petmsg{
-	flex: 2;
-	padding: 15px 0px;
+    flex: 2;
+    padding: 15px 0px;
 }
 .petname{
-	font-family: "微软雅黑";
-	font-size: 20px;
-	font-weight: bold;
-	color: #4169E1;
+    font-family: "微软雅黑";
+    font-size: 20px;
+    font-weight: bold;
+    color: #4169E1;
 }
 .petdevice{
-	padding-top: 30px;
-	font-family: "微软雅黑";
-	font-size: 14px;
+    padding-top: 30px;
+    font-family: "微软雅黑";
+    font-size: 14px;
 }
 </style>
