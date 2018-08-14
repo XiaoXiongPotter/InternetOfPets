@@ -36,7 +36,7 @@
 <script type="text/ecmascript-6">
 export default {
   name: "footernav",
-   props:['loginsuccess','loginshowflag']
+  props:['loginsuccess','loginshowflag']
 };
 </script>
 <style >

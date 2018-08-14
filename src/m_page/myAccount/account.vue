@@ -2,29 +2,29 @@
 	<div class="account" ref='banner'>
 	<div class="header">
       <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
-  </div>
-    	<div class="main-header">
-			<span>My Account</span>
-		</div>
-			<div class="head-img">
-			<el-upload
-  			action="https://jsonplaceholder.typicode.com/posts/"
-  			:class="{disabled:showto}"
-  			:limit='1'
-  			list-type='picture-card'
-  			:file-list="fileList"
-  			:auto-upload="false"
-  			:on-change='change'
-  			:on-remove='remove'
-  			:before-remove='beforeremove'
-  			>
+  	</div>
+	<div class="main-header">
+		<span>My Account</span>
+	</div>
+	<div class="head-img">
+		<el-upload
+		action="https://jsonplaceholder.typicode.com/posts/"
+		:class="{disabled:showto}"
+		:limit='1'
+		list-type='picture-card'
+		:file-list="fileList"
+		:auto-upload="false"
+		:on-change='change'
+		:on-remove='remove'
+		:before-remove='beforeremove'
+		>
   		<i class="el-icon-plus"></i>
 		</el-upload>
-			</div>
-		<div class="main-headportrait" v-for="(item,index) in message" :key='index'>
-			<div class="user"><span v-if="flag">{{item.username}}<img src="../../image/change.png" @click="edit"></span><el-input v-model='user' placeholder='输入昵称' v-else @blur='input' ref='inp'></el-input></div>
-			<p>{{item.mobile}}</p>
-		</div>
+	</div>
+	<div class="main-headportrait" v-for="(item,index) in message" :key='index'>
+		<div class="user"><span v-if="flag">{{item.username}}<img src="../../image/change.png" @click="edit"></span><el-input v-model='user' placeholder='输入昵称' v-else @blur='input' ref='inp'></el-input></div>
+		<p>{{item.mobile}}</p>
+	</div>
   <div ref="wrapper" class='main'>
   	<div>
 		<div class="main-content">
