@@ -15,7 +15,7 @@
  	<div>
  	<div class="losepet">
  	<p>走失宠物</p>
- 	<el-input v-model="petname"></el-input>
+ 	<el-input v-model="petname" :disabled="true"></el-input>
  	</div>
  	<div class="getmoney">
  	<p>赏金(￥)</p>
@@ -30,8 +30,8 @@
  		   <div class="block">
                 <el-date-picker
                       v-model="losttime"
-                      type="date"
-                      value-format="yyyy-MM-dd"
+                      type="datetime"
+                      value-format="yyyy-MM-dd HH:mm:ss"
                       placeholder="选择日期">
                 </el-date-picker>
           </div>
@@ -58,6 +58,7 @@
 <script>
 import IScroll from 'iscroll/build/iscroll-probe'
 import {addPublish} from '../../ClientServerApi/index.js'
+import Bus from '../../components/bus.js'
 import Qs from "qs";
 	export default {
 			name:'releaseSearch',
@@ -73,7 +74,8 @@ import Qs from "qs";
 					imgflag:false,
 					mobile:'',
 					email:'',
-					loseplace:''
+					loseplace:'',
+					id:''
 				}
 			},
 			mounted(){
@@ -81,7 +83,19 @@ import Qs from "qs";
           this.Scroll = new IScroll(this.$refs.wrapper, {
           click: true
         })
-       })     
+          this.petname=sessionStorage.petname
+          this.id=sessionStorage.id
+     })	 	 
+  },
+  created(){
+  		Bus.$on('id',(data) => {
+	 	  	this.id=data
+	 	  	sessionStorage.setItem('id',this.id)
+	 	  })
+  		Bus.$on('petname',(data) => {
+  			this.petname=data
+  			sessionStorage.setItem('petname',this.petname)
+	 	  })
   },
 		methods:{
 		  	  	    // 打开图片上传
@@ -104,49 +118,46 @@ import Qs from "qs";
     },
   		back(){
   		this.$router.replace({ path: '/mypet' })
+  		sessionStorage.removeItem('petname')
+  		sessionStorage.removeItem('id')
+  		sessionStorage.removeItem('base')
   		},
   		release(){
-//			let params = Qs.stringify({
-//				content:this.introduction,
-//				lat:'',
-//				lon:'',
-//				mobile:this.mobile,
-//				email:this.email,
-//				loseTime:this.losttime,
-//				lostPlace:this.loseplace,
-//				bounty:this.money
-//				featurePhoto:sessionStorage.base
-//			})
-//			addPublish(params).then(res => {
-//				console.log(res)
-//			}).catch(error => {
-//				console.log(error)
-//			})
-
-	
-            navigator.geolocation.getCurrentPosition(function (position){  
-            var longitude = position.coords.longitude;  
-            var latitude = position.coords.latitude;  
-            console.log(longitude)
-            console.log(latitude)
-            });
-
-		
+			let params = Qs.stringify({
+				content:this.introduction,
+				lat:31.1882600000,
+				lon:121.4368700000,
+				mobile:this.mobile,
+				email:this.email,
+				loseTime:this.losttime,
+				lostPlace:this.loseplace,
+				bounty:this.money,
+				featurePhoto:sessionStorage.base,
+				petId:sessionStorage.id
+			})
+			addPublish(params).then(res => {
+				console.log(res)
+				if(res.data.header.status==1000){
+					this.$router.replace({ path: '/finder' })
+					sessionStorage.removeItem('petname')
+  					sessionStorage.removeItem('id')
+  					sessionStorage.removeItem('base')
+				}
+			}).catch(error => {
+				console.log(error)
+			})		
   			}
   		}
 		}
 </script>
 <style>
-.losepet .el-input__inner{
+.losepet .el-input.is-disabled .el-input__inner{
 	border-top-color: white;
 	border-right-color: white;
 	border-left-color: white;
+	color: #0ca8e3;
 }
-.losepet .el-input__inner:hover{
-	border-top-color: white;
-	border-right-color: white;
-	border-left-color: white;
-}
+
 .getmoney .el-input__inner{
 	border-top-color: white;
 	border-right-color: white;

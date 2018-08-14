@@ -127,7 +127,7 @@ export default {
           if (res.data.header.status == 1000) {
             sessionStorage.removeItem("imgcode");
             this.loginsuccess = true;
-            this.$router.push({ name: "account",query:{username:res.data.data.username,mobile:res.data.data.mobile} });
+            this.$router.push({ name: "account"});
             sessionStorage.setItem("login", "1");
             this.$store.commit("set_token", res.headers["x-auth-token"]);
               

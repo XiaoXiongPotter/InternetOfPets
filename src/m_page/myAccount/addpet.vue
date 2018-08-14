@@ -147,14 +147,14 @@
 </script>
 <style>
 .pet .el-date-editor.el-input, .el-date-editor.el-input__inner{
-    width: 90px;
+    width: 100px;
 }
 .pet .el-input__icon{
     display: none;
 }
 .pet .el-input__inner{
     padding: 0 0;
-    width: 90px;
+    width: 100px;
     height: 30px;
     line-height: 30px;
     border-top-color: white;

@@ -30,6 +30,7 @@ import guide from '../m_page/finder/guide.vue'
 import qrPindFet from '../m_page/finder/qrFindPet.vue'
 import qrFindError from '../m_page/finder/qrFindError.vue'
 import findPetInfo from '../m_page/finder/findPetInfo.vue'
+import petDetails from '../m_page/finder/petDetails.vue'
 import store from '../store/store.js'
 //import collor from '../m_page/home/collor/necklace_map.html'
 Vue.use(Router)
@@ -179,6 +180,7 @@ const router = new Router({
       name: 'commonproblem',
       component: commonproblem
     },
+    //登陆授权
      {
       path: '/loginauthorization',
       name: 'loginauthorization',
@@ -213,6 +215,12 @@ const router = new Router({
       path: '/findPetInfo',
       name: 'findPetInfo',
       component: findPetInfo
+    },
+    //协寻详细信息
+    {
+      path: '/petDetails',
+      name: 'petDetails',
+      component: petDetails
     }
   ]
 })
