@@ -38,10 +38,18 @@
  	</div>
  	 	<div class="place">
  		<p>走失地点</p>
- 		<el-input v-model="losttime" placeholder="宝贝在哪里走丢的呢?"></el-input>
+ 		<el-input v-model="loseplace" placeholder="宝贝在哪里走丢的呢?"></el-input>
+ 	</div>
+ 		<div class="mobile">
+ 		<p>电话</p>
+ 		<el-input v-model="mobile"></el-input>
+ 	</div>
+ 		<div class="email">
+ 		<p>邮箱</p>
+ 		<el-input v-model="email"></el-input>
  	</div>
  	<div class="release-btn">
- 		 	<el-button type="primary" round style="margin: auto;display: block;margin-top: 15px;">确认发布</el-button>
+ 		 	<el-button type="primary" round style="margin: auto;display: block;margin-top: 15px;" @click='release'>确认发布</el-button>
  	</div>
  	</div>
  </div>
@@ -49,6 +57,8 @@
 </template>
 <script>
 import IScroll from 'iscroll/build/iscroll-probe'
+import {addPublish} from '../../ClientServerApi/index.js'
+import Qs from "qs";
 	export default {
 			name:'releaseSearch',
 			data(){
@@ -60,14 +70,16 @@ import IScroll from 'iscroll/build/iscroll-probe'
 					losttime:'',
 					avatar:'',
 					avatar1:require('../../image/addpet.png'),
-					imgflag:false
+					imgflag:false,
+					mobile:'',
+					email:'',
+					loseplace:''
 				}
 			},
 			mounted(){
 	 	  this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true,
-          preventDefault: false
+          click: true
         })
        })     
   },
@@ -92,6 +104,40 @@ import IScroll from 'iscroll/build/iscroll-probe'
     },
   		back(){
   		this.$router.replace({ path: '/mypet' })
+  		},
+  		release(){
+//			let params = Qs.stringify({
+//				content:this.introduction,
+//				lat:'',
+//				lon:'',
+//				mobile:this.mobile,
+//				email:this.email,
+//				loseTime:this.losttime,
+//				lostPlace:this.loseplace,
+//				bounty:this.money
+//				featurePhoto:sessionStorage.base
+//			})
+//			addPublish(params).then(res => {
+//				console.log(res)
+//			}).catch(error => {
+//				console.log(error)
+//			})
+		if(navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+        function (position) {  
+            var longitude = position.coords.longitude;  
+            var latitude = position.coords.latitude;  
+            console.log(longitude)
+            console.log(latitude)
+            },
+            function (e) {
+             var msg = e.code;
+             var dd = e.message;
+             console.log(msg)
+             console.log(dd)
+        }
+      ) 
+   }
   		}
   		}
 		}
@@ -133,6 +179,26 @@ import IScroll from 'iscroll/build/iscroll-probe'
 	border-left-color: white;
 }
 .place .el-input__inner:hover{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.mobile .el-input__inner{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.mobile .el-input__inner:hover{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.email .el-input__inner{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.email .el-input__inner:hover{
 	border-top-color: white;
 	border-right-color: white;
 	border-left-color: white;
@@ -204,6 +270,12 @@ import IScroll from 'iscroll/build/iscroll-probe'
 	font-size: 13px;
 }
 .place{
+	margin-top: 15px;
+}
+.mobile{
+	margin-top: 15px;
+}
+.email{
 	margin-top: 15px;
 }
 </style>

@@ -94,9 +94,7 @@
          mounted(){
            this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true,
-          preventDefault: false,
-          preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }
+          click: true
         })
        })     
   },

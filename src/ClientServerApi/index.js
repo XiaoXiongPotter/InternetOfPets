@@ -23,3 +23,7 @@ export const nearSearch = (params) => {
 export const getPetDevices = (params) => {
 	return http.fetchPost('/ClientServerApi/devices/listByPet',params)
 }
+//发布协寻
+export const addPublish = (params) => {
+	return http.fetchPost('/ClientServerApi/pets/search/addPublish',params)
+}
