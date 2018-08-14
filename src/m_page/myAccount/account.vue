@@ -93,7 +93,8 @@ export default {
 		imgflag:false
   	}
   },
-    beforeUpdate(){
+    created() {
+	
 	 this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
           click: true
@@ -102,7 +103,8 @@ export default {
           	this.loginsuccess=true
           	this.loginshowflag=false
           }
-       })
+	   })
+	   console.log('account-token',sessionStorage.token)
 	 
   },
   mounted(){
@@ -146,7 +148,7 @@ export default {
     	if(res.data.header.status==1000){
     		sessionStorage.removeItem('base')
     	}
-    	console.log(res)
+    	//console.log(res)
     }).catch(error=>{
     	console.log(error)
     })
@@ -161,7 +163,7 @@ export default {
   			this.message[0].username=this.user
   			 let params = Qs.stringify({nickname:this.message[0].username})
    		 	updateUserInfo(params).then(res => {
-    		console.log(res)
+    		//console.log(res)
     		}).catch(error=>{
     		console.log(error)
     		})
