@@ -15,11 +15,15 @@ export const addPet = (params) => {
 export const updatePet = (params) => {
 	return http.fetchPost('/ClientServerApi/pets/info/updatePet',params)
 }
-//获取协寻列表
-export const qrMsg = (params) => {
-	return http.fetchPost('/ClientServerApi/ClientServer/qr/qrMsg',params)
+//获取附近协寻列表
+export const nearSearch = (params) => {
+	return http.fetchPost('/ClientServerApi/ClientServer/qr/nearSearch',params)
 }
 //获取宠物设备
 export const getPetDevices = (params) => {
 	return http.fetchPost('/ClientServerApi/devices/listByPet',params)
+}
+//发布协寻
+export const addPublish = (params) => {
+	return http.fetchPost('/ClientServerApi/pets/search/addPublish',params)
 }

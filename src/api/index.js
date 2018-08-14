@@ -53,5 +53,5 @@ export const updateUserInfo = (params) => {
 }
 //获取登陆后的用户信息
 export const getLoginUser = () => {
-	return http.fetchGet('/api/getLoginUser')
+	return http.fetchPost('/api/getLoginUser')
 }

@@ -26,6 +26,7 @@ import nextchangepassword from '../m_page/myAccount/nextchangepassword.vue'
 import commonproblem from '../m_page/myAccount/commonproblem.vue'
 import loginauthorization from '../m_page/myAccount/loginauthorization.vue'
 import binddevice from '../components/binddevice.vue'
+import addpet from '../m_page/myAccount/addpet.vue'
 import guide from '../m_page/finder/guide.vue'
 import store from '../store/store.js'
 //import collor from '../m_page/home/collor/necklace_map.html'
@@ -152,6 +153,11 @@ const router = new Router({
       component: registerfalse
     },
     //添加宠物
+    {
+    	path: '/addpet',
+      name: 'addpet',
+      component: addpet
+    },
      {
       path: '/changepassword',
       name: 'changepassword',
