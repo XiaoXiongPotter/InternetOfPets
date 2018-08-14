@@ -28,7 +28,6 @@ module.exports = {
                 changeOrigin: true,
                 pathRewrite: {
                     '^/ClientServerApi': '/'
-
                 }
             }   
 

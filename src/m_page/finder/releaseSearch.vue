@@ -4,6 +4,13 @@
  	<img src="../../image/back.png" class="back" @click="back"/>
       <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
   </div>
+   	<div class="petphoto">
+ 		<p>宠物照片</p>
+ 		<div class="head_img">
+       	<img :src="imgflag?avatar:avatar1"  @click.stop="uploadHeadImg" style="margin-left:10px;margin-top: 10px;"/>
+    	 </div>
+     	<input type="file" accept="image/*" @change="handleFile" class="hiddenInput"/>
+ 	</div>
  <div class="main" ref='wrapper'>
  	<div>
  	<div class="losepet">
@@ -20,18 +27,29 @@
  	</div>
  	 	<div class="losttime">
  		<p>走失时间</p>
- 		<el-input v-model="time" placeholder="请填写走失时间"></el-input>
- 	</div>
- 	<div class="petphoto">
- 		<p>宠物照片</p>
- 		<img src="../../image/addpet.png"/>
+ 		   <div class="block">
+                <el-date-picker
+                      v-model="losttime"
+                      type="date"
+                      value-format="yyyy-MM-dd"
+                      placeholder="选择日期">
+                </el-date-picker>
+          </div>
  	</div>
  	 	<div class="place">
  		<p>走失地点</p>
- 		<el-input v-model="time" placeholder="宝贝在哪里走丢的呢?"></el-input>
+ 		<el-input v-model="loseplace" placeholder="宝贝在哪里走丢的呢?"></el-input>
+ 	</div>
+ 		<div class="mobile">
+ 		<p>电话</p>
+ 		<el-input v-model="mobile"></el-input>
+ 	</div>
+ 		<div class="email">
+ 		<p>邮箱</p>
+ 		<el-input v-model="email"></el-input>
  	</div>
  	<div class="release-btn">
- 		 	<el-button type="primary" round style="margin: auto;display: block;margin-top: 15px;">确认发布</el-button>
+ 		 	<el-button type="primary" round style="margin: auto;display: block;margin-top: 15px;" @click='release'>确认发布</el-button>
  	</div>
  	</div>
  </div>
@@ -39,6 +57,8 @@
 </template>
 <script>
 import IScroll from 'iscroll/build/iscroll-probe'
+import {addPublish} from '../../ClientServerApi/index.js'
+import Qs from "qs";
 	export default {
 			name:'releaseSearch',
 			data(){
@@ -47,7 +67,13 @@ import IScroll from 'iscroll/build/iscroll-probe'
 					petname:'',
 					money:'',
 					introduction:'',
-					time:''
+					losttime:'',
+					avatar:'',
+					avatar1:require('../../image/addpet.png'),
+					imgflag:false,
+					mobile:'',
+					email:'',
+					loseplace:''
 				}
 			},
 			mounted(){
@@ -58,8 +84,60 @@ import IScroll from 'iscroll/build/iscroll-probe'
        })     
   },
 		methods:{
+		  	  	    // 打开图片上传
+    uploadHeadImg: function () {
+       	this.$el.querySelector('.hiddenInput').click()
+    },
+    // 将头像显示
+    handleFile: function (e) {
+      this.imgflag=true
+      let $target = e.target || e.srcElement
+      let file = $target.files[0]
+    var reader = new FileReader()
+    reader.readAsDataURL(file)
+    this.changeflag=true
+    reader.onload = (data) => { 
+        let res = data.target || data.srcElement
+        this.avatar = res.result
+        sessionStorage.setItem('base',data.target.result.split(',')[1])
+    }
+    },
   		back(){
   		this.$router.replace({ path: '/mypet' })
+  		},
+  		release(){
+//			let params = Qs.stringify({
+//				content:this.introduction,
+//				lat:'',
+//				lon:'',
+//				mobile:this.mobile,
+//				email:this.email,
+//				loseTime:this.losttime,
+//				lostPlace:this.loseplace,
+//				bounty:this.money
+//				featurePhoto:sessionStorage.base
+//			})
+//			addPublish(params).then(res => {
+//				console.log(res)
+//			}).catch(error => {
+//				console.log(error)
+//			})
+		if(navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+        function (position) {  
+            var longitude = position.coords.longitude;  
+            var latitude = position.coords.latitude;  
+            console.log(longitude)
+            console.log(latitude)
+            },
+            function (e) {
+             var msg = e.code;
+             var dd = e.message;
+             console.log(msg)
+             console.log(dd)
+        }
+      ) 
+   }
   		}
   		}
 		}
@@ -105,11 +183,38 @@ import IScroll from 'iscroll/build/iscroll-probe'
 	border-right-color: white;
 	border-left-color: white;
 }
+.mobile .el-input__inner{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.mobile .el-input__inner:hover{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.email .el-input__inner{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.email .el-input__inner:hover{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
 .synopsis .el-input__inner{
 	height: 80px;
 }
 </style>
 <style scoped>
+.head_img img{
+  width:60px;
+  height:60px;
+}
+.hiddenInput{
+  display: none;
+}
 .header .imgBox {
   width: 100px;
   margin: 0 auto;
@@ -121,10 +226,10 @@ import IScroll from 'iscroll/build/iscroll-probe'
 .header{
 	display: flex;
 	width: 100%;
-  background: #fff;
-  color: #0ca8e3;
-  height: 40px;
-  line-height: 40px;
+  	background: #fff;
+  	color: #0ca8e3;
+  	height: 40px;
+  	line-height: 40px;
 	position: relative;
 }
 .back{
@@ -135,7 +240,7 @@ import IScroll from 'iscroll/build/iscroll-probe'
 }
 .main{
 	position: absolute;
-	top: 40px;
+	top: 150px;
 	bottom: 0;
 	width: 100%;
 	overflow: hidden;
@@ -160,11 +265,17 @@ import IScroll from 'iscroll/build/iscroll-probe'
 .petphoto{
 	margin-top: 15px;
 }
-.petphoto img{
-	margin-left: 10px;
-	margin-top: 10px;
+.petphoto p{
+	padding-left: 10px;
+	font-size: 13px;
 }
 .place{
+	margin-top: 15px;
+}
+.mobile{
+	margin-top: 15px;
+}
+.email{
 	margin-top: 15px;
 }
 </style>

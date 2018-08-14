@@ -1,4 +1,3 @@
-
 <template>
 <div class="home">
 <v-header :go-back='false' :add-devices='true'></v-header>
@@ -25,7 +24,7 @@
                 <div class="btn_box">
                   <a class="btn caozuo" href ="../../static/page/necklace_map.html"></a>
                      <!-- <router-link class="btn caozuo" to="/deviceManage"></router-link> -->
-                    <router-link class="btn guanli" :to="{path:'/necklaceManage',query:{deviceCode:info.device.deviceCode}}"></router-link>
+                    <router-link class="btn guanli" :to="{path:'/necklaceManage',query:{deviceCode:info.device.deviceCode,binded:info.pet==null?'':info.pet.id}}"></router-link>
                 </div>
             </div>
         </li>
@@ -48,20 +47,6 @@ export default {
     return {
       necklace: require("../../image/necklace.png"),
       islogin: false,
-      // infos: [
-      //   {
-      //     type: "necklace",
-      //     touxiang: "../../image/dog-pic.jpg",
-      //     name: "大金毛",
-      //     dogType: "拉布拉多"
-      //   },
-      //   {
-      //     type: "pendant",
-      //     touxiang: "../../image/dog-pic.jpg",
-      //     name: "小金毛",
-      //     dogType: "阿拉斯加"
-      //   }
-      // ],
       infos: "",
       loginsuccess: false,
       loginshowflag: true
@@ -93,7 +78,8 @@ export default {
     infosCmputed: function(value) {
       if (value == "FEEDER") return "智能喂食器";
       if (value == "BLUETOOTH") return "蓝牙计步器";
-        if (value == "ROBOT") return "宠物机器人";
+      if (value == "ROBOT") return "宠物机器人";
+      if(value =="TAG") return "协寻二维码"
     },
     lowercase:function(value){
       return value.toLowerCase();

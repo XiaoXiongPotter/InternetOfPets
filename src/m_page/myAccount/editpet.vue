@@ -6,19 +6,10 @@
     <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
  	</div>
  	 <div class="title">
- 		<el-upload
-  			action="https://jsonplaceholder.typicode.com/posts/"
-  			:class="{disabled:showto}"
-  			:limit='1'
-  			list-type='picture-card'
-  			:file-list="fileList"
-  			:auto-upload="false"
-  			:on-change='change'
-  			:on-remove='removepic'
-  			v-if='list'
-  		>
-  		<i class="el-icon-plus"></i>
-		</el-upload>
+    	 <div class="head_img">
+       <img :src="imgflag?avatar:avatar1"  @click.stop="uploadHeadImg" style="margin: auto;display: block;"/>
+     </div>
+     <input type="file" accept="image/*" @change="handleFile" class="hiddenInput"/>
  				<p>点击头像可更换照片</p>
  			</div>
  	<div class="main" ref='wrapper'>
@@ -53,8 +44,8 @@
  					<span>出生日期</span>
  					<div class="block">
     			<el-date-picker
-      				value-format="yyyy-MM-dd"
       				type="date"
+      				value-format="yyyy-MM-dd"
       				v-model='birthday'
       				 @input='change5'
       				>
@@ -93,8 +84,9 @@
 </template>
 <script>
 	import IScroll from 'iscroll/build/iscroll-probe'
-	import {getPetDevices} from'../../deviceApi/index.js'
+	import {getPetDevices} from'../../ClientServerApi/index.js'
 	import {updatePet} from '../../ClientServerApi/index.js'
+	import {deletepet} from '../../ClientServerApi/index.js'
 	import store from "../../store/store.js";
 	import axios from "axios";
 	import Qs from "qs";
@@ -104,8 +96,8 @@
 		data(){
 			return{
 				showflag:false,
-				showto:false,
 				changeflag:false,
+				imgflag:false,
 				petname:'',
 				petbelong:'',
 				sex:'',
@@ -114,13 +106,10 @@
 				birthday:'',
 				haircolor:'',
 				character:'',
-				core:1,
-				fileList:[],
+				avatar:'',
+				avatar1:'',
 				id:'',
-				device:'',
-				editlist:'',
-				flag:true,
-				time:0
+				device:''
 			}
 		},
 		 beforeUpdate(){
@@ -130,18 +119,11 @@
           preventDefault: false,
 		  preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }
         })
-          if(this.core==1){
-				this.fileList.push({'url':this.list[this.index].portrait})
-				this.core=0
-			}
-          if(this.fileList.length>0){
-				this.showto=true
-			}
           this.id=this.list[this.index].id
-            let params = this.id
+   		 let params = Qs.stringify({petId:this.id})
 			getPetDevices(params).then(res => {
-			if(res.data.header.status==1000){
-				this.device=res.data.data[0].devName
+				if(res.data.header.status==1000){
+					this.device=res.data.data[0].device.type
 				}
      		}).catch(error => {
      		console.log(error)
@@ -153,44 +135,45 @@
 			this.weight=this.list[this.index].weight
 			this.birthday=this.list[this.index].birthTime
 			this.haircolor=this.list[this.index].color
-			this.character=this.list[this.index].character  
+			this.character=this.list[this.index].character
+			this.avatar1=this.list[this.index].portrait
        })     
   },
   methods:{
-  	change(file, fileList){
-  		clearInterval(this.time)
-    		if(fileList.length==1){
-    		this.showto=true  			
-    		}
+  	    // 打开图片上传
+    uploadHeadImg: function () {
+      this.$confirm('是否修改头像?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+      }).then(() => {
+       	this.$el.querySelector('.hiddenInput').click()
+       }).catch(() => {         
+       });
+    },
+    // 将头像显示
+    handleFile: function (e) {
+    	this.imgflag=true
+      let $target = e.target || e.srcElement
+      let file = $target.files[0]
+    var reader = new FileReader()
+    reader.readAsDataURL(file)
     this.changeflag=true
-    this.imageUrl = URL.createObjectURL(file.raw);
-    var reader = new FileReader();
-    reader.readAsDataURL(file.raw);
-    reader.onload = function(e){ 
-        this.result // 这个就是base64编码了
-        this.imageUrl = this.result;
-        this.src=this.result.split(',')[1]
-        sessionStorage.setItem('base',this.src)
+    reader.onload = (data) => { 
+        let res = data.target || data.srcElement
+        this.avatar = res.result
+        sessionStorage.setItem('base',data.target.result.split(',')[1])
     }
-  	},
-  	removepic(file, fileList){
-    		clearInterval(this.time)
-    		this.fileList.splice(0,1)
-    		if(fileList.length==0){
-    			this.time=setInterval(()=>{
-    				this.showto=false
-    			},500)
-    		}
-    	},
+    },
   	back(){
   		if(this.changeflag==true){
   		this.$confirm('是否放弃修改?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-       }).then(() => {
-       		sessionStorage.removeItem('base')
+        }).then(() => {
 			this.$emit('react')
+			sessionStorage.removeItem('base')
         }).catch(() => {          
         });
   		}else{
@@ -199,26 +182,19 @@
   		
   	},
   	save(){
-		var data = Qs.stringify({
+		var params = Qs.stringify({
         	name:this.list[this.index].name,
 			petId:this.id,
 			height:this.list[this.index].height,
 			weight:this.list[this.index].weight,
-			birthday:this.list[this.index].birthTime,
+			birthTime:this.list[this.index].birthTime,
 			petType:this.list[this.index].petType,
 			portrait:sessionStorage.base,
 			color:this.list[this.index].color,
 			gender:this.list[this.index].gender,
 			character:this.list[this.index].character
-     })
-		axios({
-        method: "post",
-        url: "/ClientServerApi/pets/info/updatePet",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        data
-      }).then(res =>{
+    })
+		updatePet(params).then(res =>{
       	console.log(res)
       	if(res.data.header.status==1000){
       	sessionStorage.removeItem('base')
@@ -246,17 +222,10 @@
             type: 'success',
             message: '删除成功!'
           });
-       var data = Qs.stringify({
+       var params = Qs.stringify({
 			petId:this.id
       	})
-		axios({
-        method: "post",
-        url: "/ClientServerApi/pets/info/deletePet",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
-        data
-   }).then(res => {
+	deletepet(params).then(res => {
 		if(res.data.header.status==1000){
           this.showflag=false
 			this.$emit('remove',this.index)
@@ -293,7 +262,6 @@
   	},
   	change5(e){
 		this.list[this.index].birthTime=e
-  		console.log(e)
   		this.changeflag=true
   	},
   	change6(e){
@@ -307,43 +275,12 @@
 	}
   }
 </script>
+
 <style>
-.el-message-box{
+ .el-message-box{
 	width: 300px;
 }
-.editpet .el-upload--picture-card{
-	border-radius: 50%;
-	width: 100px;
-	height: 100px;
-	line-height: 100px;
-	position: relative;
-	display: block;
-	margin: auto;
-}
-.editpet .el-upload--picture-card i{
-   position: absolute;
-   left: 37%;
-   top: 35%;
-  }
-.editpet .el-upload-list--picture-card .el-upload-list__item{
-	margin: auto;
-	display: block;
-	border: none;
-	width: 100px;
-	height: 100px;
-}
-.editpet .el-upload-list--picture-card .el-upload-list__item img{
-	border-radius: 50%;
-	width: 100px;
-	height: 100px;
-}
-.editpet .disabled .el-upload--picture-card{
-    display: none;
-}
-.editpet .el-upload-list__item.is-success .el-upload-list__item-status-label{
-	display: none;
-}
-	.petmessage .el-input__inner{
+.petmessage .el-input__inner{
 	padding: 0 0;
 	width: 90px;
 	height: 30px;
@@ -352,7 +289,7 @@
 	border-right-color: white;
 	border-left-color: white;
 }
-	.petmessage .el-input__inner:hover{
+.petmessage .el-input__inner:hover{
 	border-top-color: white;
 	border-right-color: white;
 	border-left-color: white;
@@ -368,6 +305,14 @@ min-width: 50%;
 }
 </style>
 <style scoped>
+.head_img img{
+  width:90px;
+  height:90px;
+  border-radius:50px
+}
+.hiddenInput{
+  display: none;
+}
 .editpet{
 	position: fixed;
     left: 0;

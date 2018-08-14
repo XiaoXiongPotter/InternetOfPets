@@ -1,4 +1,3 @@
-
 <template>
   <div class="header">
     
@@ -12,7 +11,7 @@
           <div class="triangle "></div>
           <div class="funBtn ">
             <p><router-link  to="/addDevice">添加设备</router-link></p>
-            <p>扫一扫</p>
+            <p>   <a :href="'../../static/page/scan.html?token='+authToken"> 扫一扫</a></p>
           </div>
         </div>
        </transition>
@@ -24,8 +23,12 @@ export default {
   name: "Pheader",
   props: ["goBack", "addDevices"],
   data: () => ({
-    show: false
-  })
+    show: false,
+    authToken:sessionStorage.token
+  }),
+  created() {
+    
+  },
 };
 </script>
 <style scoped>
