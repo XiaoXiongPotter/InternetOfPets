@@ -1,6 +1,5 @@
 <template>
-	<transition name="show">
-<div class="releaseSearch" ref='banner' v-show="showflag">
+<div class="releaseSearch" ref='banner'>
 	<div class="header">
  	<img src="../../image/back.png" class="back" @click="back"/>
       <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
@@ -55,7 +54,6 @@
  	</div>
  </div>
 </div>
-</transition>
 </template>
 <script>
 import IScroll from 'iscroll/build/iscroll-probe'
@@ -63,7 +61,6 @@ import {addPublish} from '../../ClientServerApi/index.js'
 import Qs from "qs";
 	export default {
 			name:'releaseSearch',
-			props:['id','petname'],
 			data(){
 				return{
 					showflag:false,
@@ -79,7 +76,7 @@ import Qs from "qs";
 					loseplace:''
 				}
 			},
-			beforeUpdate(){
+			mounted(){
 	 	  this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
           click: true
@@ -106,7 +103,7 @@ import Qs from "qs";
     }
     },
   		back(){
-  		this.showflag=false
+  		this.$router.replace({ path: '/mypet' })
   		},
   		release(){
 //			let params = Qs.stringify({
@@ -117,9 +114,8 @@ import Qs from "qs";
 //				email:this.email,
 //				loseTime:this.losttime,
 //				lostPlace:this.loseplace,
-//				bounty:this.money,
-//				featurePhoto:sessionStorage.base,
-//				petId:this.id
+//				bounty:this.money
+//				featurePhoto:sessionStorage.base
 //			})
 //			addPublish(params).then(res => {
 //				console.log(res)
@@ -127,17 +123,16 @@ import Qs from "qs";
 //				console.log(error)
 //			})
 
+	
             navigator.geolocation.getCurrentPosition(function (position){  
             var longitude = position.coords.longitude;  
-            var latitude = position.coords.latitude;
-            this.loseplace=longitude+''+latitude
+            var latitude = position.coords.latitude;  
             console.log(longitude)
             console.log(latitude)
             });
-  		},
-  		show(){
-  			this.showflag=true
-  		}
+
+		
+  			}
   		}
 		}
 </script>
@@ -236,19 +231,6 @@ import Qs from "qs";
 	height: 22px;
 	position: absolute;
 	top: 18%;
-}
-.releaseSearch{
-	position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0px;
-	width: 100%;
-    z-index: 30;
-    background-color: #fff;
-    transition: all .2s linear;
-}
-.releaseSearch.show-enter, .releaseSearch.show-leave-to{
-	transform: translateX(100%);
 }
 .main{
 	position: absolute;
