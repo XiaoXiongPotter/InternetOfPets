@@ -121,16 +121,18 @@
       $.post("http://manager.dognessnetwork.com/document/IMG", {
         "img": data
       }, function (result) {
-		printHtml("解析结果：" + result.data);
+	//	printHtml("解析结果：" + result.data);
 		console.log(result)
         if (result.header.status == "1000" && result.data != "") {
-			alert('开始传值')
+          var url = window.location.href
+          url = url.split("token=")[1]
+          //alert(url)
           // printHtml("解析结果成功！");
-          // alert("解析成功！");
+          
           // $("#video").css("display","none");
           // $("#support").css("display","none");
 		  // $("button").css("display","block")
-		  window.location.replace("http://petnet.imwork.net:8080/device/qr?id="+result.data);
+		  window.location.replace("http://petnet.imwork.net:8080/device/qr?id="+result.data+"&x-auth-token="+url);
 		  
         } else {
           startPat(); //如果没有解析出来则重新抓拍解析       
