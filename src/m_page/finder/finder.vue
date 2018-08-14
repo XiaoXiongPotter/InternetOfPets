@@ -35,6 +35,8 @@
 <script>
 	import IScroll from 'iscroll/build/iscroll-probe'
 	import footernav from '../../components/footernav'
+	import {nearSearch} from '../../ClientServerApi/index.js'
+	import Qs from "qs";
 	export default{
 		name: "finder",
 		data(){
@@ -74,6 +76,15 @@
           	this.loginsuccess=true
           	this.loginshowflag=false
          }
+//     let params = Qs.stringify({
+//     	lat:'',
+//     	lon:''
+//     })
+//     nearSearch(params).then(res => {
+//     	console.log(res)
+//     }).catch(error => {
+//     	console.log(error)
+//     })
        })  
   },
 		methods:{
@@ -92,26 +103,7 @@
 				}else{
 					this.src2=require('../../image/icon-up.png')
 				}
-			},
-			getPosition () {
-  			return new Promise((resolve, reject) => {
-    		if (navigator.geolocation) {
-      		navigator.geolocation.getCurrentPosition(function (position) {
-        		let latitude = position.coords.latitude
-        		let longitude = position.coords.longitude
-        		let data = {
-          		latitude: latitude,
-          		longitude: longitude
-        		}
-        		resolve(data)
-      		}, function () {
-        	reject(arguments)
-      		})
-   		 } else {
-      		reject('你的浏览器不支持当前地理位置信息获取')
-    		}
-  			})
-		}
+			}
 		},
 		 components: {
    			'v-foot':footernav

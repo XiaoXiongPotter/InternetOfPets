@@ -79,6 +79,7 @@
  			</div>
  		</div>
  	</div>
+ 	<releaseSearch :id='id' :petname='petname' ref='banner'></releaseSearch>
 	</div>
 	</transition>
 </template>
@@ -87,6 +88,7 @@
 	import {getPetDevices} from'../../ClientServerApi/index.js'
 	import {updatePet} from '../../ClientServerApi/index.js'
 	import {deletepet} from '../../ClientServerApi/index.js'
+	import releaseSearch from '../finder/releaseSearch'
 	import store from "../../store/store.js";
 	import axios from "axios";
 	import Qs from "qs";
@@ -138,6 +140,9 @@
 			this.character=this.list[this.index].character
 			this.avatar1=this.list[this.index].portrait
        })     
+  },
+  components:{
+  	releaseSearch
   },
   methods:{
   	    // 打开图片上传
@@ -210,7 +215,7 @@
   		this.showflag=true
   	},
   	search(){
-  		this.$router.replace({ path: '/releaseSearch' })
+  		this.$refs.banner.show()
   	},
   	remove(){
 		  this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
