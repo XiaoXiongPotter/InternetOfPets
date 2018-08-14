@@ -2,29 +2,21 @@
 	<div class="account" ref='banner'>
 	<div class="header">
       <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
-  	</div>
-	<div class="main-header">
-		<span>My Account</span>
-	</div>
-	<div class="head-img">
-		<el-upload
-		action="https://jsonplaceholder.typicode.com/posts/"
-		:class="{disabled:showto}"
-		:limit='1'
-		list-type='picture-card'
-		:file-list="fileList"
-		:auto-upload="false"
-		:on-change='change'
-		:on-remove='remove'
-		:before-remove='beforeremove'
-		>
-  		<i class="el-icon-plus"></i>
-		</el-upload>
-	</div>
-	<div class="main-headportrait" v-for="(item,index) in message" :key='index'>
-		<div class="user"><span v-if="flag">{{item.username}}<img src="../../image/change.png" @click="edit"></span><el-input v-model='user' placeholder='输入昵称' v-else @blur='input' ref='inp'></el-input></div>
-		<p>{{item.mobile}}</p>
-	</div>
+
+  </div>
+    	<div class="main-header">
+			<span>My Account</span>
+		</div>
+			<div class="head-img">
+			<div class="head_img">
+       	<img :src="imgflag?avatar:avatar1"  @click.stop="uploadHeadImg" style="margin: auto;display: block;"/>
+    	 </div>
+     	<input type="file" accept="image/*" @change="handleFile" class="hiddenInput"/>
+			</div>
+		<div class="main-headportrait" v-for="(item,index) in message" :key='index'>
+			<div class="user"><span v-if="flag">{{item.username}}<img src="../../image/change.png" @click="edit"></span><el-input v-model='user' placeholder='输入昵称' v-else @blur='input' ref='inp'></el-input></div>
+			<p>{{item.mobile}}</p>
+		</div>
   <div ref="wrapper" class='main'>
   	<div>
 		<div class="main-content">
@@ -96,9 +88,9 @@ export default {
   		loginshowflag:true,
   		flag:true,
   		user:'',
-  		showto:false,
-  		fileList:[],
-  		deleteflag:true
+  		avatar:'',
+		avatar1:'',
+		imgflag:false
   	}
   },
     beforeUpdate(){
@@ -110,36 +102,44 @@ export default {
           	this.loginsuccess=true
           	this.loginshowflag=false
           }
-          if(this.fileList.length>0){
-				this.showto=true
-			}
        })
 	 
   },
   mounted(){
   	     getLoginUser().then(res => {
           	console.log(res.data)
-          	this.message[0].username=res.data.username
-          	this.message[0].mobile=res.data.mobile
-          	this.fileList.push({'url':res.data.photoUrl})
+          	this.message[0].username=res.data.data.username
+          	this.message[0].mobile=res.data.data.mobile
+          	this.avatar1=res.data.data.photoUrl
           }).catch(error => {
           	console.log(error)
           })
   },
   methods:{
-  	change(file, fileList){
-  		clearInterval(this.time)
-    		if(fileList.length==1){
-    			this.showto=true
-    		}
-    this.imageUrl = URL.createObjectURL(file.raw);
-    var reader = new FileReader();
-    reader.readAsDataURL(file.raw);
-    reader.onload = function(e){ 
-        this.result // 这个就是base64编码了
-        this.imageUrl = this.result;
-        this.src=this.result.split(',')[1]
-        sessionStorage.setItem('base',this.src)
+  	  	    // 打开图片上传
+    uploadHeadImg: function () {
+      this.$confirm('是否修改头像?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+      }).then(() => {
+       	this.$el.querySelector('.hiddenInput').click()
+       }).catch(() => { 
+       	this.imgflag=false
+       });
+    },
+    // 将头像显示
+    handleFile: function (e) {
+      this.imgflag=true
+      let $target = e.target || e.srcElement
+      let file = $target.files[0]
+    var reader = new FileReader()
+    reader.readAsDataURL(file)
+    this.changeflag=true
+    reader.onload = (data) => { 
+        let res = data.target || data.srcElement
+        this.avatar = res.result
+        sessionStorage.setItem('base',data.target.result.split(',')[1])
     }
     let params = Qs.stringify({picImg:sessionStorage.base})
     updateUserInfo(params).then(res => {
@@ -150,18 +150,7 @@ export default {
     }).catch(error=>{
     	console.log(error)
     })
-  		},
-		beforeremove(file, fileList){
-		},
-  		remove(file, fileList){
-        	clearInterval(this.time)
-			this.fileList.splice(0,1)
-    		if(fileList.length==0){
-    			this.time=setInterval(()=>{
-    				this.showto=false
-    			},500)
-    		} 	   	
-    	},
+    },
   	edit(){
   		this.flag=false
   		this.user=this.message[0].username
@@ -228,43 +217,19 @@ export default {
 	border-right-color: white;
 	border-left-color: white;
 }
-.account .el-upload--picture-card{
-	border-radius: 50%;
-	width: 100px;
-	height: 100px;
-	line-height: 100px;
-	position: relative;
-	display: block;
-	margin: auto;
-}
-.account .el-upload--picture-card i{
-   position: absolute;
-   left: 37%;
-   top: 35%;
-  }
-.account .el-upload-list--picture-card .el-upload-list__item{
-	margin: auto;
-	display: block;
-	border: none;
-	width: 100px;
-	height: 100px;
-}
-.account .el-upload-list--picture-card .el-upload-list__item img{
-	border-radius: 50%;
-	width: 100px;
-	height: 100px;
-}
-.account .disabled .el-upload--picture-card{
-    display: none;
-}
-.account .el-upload-list__item.is-success .el-upload-list__item-status-label{
-	display: none;
-}
 </style>
 <style scoped>
-	a{
-		color: black;
-	}
+a{
+  color: black;
+}
+.head_img img{
+  width:90px;
+  height:90px;
+  border-radius:50px
+}
+.hiddenInput{
+  display: none;
+}
 .header .imgBox {
   width: 100px;
   margin: 0 auto;

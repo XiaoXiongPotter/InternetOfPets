@@ -50,7 +50,7 @@ export default {
   }
 };
 </script>
-<style scroped>
+<style scoped>
 .btn {
   border: 0;
   color: #fff;

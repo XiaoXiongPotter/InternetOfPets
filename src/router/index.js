@@ -26,7 +26,11 @@ import nextchangepassword from '../m_page/myAccount/nextchangepassword.vue'
 import commonproblem from '../m_page/myAccount/commonproblem.vue'
 import loginauthorization from '../m_page/myAccount/loginauthorization.vue'
 import binddevice from '../components/binddevice.vue'
+import addpet from '../m_page/myAccount/addpet.vue'
 import guide from '../m_page/finder/guide.vue'
+import qrPindFet from '../m_page/finder/qrFindPet.vue'
+import qrFindError from '../m_page/finder/qrFindError.vue'
+import findPetInfo from '../m_page/finder/findPetInfo.vue'
 import store from '../store/store.js'
 //import collor from '../m_page/home/collor/necklace_map.html'
 Vue.use(Router)
@@ -50,6 +54,7 @@ const router = new Router({
       name: 'login',
       component: login
     },
+    //注册
     {
       path: '/register',
       name: 'register',
@@ -152,6 +157,12 @@ const router = new Router({
       component: registerfalse
     },
     //添加宠物
+    {
+    	path: '/addpet',
+      name: 'addpet',
+      component: addpet
+    },
+    //修改密码
      {
       path: '/changepassword',
       name: 'changepassword',
@@ -190,6 +201,24 @@ const router = new Router({
       path: '/createQrCode',
       name: 'createQrCode',
       component: createQrCode
+    },
+    //扫码显示宠物信息--已协寻
+    {
+      path: '/qrFindPet',
+      name: 'qrFindPet',
+      component: qrPindFet
+    },
+    //扫码报错页
+    {
+      path: '/qrFindError',
+      name: 'qrFindError',
+      component: qrFindError
+    },
+    //扫码显示宠物信息--未协寻
+    {
+      path: '/findPetInfo',
+      name: 'findPetInfo',
+      component: findPetInfo
     }
   ]
 })
