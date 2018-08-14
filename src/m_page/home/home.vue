@@ -78,7 +78,8 @@ export default {
     infosCmputed: function(value) {
       if (value == "FEEDER") return "智能喂食器";
       if (value == "BLUETOOTH") return "蓝牙计步器";
-        if (value == "ROBOT") return "宠物机器人";
+      if (value == "ROBOT") return "宠物机器人";
+      if(value =="TAG") return "协寻二维码"
     },
     lowercase:function(value){
       return value.toLowerCase();

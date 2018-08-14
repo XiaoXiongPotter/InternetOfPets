@@ -2,6 +2,7 @@
 	<div class="account" ref='banner'>
 	<div class="header">
       <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
+
   </div>
     	<div class="main-header">
 			<span>My Account</span>
