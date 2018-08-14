@@ -168,6 +168,7 @@ body, html, #allmap{
 	var fanceId;
 	var language = 'ZH'
 	var timeOut;
+	var token = window.sessionStorage.getItem("token");
 	$(function() {
 		//h5接收网页推送
 		var room = "866557030061396";
@@ -178,7 +179,8 @@ body, html, #allmap{
 	            console.log("链接打开");
 	            //sessionId是用户登录时的sessionId，要传到soket服务器
 	            var message = {
-	        		       "sessionId": 789
+	            		   "sessionId": imei,
+	        		       "deviceCode":deviceId
 	        		     }
 	            socket.send(JSON.stringify(message) );
 	        };
@@ -215,7 +217,7 @@ body, html, #allmap{
 							 off = msgId.indexOf('f.0');
 							 console.log("on:"+on+'==off:'+off)
 							setTimeout(function(){
-								 window.location.href='/static/page/necklace_map.html?fanceId='+fanceId+'&imei='+imei
+								 window.location.href='../../static/page/necklace_map.html?deviceId='+deviceId+'&imei='+imei
 							},10)
 						}//清除定时器
 						window.clearTimeout(timeOut);
@@ -268,7 +270,7 @@ body, html, #allmap{
 										    		success:function(res){
 										    			timeOut = setTimeout(function(){
 										    				alert('网络异常')
-										    				window.location.href='/necklace_map.html?fanceId='+fanceId+'&imei='+imei;
+										    				window.location.href='../../static/page/necklace_map.html?fanceId='+fanceId+'&imei='+imei;
 										    			},60000);
 										    			//setTimeout(function(){window.location.href='/necklace_map.html?fanceId='+fanceId+'&imei='+imei},600);
 										    		}		
