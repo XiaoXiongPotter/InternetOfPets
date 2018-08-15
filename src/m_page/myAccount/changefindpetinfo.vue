@@ -1,65 +1,64 @@
 <template>
-	<div class="petDetails">
+	<div class="changefindpetinfo">
 	<div class="header">
  	<img src="../../image/back.png" class="back" @click="back"/>
     <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
  	</div>
- 	<div class="main" ref='wrapper'>
- 		<div>
- 			<div class="pet-img">
+ 	 	<div class="pet-img">
  				<img :src="featurePhoto"/>
- 			</div>
+ 		</div>
+ 	 	<div class="main" ref='wrapper'>
+ 		<div>
  			 <div class="petmessage">
  				<div class="petname">
  					<span>名称</span>
- 					<p>{{petName}}</p>
+ 					<el-input  :value='petName' @input='change0'></el-input>
  				</div>
  				<div class="pet-msg">
  				<div class="petbelong">
  					<span>种类</span>
- 					<p>{{petType}}</p>
+ 					<el-input :value='petType'  @input='change1'></el-input>
  				</div>
  				<div class="money" >
  					<span>赏金(￥)</span>
- 					<p>{{bounty}}</p>
+ 					<el-input :value='bounty'  @input='change2' ></el-input>
  				</div>
  				</div>
  				<div class="pet-msg">
  					<div class="losttime">
  					<span>丢失时间</span>
- 					<p>{{loseTime}}</p>
+ 					<el-input :value='loseTime'  @input='change3' ></el-input>
  					</div>
  					<div class="loseplace">
  					<span>丢失地点</span>
- 					<p>{{lostPlace}}</p>
+ 					<el-input :value='lostPlace'  @input='change4' ></el-input>
  					</div>
  				</div>
  				<div class="pet-msg">
  					<div class="content">
  					<span>简介</span>
- 					<p>{{content}}</p>
+ 					<el-input :value='content'  @input='change5' ></el-input>
   				</div>
  					</div>
  					<div class="mobile"> 
  					<span>联系电话</span>
- 					<p>{{mobile}}</p>
+ 					<el-input :value='mobile'  @input='change6' ></el-input>
  					</div>
  				</div>
  				<div class="email">
  					<span>邮箱</span>
- 					<p>{{email}}</p>
+ 					<el-input :value='email'  @input='change7' ></el-input>
  				</div>
  			</div>
+ 			</div>
  		</div>
- 	</div>
-	</div>
 </template>
 <script>
 	import IScroll from 'iscroll/build/iscroll-probe'
-export default{
-	name: "petDetails",
-	data(){
-		return{
+	export default{
+		name:'changefindpetinfo',
+		data(){
+			return{
 			featurePhoto:'',
 			petName:'',
 			petType:'',
@@ -68,10 +67,11 @@ export default{
 			lostPlace:'',
 			content:'',
 			mobile:'',
-			email:''
-		}
-	},
-	mounted(){
+			email:'',
+			changeflag:false
+			}
+		},
+		mounted(){
 		  this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
           click: true
@@ -91,11 +91,70 @@ export default{
 	},
 	methods:{
 		back(){
-			this.$router.replace('/finder')
+		if(this.changeflag==true){
+  		this.$confirm('是否放弃修改?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+       }).then(() => {
+			sessionStorage.removeItem('base')
+        }).catch(() => {          
+        });
+  		}else{
+			this.$router.replace('/mysearch')
+  		}
+		},
+		change0(e){
+		this.$route.query.petName=e
+		this.changeflag=true
+		},
+		change1(e){
+		this.$route.query.petType=e
+		this.changeflag=true
+		},
+		change2(e){
+		this.$route.query.bounty=e
+		this.changeflag=true
+		},
+		change3(e){
+		this.$route.query.loseTime=e
+		this.changeflag=true
+		},
+		change4(e){
+		this.$route.query.lostPlace=e
+		this.changeflag=true
+		},
+		change5(e){
+		this.$route.query.content=e
+		this.changeflag=true
+		},
+		change6(e){
+		this.$route.query.mobile=e
+		this.changeflag=true
+		},
+		change7(e){
+		this.$route.query.email=e
+		this.changeflag=true
 		}
 	}
-}
+	}
 </script>
+<style>
+.changefindpetinfo .el-input__inner{
+	padding: 0 0;
+	width: 150px;
+	height: 30px;
+	line-height: 30px;
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
+.changefindpetinfo .el-input__inner:hover{
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}	
+</style>
 <style scoped>
 .header span{
   width: 100%;
@@ -137,7 +196,7 @@ export default{
 }
 .main{
 	position: absolute;
-	top: 49px;
+	top: 170px;
 	bottom: 0px;
 	width: 100%;
 	overflow: hidden;

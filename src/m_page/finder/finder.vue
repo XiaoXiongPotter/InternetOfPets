@@ -14,16 +14,16 @@
 		<div class="main-content" ref="wrapper">
 			<ul>
 				<li v-for="(item,index) in list" :key='index' @click="inquire(index)">
-					<img :src='item[index].portrait'>
+					<img :src='item.portrait'>
 					<div class="message">
-						<p class="petname">{{item[index].petName}}</p>
-						<span>{{item[index].loseTime}}</span>
-						<p class="place">{{item[index].lostPlace}}</p>
+						<p class="petname">{{item.petName}}</p>
+						<span>{{item.loseTime}}</span>
+						<p class="place">{{item.lostPlace}}</p>
 					</div>
 					<div class="reward">
 						<div class="reward-title"><span>赏金</span></div>
-						<p>￥{{item[index].bounty}}</p>
-						<div class="reward-btn"><el-button size="mini" style="color: #FF8C00;padding: 3px 3px;position: absolute;left: 15%;"><a href="tel:item[index].mobile">联系主人</a></el-button></div>
+						<p>￥{{item.bounty}}</p>
+						<div class="reward-btn"><el-button size="mini" style="color: #FF8C00;padding: 3px 3px;position: absolute;left: 15%;"><a href="tel:item.mobile">联系主人</a></el-button></div>
 					</div>
 				</li>
 			</ul>
@@ -41,7 +41,7 @@
 		name: "finder",
 		data(){
 			return{
-				list:[],
+				list:'',
 				src1:require('../../image/icon-up.png'),
 				srcchange1:false,
 				src2:require('../../image/icon-up.png'),
@@ -65,7 +65,7 @@
        })
        nearSearch(params).then(res => {
        	console.log(res)
-       	this.list.push(res.data.data)
+       	this.list=res.data.data
        }).catch(error => {
        	console.log(error)
        })
@@ -74,6 +74,7 @@
 		methods:{
 			distance(){
 				this.srcchange=!this.srcchange
+				this.list.reverse()
 				if(this.srcchange==true){
 					this.src1=require('../../image/icon-down.png')
 				}else{
@@ -82,6 +83,7 @@
 			},
 				time(){
 				this.srcchange2=!this.srcchange2
+				this.list.reverse()
 				if(this.srcchange2==true){
 					this.src2=require('../../image/icon-down.png')
 				}else{
@@ -89,18 +91,21 @@
 				}
 			},
 			inquire(index){
-//				console.log(this.list[index][index])
-				this.$router.push({ name: "petDetails",query:{
-					featurePhoto:this.list[index][index].featurePhoto,
-					petName:this.list[index][index].petName,
-					petType:this.list[index][index].petType,
-					bounty:this.list[index][index].bounty,
-					loseTime:this.list[index][index].loseTime,
-					lostPlace:this.list[index][index].lostPlace,
-					content:this.list[index][index].content,
-					mobile:this.list[index][index].mobile,
-					email:this.list[index][index].email
+				if(sessionStorage.getItem('login')){
+					this.$router.push({ name: "petDetails",query:{
+					featurePhoto:this.list[index].featurePhoto,
+					petName:this.list[index].petName,
+					petType:this.list[index].petType,
+					bounty:this.list[index].bounty,
+					loseTime:this.list[index].loseTime,
+					lostPlace:this.list[index].lostPlace,
+					content:this.list[index].content,
+					mobile:this.list[index].mobile,
+					email:this.list[index].email
 				} })
+				}else{
+					this.$router.replace('/login')
+				}
 			}
 		},
 		 components: {

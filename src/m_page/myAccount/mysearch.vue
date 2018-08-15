@@ -8,33 +8,36 @@
  	<el-tabs v-model="activeName"  @tab-click="handleClick">
     <el-tab-pane label="找寻中" name="first">
     <ul>
- 		<li v-for="(item,index) in petlist" :key='index' class="petlist">
- 		<div class="petimg"><img :src="item.img"/></div>
+ 		<li v-for="(item,index) in petlist" :key='index' class="petlist" v-if='item.isOpen' @click="changefindpetinfo(index)">
+ 		<div class="petimg"><img :src="item.portrait"/></div>
  		<div class="petmsg">
- 		<p class="petname">{{item.petname}}</p>
- 		<p class="pettime">走失:{{item.pettime}}天</p>
+ 		<p class="petname">{{item.petName}}</p>
+ 		<p class="pettime">走失地点:{{item.lostPlace}}</p>
+ 		<p class="pettime">走失时间:{{item.loseTime}}</p>
  		</div>
  	</li>
  	</ul>
     </el-tab-pane>
     <el-tab-pane label="已找到" name="second">
     <ul>
- 		<li v-for="(item,index) in petlist1" :key='index' class="petlist">
- 		<div class="petimg"><img :src="item.img"/></div>
+ 		<li v-for="(item,index) in petlist" :key='index' class="petlist" v-if='!item.isOpen'>
+ 		<div class="petimg"><img :src="item.portrait"/></div>
  		<div class="petmsg">
- 		<p class="petname">{{item.petname}}</p>
- 		<p class="pettime">走失:{{item.pettime}}天</p>
+ 		<p class="petname">{{item.petName}}</p>
+ 		<p class="pettime">走失地点:{{item.lostPlace}}</p>
+ 		<p class="pettime">走失时间:{{item.loseTime}}</p>
  		</div>
- 	</li>
+ 		</li>
  	</ul>
     </el-tab-pane>
     <el-tab-pane label="已关闭" name="third">
     <ul>
- 		<li v-for="(item,index) in petlist1" :key='index' class="petlist">
- 		<div class="petimg"><img :src="item.img"/></div>
+ 		<li v-for="(item,index) in petlist" :key='index' class="petlist" v-if='!item.isOpen'>
+ 		<div class="petimg"><img :src="item.portrait"/></div>
  		<div class="petmsg">
- 		<p class="petname">{{item.petname}}</p>
- 		<p class="pettime">走失:{{item.pettime}}天</p>
+ 		<p class="petname">{{item.petName}}</p>
+ 		<p class="pettime">走失地点:{{item.lostPlace}}</p>
+ 		<p class="pettime">走失时间:{{item.loseTime}}</p>
  		</div>
  	</li>
  	</ul>
@@ -44,22 +47,22 @@
 	</div>
 </template>
 <script>
+	import {listPublish} from '../../ClientServerApi/index.js'
 	export default {
 		 name: "mysearch",
 		 data() {
       return {
         activeName: 'first',
-        petlist:[{
-        	'img':require('../../image/pet2.jpg'),
-        	'petname':'蝴蝶',
-        	'pettime':'5'
-        }],
-          petlist1:[{
-        	'img':require('../../image/pet1.jpg'),
-        	'petname':'二哈',
-        	'pettime':'3'
-        }]
+        petlist:''
       };
+   		 },
+   		 created(){
+   		 	listPublish().then(res => {
+   		 		this.petlist=res.data.data
+   		 		console.log(res)
+   		 	}).catch(error => {
+   		 		console.log(error)
+   		 	})
    		 },
 		  methods:{
   		back(){
@@ -67,7 +70,20 @@
   		},
   		handleClick(tab, event) {
 //      console.log(tab, event);
-      	}
+     	},
+     	changefindpetinfo(index){
+     	this.$router.push({ name: "changefindpetinfo",query:{
+					featurePhoto:this.petlist[index].featurePhoto,
+					petName:this.petlist[index].petName,
+					petType:this.petlist[index].petType,
+					bounty:this.petlist[index].bounty,
+					loseTime:this.petlist[index].loseTime,
+					lostPlace:this.petlist[index].lostPlace,
+					content:this.petlist[index].content,
+					mobile:this.petlist[index].mobile,
+					email:this.petlist[index].email
+				} })
+     }
   		}
 	}
 </script>
@@ -149,7 +165,7 @@
 	color: #4169E1;
 }
 .pettime{
-	padding-top: 30px;
+	padding-top: 10px;
 	font-family: "微软雅黑";
 	font-size: 14px;
 }

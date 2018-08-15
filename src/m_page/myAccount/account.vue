@@ -90,7 +90,8 @@ export default {
   		user:'',
   		avatar:'',
 		avatar1:'',
-		imgflag:false
+		imgflag:false,
+		userId:''
   	}
   },
     beforeUpdate(){
@@ -111,6 +112,7 @@ export default {
           	this.message[0].username=res.data.data.username
           	this.message[0].mobile=res.data.data.mobile
           	this.avatar1=res.data.data.photoUrl
+          	this.userId=res.data.data.id
           }).catch(error => {
           	console.log(error)
           })
@@ -171,7 +173,7 @@ export default {
   		this.$router.replace({ path: '/mypet' })
   	},
   	mysearch(){
-  		this.$router.replace({ path: '/mysearch' })
+		this.$router.push({ name: "mysearch"})
   	},
   	changepassword(){
   		this.$router.replace({ path: '/changepassword' })

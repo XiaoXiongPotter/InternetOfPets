@@ -58,7 +58,6 @@
 <script>
 import IScroll from 'iscroll/build/iscroll-probe'
 import {addPublish} from '../../ClientServerApi/index.js'
-import Bus from '../../components/bus.js'
 import Qs from "qs";
 	export default {
 			name:'releaseSearch',
@@ -83,19 +82,11 @@ import Qs from "qs";
           this.Scroll = new IScroll(this.$refs.wrapper, {
           click: true
         })
-          this.petname=sessionStorage.petname
-          this.id=sessionStorage.id
      })	 	 
   },
   created(){
-  		Bus.$on('id',(data) => {
-	 	  	this.id=data
-	 	  	sessionStorage.setItem('id',this.id)
-	 	  })
-  		Bus.$on('petname',(data) => {
-  			this.petname=data
-  			sessionStorage.setItem('petname',this.petname)
-	 	  })
+		this.id=this.$route.query.id
+		this.petname=this.$route.query.petname
   },
 		methods:{
 		  	  	    // 打开图片上传
@@ -118,8 +109,6 @@ import Qs from "qs";
     },
   		back(){
   		this.$router.replace({ path: '/mypet' })
-  		sessionStorage.removeItem('petname')
-  		sessionStorage.removeItem('id')
   		sessionStorage.removeItem('base')
   		},
   		release(){
@@ -139,8 +128,6 @@ import Qs from "qs";
 				console.log(res)
 				if(res.data.header.status==1000){
 					this.$router.replace({ path: '/finder' })
-					sessionStorage.removeItem('petname')
-  					sessionStorage.removeItem('id')
   					sessionStorage.removeItem('base')
 				}
 			}).catch(error => {

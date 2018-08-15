@@ -88,7 +88,6 @@
 	import {updatePet} from '../../ClientServerApi/index.js'
 	import {deletepet} from '../../ClientServerApi/index.js'
 	import store from "../../store/store.js";
-	import Bus from '../../components/bus.js'
 	import Qs from "qs";
 	export default{
 		name: "editpet",
@@ -115,9 +114,7 @@
 		 beforeUpdate(){
 	 	  this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true,
-          preventDefault: false,
-		  preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/ }
+          click: true
         })
           this.id=this.list[this.index].id
    		 let params = Qs.stringify({petId:this.id})
@@ -210,9 +207,10 @@
   		this.showflag=true
   	},
   	search(){
-  		this.$router.replace({ path: '/releaseSearch' })
-  		Bus.$emit('id', this.id)
-  		Bus.$emit('petname', this.petname)
+  		this.$router.push({ name: 'releaseSearch' ,query:{
+  			id:this.id,
+  			petname:this.petname
+  		}})
   	},
   	remove(){
 		  this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
