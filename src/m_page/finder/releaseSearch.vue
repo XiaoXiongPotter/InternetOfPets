@@ -1,55 +1,55 @@
 <template>
-	<div class="releaseSearch" ref='banner'>
-		<div class="header">
-			<img src="../../image/back.png" class="back" @click="back" />
-			<div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
-		</div>
-		<div class="petphoto">
-			<p>宠物照片</p>
-			<div class="head_img">
-				<img :src="imgflag?avatar:avatar1" @click.stop="uploadHeadImg" style="margin-left:10px;margin-top: 10px;" />
-			</div>
-			<input type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
-		</div>
-		<div class="main" ref='wrapper'>
-			<div>
-				<div class="losepet">
-					<p>走失宠物</p>
-					<el-input v-model="petname" :disabled="true"></el-input>
-				</div>
-				<div class="getmoney">
-					<p>赏金(￥)</p>
-					<el-input v-model="money"></el-input>
-				</div>
-				<div class="synopsis">
-					<p>协寻简介</p>
-					<el-input v-model="introduction" placeholder="宝贝走丢了总该说点什么吧..."></el-input>
-				</div>
-				<div class="losttime">
-					<p>走失时间</p>
-					<div class="block">
-						<el-date-picker v-model="losttime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
-						</el-date-picker>
-					</div>
-				</div>
-				<div class="place">
-					<p>走失地点</p>
-					<el-input v-model="loseplace" placeholder="宝贝在哪里走丢的呢?"></el-input>
-				</div>
-				<div class="mobile">
-					<p>电话</p>
-					<el-input v-model="mobile"></el-input>
-				</div>
-				<div class="email">
-					<p>邮箱</p>
-					<el-input v-model="email"></el-input>
-				</div>
-				<div class="release-btn">
-					<el-button type="primary" round style="margin: auto;display: block;margin-top: 15px;" @click='release'>确认发布</el-button>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="releaseSearch" ref='banner'>
+        <div class="header">
+            <img src="../../image/back.png" class="back" @click="back" />
+            <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
+        </div>
+        <div class="petphoto">
+            <p>宠物照片</p>
+            <div class="head_img">
+                <img :src="imgflag?avatar:avatar1" @click.stop="uploadHeadImg" style="margin-left:10px;margin-top: 10px;" />
+            </div>
+            <input type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
+        </div>
+        <div class="main" ref='wrapper'>
+            <div>
+                <div class="losepet">
+                    <p>走失宠物</p>
+                    <el-input v-model="petname" :disabled="true"></el-input>
+                </div>
+                <div class="getmoney">
+                    <p>赏金(￥)</p>
+                    <el-input v-model="money"></el-input>
+                </div>
+                <div class="synopsis">
+                    <p>协寻简介</p>
+                    <el-input v-model="introduction" placeholder="宝贝走丢了总该说点什么吧..."></el-input>
+                </div>
+                <div class="losttime">
+                    <p>走失时间</p>
+                    <div class="block">
+                        <el-date-picker v-model="losttime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期">
+                        </el-date-picker>
+                    </div>
+                </div>
+                <div class="place">
+                    <p>走失地点</p>
+                    <el-input v-model="loseplace" placeholder="宝贝在哪里走丢的呢?"></el-input>
+                </div>
+                <div class="mobile">
+                    <p>电话</p>
+                    <el-input v-model="mobile"></el-input>
+                </div>
+                <div class="email">
+                    <p>邮箱</p>
+                    <el-input v-model="email"></el-input>
+                </div>
+                <div class="release-btn">
+                    <el-button type="primary" round style="margin: auto;display: block;margin-top: 15px;" @click='release'>确认发布</el-button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 <script>
 import IScroll from "iscroll/build/iscroll-probe";
@@ -174,7 +174,7 @@ export default {
     border-left-color: white;
     color: #0ca8e3;
 }
-
+ 
 .getmoney .el-input__inner {
     border-top-color: white;
     border-right-color: white;
