@@ -38,7 +38,7 @@ export default {
       });
 
       bindDevice(params).then(res => {
-        console.log(res.data);
+        console.log(res.data.data);
         this.$alert('<img src="'+res.data.data+'" style="width:100%">', '请将二维码对准设备摄像头', {
           dangerouslyUseHTMLString: true
         });

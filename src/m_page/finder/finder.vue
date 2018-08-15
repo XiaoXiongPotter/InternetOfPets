@@ -64,8 +64,9 @@
 		lon:121.4368700000
        })
        nearSearch(params).then(res => {
-       	console.log(res)
-       	this.list=res.data.data
+		   this.list=res.data.data
+		   console.log(this.list)
+
        }).catch(error => {
        	console.log(error)
        })

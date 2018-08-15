@@ -1,4 +1,8 @@
 import http from './public'
+//获取touken
+export const systemInit = () => {
+	return http.fetchPost('/api/systemInit')
+}
 // 登陆
 export const userLogin = (params) => {
   return http.fetchPost('/api/authentication/form', params)
@@ -35,10 +39,7 @@ export const submitpassword = (params) => {
 export const sendreset = (params) => {
 	return http.fetchPost('/api/send_reset_pass_link', params)
 }
-//获取touken
-export const systemInit = () => {
-	return http.fetchPost('/api/systemInit')
-}
+
 //图形验证码
 export const getimg = () => {
 	return http.fetchPost('/api/code/image?width=100')

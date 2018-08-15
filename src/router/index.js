@@ -11,6 +11,7 @@ import home from '../m_page/home/home.vue'
 import finder from '../m_page/finder/finder.vue'
 import account from '../m_page/myAccount/account.vue'
 import deviceManage from '../m_page/home/deviceManage.vue'
+import tag from '../m_page/home/tag.vue'
 import addDevice from '../m_page/home/addDevice.vue'
 import createQrCode from '../m_page/home/createQrCode.vue'
 import connectDevice from '../m_page/home/connectDevice.vue'
@@ -18,7 +19,6 @@ import mypet from '../m_page/myAccount/mypet.vue'
 import mysearch from '../m_page/myAccount/mysearch.vue'
 import releaseSearch from '../m_page/finder/releaseSearch.vue'
 import userInformation from '../m_page/myAccount/userInformation.vue'
-import necklaceManage from '../m_page/home/necklaceManage.vue'
 import changePet from "../components/changepet.vue"
 import editpet from '../m_page/myAccount/editpet.vue'
 import changepassword from '../m_page/myAccount/changepassword.vue'
@@ -78,10 +78,11 @@ const router = new Router({
       component: deviceManage
     },
     {
-      path: '/necklaceManage',
-      name: 'necklaceManage',
-      component: necklaceManage
+      path: '/tag',
+      name: 'tag',
+      component: tag
     },
+    
     //设备切换绑定宠物
     {
       path: '/changepet',

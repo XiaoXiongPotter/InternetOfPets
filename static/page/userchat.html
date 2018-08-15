@@ -425,10 +425,7 @@
 
     //返回列表
     $(".chat-return").click(function () {
-        $(".chatBox-head-one").toggle(1);
-        $(".chatBox-head-two").toggle(1);
-        //$(".chatBox-list").fadeToggle(1);
-        $(".chatBox-kuang").fadeToggle(1);
+		window.history.go(-1);
     });
 
     //发送信息
