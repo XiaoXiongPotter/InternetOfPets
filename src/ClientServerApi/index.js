@@ -27,3 +27,7 @@ export const getPetDevices = (params) => {
 export const addPublish = (params) => {
 	return http.fetchPost('/ClientServerApi/pets/search/addPublish',params)
 }
+//我的协寻
+export const listPublish = (params) => {
+	return http.fetchPost('/ClientServerApi/pets/search/listPublish',params)
+}

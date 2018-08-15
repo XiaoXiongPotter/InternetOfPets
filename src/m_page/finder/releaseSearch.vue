@@ -54,7 +54,6 @@
 <script>
 import IScroll from "iscroll/build/iscroll-probe";
 import { addPublish } from "../../ClientServerApi/index.js";
-import Bus from "../../components/bus.js";
 import Qs from "qs";
 export default {
     name: "releaseSearch",
@@ -79,77 +78,94 @@ export default {
             this.Scroll = new IScroll(this.$refs.wrapper, {
                 click: true
             });
-            this.petname = sessionStorage.petname;
-            this.id = sessionStorage.id;
         });
     },
     created() {
-        Bus.$on("id", data => {
-            this.id = data;
-            sessionStorage.setItem("id", this.id);
-        });
-        Bus.$on("petname", data => {
-            this.petname = data;
-            sessionStorage.setItem("petname", this.petname);
-        });
+        this.id = this.$route.query.id;
+        this.petname = this.$route.query.petname;
     },
     methods: {
         // 打开图片上传
         uploadHeadImg: function() {
             this.$el.querySelector(".hiddenInput").click();
         },
-        // 将头像显示
-        handleFile: function(e) {
-            this.imgflag = true;
-            let $target = e.target || e.srcElement;
-            let file = $target.files[0];
-            var reader = new FileReader();
-            reader.readAsDataURL(file);
-            this.changeflag = true;
-            reader.onload = data => {
-                let res = data.target || data.srcElement;
-                this.avatar = res.result;
-                sessionStorage.setItem(
-                    "base",
-                    data.target.result.split(",")[1]
-                );
-            };
-        },
-        back() {
-            this.$router.replace({ path: "/mypet" });
-            sessionStorage.removeItem("petname");
-            sessionStorage.removeItem("id");
-            sessionStorage.removeItem("base");
-        },
-        release() {
-            let params = Qs.stringify({
-                content: this.introduction,
-                lat: 31.18826,
-                lon: 121.43687,
-                mobile: this.mobile,
-                email: this.email,
-                loseTime: this.losttime,
-                lostPlace: this.loseplace,
-                bounty: this.money,
-                featurePhoto: sessionStorage.base,
-                petId: sessionStorage.id
-            });
-            addPublish(params)
-                .then(res => {
-                    console.log(res);
-                    if (res.data.header.status == 1000) {
-                        this.$router.replace({ path: "/finder" });
-                        sessionStorage.removeItem("petname");
-                        sessionStorage.removeItem("id");
-                        sessionStorage.removeItem("base");
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
+        mounted() {
+            this.$nextTick(() => {
+                this.Scroll = new IScroll(this.$refs.wrapper, {
+                    click: true
                 });
+                this.petname = sessionStorage.petname;
+                this.id = sessionStorage.id;
+            });
+        },
+        created() {
+            Bus.$on("id", data => {
+                this.id = data;
+                sessionStorage.setItem("id", this.id);
+            });
+            Bus.$on("petname", data => {
+                this.petname = data;
+                sessionStorage.setItem("petname", this.petname);
+            });
+        },
+        methods: {
+            // 打开图片上传
+            uploadHeadImg: function() {
+                this.$el.querySelector(".hiddenInput").click();
+            },
+            // 将头像显示
+            handleFile: function(e) {
+                this.imgflag = true;
+                let $target = e.target || e.srcElement;
+                let file = $target.files[0];
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                this.changeflag = true;
+                reader.onload = data => {
+                    let res = data.target || data.srcElement;
+                    this.avatar = res.result;
+                    sessionStorage.setItem(
+                        "base",
+                        data.target.result.split(",")[1]
+                    );
+                };
+            },
+            back() {
+                this.$router.replace({ path: "/mypet" });
+                sessionStorage.removeItem("petname");
+                sessionStorage.removeItem("id");
+                sessionStorage.removeItem("base");
+            },
+            release() {
+                let params = Qs.stringify({
+                    content: this.introduction,
+                    lat: 31.18826,
+                    lon: 121.43687,
+                    mobile: this.mobile,
+                    email: this.email,
+                    loseTime: this.losttime,
+                    lostPlace: this.loseplace,
+                    bounty: this.money,
+                    featurePhoto: sessionStorage.base,
+                    petId: sessionStorage.id
+                });
+                addPublish(params)
+                    .then(res => {
+                        console.log(res);
+                        if (res.data.header.status == 1000) {
+                            this.$router.replace({ path: "/finder" });
+                            sessionStorage.removeItem("petname");
+                            sessionStorage.removeItem("id");
+                            sessionStorage.removeItem("base");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
         }
     }
-};
+}
 </script>
 <style>
 .losepet .el-input.is-disabled .el-input__inner {

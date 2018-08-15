@@ -64,9 +64,9 @@
 		lon:121.4368700000
        })
        nearSearch(params).then(res => {
-       	
 		   this.list=res.data.data
 		   console.log(this.list)
+
        }).catch(error => {
        	console.log(error)
        })
@@ -75,6 +75,7 @@
 		methods:{
 			distance(){
 				this.srcchange=!this.srcchange
+				this.list.reverse()
 				if(this.srcchange==true){
 					this.src1=require('../../image/icon-down.png')
 				}else{
@@ -83,6 +84,7 @@
 			},
 				time(){
 				this.srcchange2=!this.srcchange2
+				this.list.reverse()
 				if(this.srcchange2==true){
 					this.src2=require('../../image/icon-down.png')
 				}else{
@@ -90,18 +92,21 @@
 				}
 			},
 			inquire(index){
-//				console.log(this.list[index][index])
-				this.$router.push({ name: "petDetails",query:{
-					featurePhoto:this.list[index][index].featurePhoto,
-					petName:this.list[index][index].petName,
-					petType:this.list[index][index].petType,
-					bounty:this.list[index][index].bounty,
-					loseTime:this.list[index][index].loseTime,
-					lostPlace:this.list[index][index].lostPlace,
-					content:this.list[index][index].content,
-					mobile:this.list[index][index].mobile,
-					email:this.list[index][index].email
+				if(sessionStorage.getItem('login')){
+					this.$router.push({ name: "petDetails",query:{
+					featurePhoto:this.list[index].featurePhoto,
+					petName:this.list[index].petName,
+					petType:this.list[index].petType,
+					bounty:this.list[index].bounty,
+					loseTime:this.list[index].loseTime,
+					lostPlace:this.list[index].lostPlace,
+					content:this.list[index].content,
+					mobile:this.list[index].mobile,
+					email:this.list[index].email
 				} })
+				}else{
+					this.$router.replace('/login')
+				}
 			}
 		},
 		 components: {
