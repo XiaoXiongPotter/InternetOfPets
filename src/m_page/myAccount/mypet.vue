@@ -9,7 +9,7 @@
  </div>
  <div class="main" ref='wrapper'>
      <ul>
-     <li v-for="(item,index) in petlist[0]" :key='index' class="petlist" @click="petinfos(index)">
+     <li v-for="(item,index) in petlist" :key='index' class="petlist" @click="petinfos(index)">
          <div class="petimg"><img :src="item.portrait"/></div>
          <div class="petmsg">
          <p class="petname">{{item.name}}</p>
@@ -18,7 +18,7 @@
      </li>
      </ul>
  </div>
- <editpet ref='banner' :list='petlist[0]' :index='index' @remove='remove' v-if='petlist[0]' @react='react'></editpet>
+ <editpet ref='banner' :list='petlist' :index='index' @remove='remove' v-if='petlist' @react='react'></editpet>
   </div>
 </template>
 <script>
@@ -34,7 +34,7 @@ export default {
   inject:['reload'],
   data(){
       return{
-          petlist:[],
+          petlist:'',
           index:'',
           showflag:false,
           binddevice:[]
@@ -51,7 +51,7 @@ export default {
           getpet().then(res =>{
               console.log(res)
               if(res.data.header.status==1000){
-                  this.petlist.push(res.data.data)
+                  this.petlist=res.data.data
               }
           }).catch(error => {
               console.log(error)
@@ -75,11 +75,11 @@ export default {
         this.$router.replace({ path: '/addpet' })
       },
       remove(index){
-          this.petlist[0].splice(index,1)
+          this.petlist.splice(index,1)
            getpet().then(res =>{
               console.log(res)
               if(res.data.header.status==1000){
-                  this.petlist.push(res.data.data)
+                  this.petlist=res.data.data
               }
           }).catch(error => {
               console.log(error)

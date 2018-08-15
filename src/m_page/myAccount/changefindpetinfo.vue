@@ -10,9 +10,19 @@
  	 	<div class="main" ref='wrapper'>
  		<div>
  			 <div class="petmessage">
+ 			 	<div class="pet-msg">
  				<div class="petname">
  					<span>名称</span>
  					<el-input  :value='petName' @input='change0'></el-input>
+ 				</div>
+ 				<div class="switch">
+ 					<el-switch
+  						v-model="value2"
+  						active-color="#13ce66"
+  						inactive-color="#C0C0C0">
+					</el-switch>
+					<span>可开启关闭</span>
+ 				</div>
  				</div>
  				<div class="pet-msg">
  				<div class="petbelong">
@@ -68,7 +78,8 @@
 			content:'',
 			mobile:'',
 			email:'',
-			changeflag:false
+			changeflag:false,
+			value2:true
 			}
 		},
 		mounted(){
@@ -153,7 +164,16 @@
 	border-top-color: white;
 	border-right-color: white;
 	border-left-color: white;
-}	
+}
+.content .el-input__inner{
+	padding: 0 0;
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	border-top-color: white;
+	border-right-color: white;
+	border-left-color: white;
+}
 </style>
 <style scoped>
 .header span{
@@ -203,9 +223,11 @@
 	touch-action: none;
 }
 .petname{
-	position: relative;
 	margin-left: 15px;
-	width: 50%;
+	flex: 1;
+}
+.switch{
+	flex: 1;
 }
 .petmessage span{
 	font-size: 16px;
@@ -216,7 +238,6 @@
 }
 .petbelong{
 	flex: 1;
-	position: relative;
 	margin-left: 15px;
 }
 .pet-msg{
@@ -226,20 +247,16 @@
 }
 .money{
 	flex: 1;
-	position: relative;
 }
 .losttime{
 	flex: 1;
-	position: relative;
 	margin-left: 15px;
 }
 .loseplace{
 	flex: 1;
-	position: relative;
 }
 .content{
 	flex: 1;
-	position: relative;
 	margin-left: 15px;
 }
 .mobile{
