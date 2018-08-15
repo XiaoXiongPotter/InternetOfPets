@@ -31,3 +31,7 @@ export const addPublish = (params) => {
 export const listPublish = (params) => {
 	return http.fetchPost('/ClientServerApi/pets/search/listPublish',params)
 }
+//修改协寻信息
+export const updatePublish = (params) => {
+	return http.fetchPost('/ClientServerApi/pets/search/updatePublish',params)
+}
