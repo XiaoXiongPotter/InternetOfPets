@@ -32,7 +32,7 @@
     </div>
     <div class="btnGroup">
         <!-- <router-link class="btn" to='/changepet'>更改绑定宠物</router-link> -->
-         <router-link class="btn" to=''>发布协寻信息</router-link>
+         <router-link class="btn" :to="{path:'/releaseSearch', query:{id:bindPet,petname:petname}}">发布协寻信息</router-link>
          <el-button type="text" class="btn"  @click="unbind">设备解绑</el-button>
      
     </div>
@@ -53,7 +53,8 @@ export default {
       deviceName: "",
       deviceCode: "",
       options: "",
-      bindPet: this.$route.query.binded
+      bindPet: this.$route.query.binded,
+      petname:''
     };
   },
   created() {
@@ -66,15 +67,17 @@ export default {
         this.deviceInfo = res;
         this.deviceName = res.data.data.device.deviceName;
         this.deviceCode = res.data.data.device.deviceCode;
+        this.petId = res.data.data.device.petId
         //  this.bindPet =res.data.data.pet==null?'':res.data.data.pet
-        console.log("bingpat", res.data.data.pet);
+        console.log("bingpat", res.data);
         //输出返回值
         console.log("设备", res);
       })
       .catch(err => {});
     getpet().then(res => {
       this.options = res.data.data;
-      console.log("petlist", res);
+      console.log("petlist", res.data.data);
+      
     });
   },
   methods: {

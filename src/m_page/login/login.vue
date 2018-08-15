@@ -57,6 +57,7 @@ import Qs from "qs";
 import axios from "axios";
 import footernav from "../../components/footernav";
 export default {
+
     name: "login",
     data() {
         return {
@@ -76,20 +77,21 @@ export default {
         systemInit()
             .then(res => {
                 let data = res.headers["x-auth-token"];
-                if (data == sessionStorage.token) {
-                    this.$router.push({ path: "/" });
-                    this.$message({
-                        type: "success",
-                        message: "已登录，请勿重复登录"
-                    });
-                } else {
+                // if (data == sessionStorage.token) {
+                //     this.$router.push({ path: "/" });
+                //     this.$message({
+                //         type: "success",
+                //         message: "已登录，请勿重复登录"
+                //     });
+                // } else {
                     if (data != undefined) {
                         this.$store.commit("set_token", data); //根据store中set_token方法将token保存至localStorage/sessionStorage中，data["Authentication-Token"]，获取token的value值
                     }
-                }
+                // }
             })
             .catch(error => {
                 console.log(error);
+
             });
     },
     mounted() {

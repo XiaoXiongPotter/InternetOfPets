@@ -17,7 +17,7 @@ export const updatePet = (params) => {
 }
 //获取附近协寻列表
 export const nearSearch = (params) => {
-	return http.fetchPost('/ClientServerApi/ClientServer/qr/nearSearch',params)
+	return http.fetchPost('/ClientServerApi/qr/nearSearch',params)
 }
 //获取宠物设备
 export const getPetDevices = (params) => {
@@ -26,4 +26,8 @@ export const getPetDevices = (params) => {
 //发布协寻
 export const addPublish = (params) => {
 	return http.fetchPost('/ClientServerApi/pets/search/addPublish',params)
+}
+//我的协寻
+export const listPublish = (params) => {
+	return http.fetchPost('/ClientServerApi/pets/search/listPublish',params)
 }
