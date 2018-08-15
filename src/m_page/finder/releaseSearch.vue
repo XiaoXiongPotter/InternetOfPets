@@ -108,8 +108,8 @@ export default {
             };
         },
         back() {
-            this.$router.replace({ path: "/mypet" });
             sessionStorage.removeItem("base");
+            this.$router.back(-1)
         },
         release() {
             let params = Qs.stringify({
