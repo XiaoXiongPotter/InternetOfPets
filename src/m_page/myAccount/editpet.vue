@@ -210,13 +210,9 @@ export default {
             this.showflag = true;
         },
         search() {
-            this.$router.push({
-                name: "releaseSearch",
-                query: {
-                    id: this.id,
-                    petname: this.petname
-                }
-            });
+            this.$router.replace({ path: "/releaseSearch" });
+            Bus.$emit("id", this.id);
+            Bus.$emit("petname", this.petname);
         },
         remove() {
             this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
@@ -250,151 +246,37 @@ export default {
                     });
                 });
         },
-        methods: {
-            // 打开图片上传
-            uploadHeadImg: function() {
-                this.$confirm("是否修改头像?", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        this.$el.querySelector(".hiddenInput").click();
-                    })
-                    .catch(() => {});
-            },
-            // 将头像显示
-            handleFile: function(e) {
-                this.imgflag = true;
-                let $target = e.target || e.srcElement;
-                let file = $target.files[0];
-                var reader = new FileReader();
-                reader.readAsDataURL(file);
-                this.changeflag = true;
-                reader.onload = data => {
-                    let res = data.target || data.srcElement;
-                    this.avatar = res.result;
-                    sessionStorage.setItem(
-                        "base",
-                        data.target.result.split(",")[1]
-                    );
-                };
-            },
-            back() {
-                if (this.changeflag == true) {
-                    this.$confirm("是否放弃修改?", "提示", {
-                        confirmButtonText: "确定",
-                        cancelButtonText: "取消",
-                        type: "warning"
-                    })
-                        .then(() => {
-                            this.$emit("react");
-                            sessionStorage.removeItem("base");
-                        })
-                        .catch(() => {});
-                } else {
-                    this.showflag = false;
-                }
-            },
-            save() {
-                var params = Qs.stringify({
-                    name: this.list[this.index].name,
-                    petId: this.id,
-                    height: this.list[this.index].height,
-                    weight: this.list[this.index].weight,
-                    birthTime: this.list[this.index].birthTime,
-                    petType: this.list[this.index].petType,
-                    portrait: sessionStorage.base,
-                    color: this.list[this.index].color,
-                    gender: this.list[this.index].gender,
-                    character: this.list[this.index].character
-                });
-                updatePet(params)
-                    .then(res => {
-                        console.log(res);
-                        if (res.data.header.status == 1000) {
-                            sessionStorage.removeItem("base");
-                            this.changeflag = false;
-                            this.showflag = false;
-                            this.$emit("react");
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            },
-            show() {
-                this.showflag = true;
-            },
-            search() {
-                this.$router.replace({ path: "/releaseSearch" });
-                Bus.$emit("id", this.id);
-                Bus.$emit("petname", this.petname);
-            },
-            remove() {
-                this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        this.$message({
-                            type: "success",
-                            message: "删除成功!"
-                        });
-                        var params = Qs.stringify({
-                            petId: this.id
-                        });
-                        deletepet(params)
-                            .then(res => {
-                                if (res.data.header.status == 1000) {
-                                    this.showflag = false;
-                                    this.$emit("remove", this.index);
-                                }
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: "info",
-                            message: "已取消删除"
-                        });
-                    });
-            },
-            change0(e) {
-                this.list[this.index].name = e;
-                this.changeflag = true;
-            },
-            change1(e) {
-                this.list[this.index].petType = e;
-                this.changeflag = true;
-            },
-            change2(e) {
-                this.list[this.index].gender = e;
-                this.changeflag = true;
-            },
-            change3(e) {
-                this.list[this.index].height = e;
-                this.changeflag = true;
-            },
-            change4(e) {
-                this.list[this.index].weight = e;
-                this.changeflag = true;
-            },
-            change5(e) {
-                this.list[this.index].birthTime = e;
-                this.changeflag = true;
-            },
-            change6(e) {
-                this.list[this.index].color = e;
-                this.changeflag = true;
-            },
-            change7(e) {
-                this.list[this.index].character = e;
-                this.changeflag = true;
-            }
+        change0(e) {
+            this.list[this.index].name = e;
+            this.changeflag = true;
+        },
+        change1(e) {
+            this.list[this.index].petType = e;
+            this.changeflag = true;
+        },
+        change2(e) {
+            this.list[this.index].gender = e;
+            this.changeflag = true;
+        },
+        change3(e) {
+            this.list[this.index].height = e;
+            this.changeflag = true;
+        },
+        change4(e) {
+            this.list[this.index].weight = e;
+            this.changeflag = true;
+        },
+        change5(e) {
+            this.list[this.index].birthTime = e;
+            this.changeflag = true;
+        },
+        change6(e) {
+            this.list[this.index].color = e;
+            this.changeflag = true;
+        },
+        change7(e) {
+            this.list[this.index].character = e;
+            this.changeflag = true;
         }
     }
 };

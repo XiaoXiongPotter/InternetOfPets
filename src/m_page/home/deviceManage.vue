@@ -77,6 +77,7 @@ export default {
     getpet().then(res => {
       this.options = res.data.data;
       console.log("petlist", res.data.data);
+      
     });
   },
   methods: {
