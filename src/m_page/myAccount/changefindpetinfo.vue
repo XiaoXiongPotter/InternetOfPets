@@ -13,13 +13,14 @@
  			 	<div class="pet-msg">
  				<div class="petname">
  					<span>名称</span>
- 					<el-input  :value='petName' @input='change0'></el-input>
+ 					<el-input  :value='petName' @input='changepetName'></el-input>
  				</div>
  				<div class="switch">
  					<el-switch
   						v-model="value2"
   						active-color="#13ce66"
-  						inactive-color="#C0C0C0">
+  						inactive-color="#C0C0C0"
+  						@change='switchchange'>
 					</el-switch>
 					<span>可开启关闭</span>
  				</div>
@@ -27,44 +28,49 @@
  				<div class="pet-msg">
  				<div class="petbelong">
  					<span>种类</span>
- 					<el-input :value='petType'  @input='change1'></el-input>
+ 					<el-input :value='petType'  @input='changepetType'></el-input>
  				</div>
  				<div class="money" >
  					<span>赏金(￥)</span>
- 					<el-input :value='bounty'  @input='change2' ></el-input>
+ 					<el-input :value='bounty'  @input='changebounty' ></el-input>
  				</div>
  				</div>
  				<div class="pet-msg">
  					<div class="losttime">
  					<span>丢失时间</span>
- 					<el-input :value='loseTime'  @input='change3' ></el-input>
+ 					<el-input :value='loseTime'  @input='changeloseTime' ></el-input>
  					</div>
  					<div class="loseplace">
  					<span>丢失地点</span>
- 					<el-input :value='lostPlace'  @input='change4' ></el-input>
+ 					<el-input :value='lostPlace'  @input='changelostPlace' ></el-input>
  					</div>
  				</div>
  				<div class="pet-msg">
  					<div class="content">
  					<span>简介</span>
- 					<el-input :value='content'  @input='change5' ></el-input>
+ 					<el-input :value='content'  @input='changecontent' ></el-input>
   				</div>
  					</div>
  					<div class="mobile"> 
  					<span>联系电话</span>
- 					<el-input :value='mobile'  @input='change6' ></el-input>
+ 					<el-input :value='mobile'  @input='changemobile' ></el-input>
  					</div>
  				</div>
  				<div class="email">
  					<span>邮箱</span>
- 					<el-input :value='email'  @input='change7' ></el-input>
+ 					<el-input :value='email'  @input='changeemail' ></el-input>
  				</div>
+ 			<div class="save-btn" style="margin: 20px 0;">
+ 				 <el-button type="primary" round style='margin: auto;display: block;' @click='save'>保存修改</el-button>
+ 			</div>
  			</div>
  			</div>
  		</div>
 </template>
 <script>
 	import IScroll from 'iscroll/build/iscroll-probe'
+	import {updatePublish} from'../../ClientServerApi/index.js'
+	import Qs from "qs";
 	export default{
 		name:'changefindpetinfo',
 		data(){
@@ -79,7 +85,8 @@
 			mobile:'',
 			email:'',
 			changeflag:false,
-			value2:true
+			value2:true,
+			isOpen:true
 			}
 		},
 		mounted(){
@@ -115,35 +122,52 @@
 			this.$router.replace('/mysearch')
   		}
 		},
-		change0(e){
+		switchchange(){
+			this.isOpen=!this.isOpen
+		},
+		save(){
+//			let params = Qs.stringify({
+//				petId:this.id,
+//				lat:31.1882600000,
+//				lon:121.4368700000,
+//				mobile:this.$route.query.mobile,
+//				
+//			})
+//			updatePublish(params).then(res => {
+//				console.log(res)
+//			}).catch(error => {
+//				console.log(error)
+//			})
+		},
+		changepetName(e){
 		this.$route.query.petName=e
 		this.changeflag=true
 		},
-		change1(e){
+		changepetType(e){
 		this.$route.query.petType=e
 		this.changeflag=true
 		},
-		change2(e){
+		changebounty(e){
 		this.$route.query.bounty=e
 		this.changeflag=true
 		},
-		change3(e){
+		changeloseTime(e){
 		this.$route.query.loseTime=e
 		this.changeflag=true
 		},
-		change4(e){
+		changelostPlace(e){
 		this.$route.query.lostPlace=e
 		this.changeflag=true
 		},
-		change5(e){
+		changecontent(e){
 		this.$route.query.content=e
 		this.changeflag=true
 		},
-		change6(e){
+		changemobile(e){
 		this.$route.query.mobile=e
 		this.changeflag=true
 		},
-		change7(e){
+		changeemail(e){
 		this.$route.query.email=e
 		this.changeflag=true
 		}
