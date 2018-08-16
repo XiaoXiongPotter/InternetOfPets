@@ -12,9 +12,9 @@
                     <span>产品名称</span>
                     <p v-text='deviceName'></p>
                 </li>
-                 <li>
+                <li>
                     <span>产品类型</span>
-                    <p v-text='deviceType'></p>
+                    <p v-text='deviceType | productType'></p>
                 </li>
                 <li>
                     <span>产品编号</span>
@@ -54,7 +54,7 @@ export default {
             deviceInfo: "",
             deviceName: "",
             deviceCode: "",
-            deviceType:"",
+            deviceType: "",
             options: "",
             bindPet: this.$route.query.binded,
             petname: ""
@@ -118,7 +118,7 @@ export default {
                     this.deviceInfo = res;
                     this.deviceName = res.data.data.device.deviceName;
                     this.deviceCode = res.data.data.device.deviceCode;
-                     this.deviceType = res.data.data.device.type;
+                    this.deviceType = res.data.data.device.type;
                     this.petId = res.data.data.device.petId;
                     //  this.bindPet =res.data.data.pet==null?'':res.data.data.pet
                     console.log("bingpat", res.data);
@@ -178,6 +178,11 @@ export default {
                         message: "已取消解绑"
                     });
                 });
+        }
+    },
+    filters: {
+        productType: function(value) {
+            if (value == "TAG") return "多尼斯协寻吊坠";
         }
     },
     components: {
