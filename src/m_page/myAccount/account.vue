@@ -16,7 +16,7 @@
 		</div>
 		<div class="main-headportrait" v-for="(item,index) in message" :key='index'>
 			<div class="user">
-				<span v-if="flag">{{item.username}}<img src="../../image/change.png" @click="edit"></span>
+				<span v-if="flag">{{item.nickname}}<img src="../../image/change.png" @click="edit"></span>
 				<el-input v-model='user' placeholder='输入昵称' v-else @blur='input' ref='inp'></el-input>
 			</div>
 			<p>{{item.mobile}}</p>
@@ -122,7 +122,7 @@ export default {
         return {
             message: [
                 {
-                    username: "",
+                    nickname: "",
                     mobile: ""
                 }
             ],
@@ -153,7 +153,7 @@ export default {
         getLoginUser()
             .then(res => {
                 console.log(res.data);
-                this.message[0].username = res.data.data.username;
+                this.message[0].nickname = res.data.data.nickname;
                 this.message[0].mobile = res.data.data.mobile;
                 this.avatar1 = res.data.data.photoUrl;
             })
@@ -183,7 +183,6 @@ export default {
             let file = $target.files[0];
             var reader = new FileReader();
             reader.readAsDataURL(file);
-            this.changeflag = true;
             reader.onload = data => {
                 let res = data.target || data.srcElement;
                 this.avatar = res.result;
@@ -206,14 +205,14 @@ export default {
         },
         edit() {
             this.flag = false;
-            this.user = this.message[0].username;
+            this.user = this.message[0].nickname;
         },
         input() {
             this.flag = true;
             if (this.user != this.message[0].user) {
-                this.message[0].username = this.user;
+                this.message[0].nickname = this.user;
                 let params = Qs.stringify({
-                    nickname: this.message[0].username
+                    nickname: this.message[0].nickname
                 });
                 updateUserInfo(params)
                     .then(res => {

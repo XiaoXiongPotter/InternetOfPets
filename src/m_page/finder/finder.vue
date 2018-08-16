@@ -65,6 +65,7 @@
        })
        nearSearch(params).then(res => {
 		   this.list=res.data.data
+		   console.log(res)
 		   console.log(this.list)
 
        }).catch(error => {

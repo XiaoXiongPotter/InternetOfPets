@@ -5,56 +5,64 @@
 				<img src="../../image/back.png" class="back" @click="back" />
 				<div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
 			</div>
-			<div class="title">
+			<div class="main" ref='wrapper'>
+				<div>
+				<div class="title">
 				<div class="head_img">
 					<img :src="imgflag?avatar:avatar1" @click.stop="uploadHeadImg" style="margin: auto;display: block;" />
 				</div>
 				<input type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
 				<p>点击头像可更换照片</p>
 			</div>
-			<div class="main" ref='wrapper'>
-				<div>
 					<div class="petmessage">
 						<div class="petname" v-if='list'>
 							<span>名称</span>
-							<el-input :value='petname' @input='change0'></el-input>
+							<el-input :value='petname' @input='changename'></el-input>
 						</div>
 						<div class="pet-msg">
 							<div class="petbelong" v-if='list'>
 								<span>种类</span>
-								<el-input :value='petbelong' @input='change1'></el-input>
+								<el-input :value='petbelong' @input='changepetbelong'></el-input>
 							</div>
 							<div class="sex" v-if='list'>
 								<span>性别</span>
-								<el-input :value='sex' @input='change2'></el-input>
+								<br />
+								<div class="selectsex" style="margin-top: 10px;">
+								<el-radio v-model="radio" label="男" @change='selectman'>男</el-radio>
+  								<el-radio v-model="radio" label="女" @change='selectwomen'>女</el-radio>
+								</div>
 							</div>
 						</div>
 						<div class="pet-msg">
 							<div class="height" v-if='list'>
 								<span>身高(cm)</span>
-								<el-input :value='height' @input='change3'></el-input>
+								<el-input :value='height' @input='changeheight' @change='judgeheight'></el-input>
+								<br />
+								<span class="danger" v-show='flag'>格式不正确</span>
 							</div>
 							<div class="weight" v-if='list'>
 								<span>体重(kg)</span>
-								<el-input :value='weight' @input='change4'></el-input>
+								<el-input :value='weight' @input='changeweight' @change='judgeweight'></el-input>
+								<br />
+								<span class="danger" v-show='flag1'>格式不正确</span>
 							</div>
 						</div>
 						<div class="pet-msg">
 							<div class="birthday" v-if='list'>
 								<span>出生日期</span>
 								<div class="block">
-									<el-date-picker type="date" value-format="yyyy-MM-dd" v-model='birthday' @input='change5'>
+									<el-date-picker type="date" value-format="yyyy-MM-dd" v-model='birthday' @input='changebirthday'>
 									</el-date-picker>
 								</div>
 							</div>
 							<div class="haircolor" v-if='list'>
 								<span>毛色</span>
-								<el-input :value='haircolor' @input='change6'></el-input>
+								<el-input :value='haircolor' @input='changehaircolor'></el-input>
 							</div>
 						</div>
 						<div class="character" v-if='list'>
 							<span>性格</span>
-							<el-input :value='character' @input='change7'></el-input>
+							<el-input :value='character' @input='changecharacter'></el-input>
 						</div>
 						<div class="binddevice" v-if='list'>
 							<span>绑定设备</span>
@@ -103,13 +111,19 @@ export default {
             avatar: "",
             avatar1: "",
             id: "",
-            device: ""
+            device: "",
+            radio:'',
+            man:'男',
+            women:'女',
+            flag:false,
+            flag1:false
         };
     },
     beforeUpdate() {
         this.$nextTick(() => {
             this.Scroll = new IScroll(this.$refs.wrapper, {
-                click: true
+                click: true,
+                preventDefault:false
             });
             this.id = this.list[this.index].id;
             let params = Qs.stringify({ petId: this.id });
@@ -124,7 +138,7 @@ export default {
                 });
             this.petname = this.list[this.index].name;
             this.petbelong = this.list[this.index].petType;
-            this.sex = this.list[this.index].gender;
+            this.radio = this.list[this.index].gender;
             this.height = this.list[this.index].height;
             this.weight = this.list[this.index].weight;
             this.birthday = this.list[this.index].birthTime;
@@ -157,11 +171,32 @@ export default {
             reader.onload = data => {
                 let res = data.target || data.srcElement;
                 this.avatar = res.result;
-                sessionStorage.setItem(
-                    "base",
-                    data.target.result.split(",")[1]
-                );
+                sessionStorage.setItem("base",data.target.result.split(",")[1]);
             };
+        },
+        judgeheight(){
+        	let reg = /^[0-9]*$/
+        	if(reg.test(this.list[this.index].height)){
+        		this.flag=false
+        	}else{
+        		this.flag=true
+        	}
+        },
+        judgeweight(){
+        	let reg = /^[0-9]*$/
+        	if(reg.test(this.list[this.index].height)){
+        		this.flag1=false
+        	}else{
+        		this.flag1=true
+        	}
+        },
+        selectman(){
+        	this.list[this.index].gender=this.man
+        	this.changeflag=true
+        },
+        selectwomen(){
+        	this.list[this.index].gender=this.women
+        	this.changeflag=true
         },
         back() {
             if (this.changeflag == true) {
@@ -169,8 +204,7 @@ export default {
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",
                     type: "warning"
-                })
-                    .then(() => {
+                }).then(() => {
                         this.$emit("react");
                         sessionStorage.removeItem("base");
                     })
@@ -180,7 +214,8 @@ export default {
             }
         },
         save() {
-            var params = Qs.stringify({
+        	if(this.flag==false&&this.flag1==false){
+        		var params = Qs.stringify({
                 name: this.list[this.index].name,
                 petId: this.id,
                 height: this.list[this.index].height,
@@ -205,6 +240,7 @@ export default {
                 .catch(error => {
                     console.log(error);
                 });
+        	}
         },
         show() {
             this.showflag = true;
@@ -250,35 +286,31 @@ export default {
                     });
                 });
         },
-        change0(e) {
+        changename(e) {
             this.list[this.index].name = e;
             this.changeflag = true;
         },
-        change1(e) {
+        changepetbelong(e) {
             this.list[this.index].petType = e;
             this.changeflag = true;
         },
-        change2(e) {
-            this.list[this.index].gender = e;
-            this.changeflag = true;
-        },
-        change3(e) {
+        changeheight(e) {
             this.list[this.index].height = e;
             this.changeflag = true;
         },
-        change4(e) {
+        changeweight(e) {
             this.list[this.index].weight = e;
             this.changeflag = true;
         },
-        change5(e) {
+        changebirthday(e) {
             this.list[this.index].birthTime = e;
             this.changeflag = true;
         },
-        change6(e) {
+        changehaircolor(e) {
             this.list[this.index].color = e;
             this.changeflag = true;
         },
-        change7(e) {
+        changecharacter(e) {
             this.list[this.index].character = e;
             this.changeflag = true;
         }
@@ -316,6 +348,10 @@ export default {
 }
 </style>
 <style scoped>
+.editpet .danger{
+	font-size: 10px;
+	color: red;
+}
 .head_img img {
     width: 90px;
     height: 90px;
@@ -372,7 +408,8 @@ export default {
 }
 .main {
     position: absolute;
-    top: 169px;
+    top: 40px;
+
     bottom: 0px;
     width: 100%;
     overflow: hidden;

@@ -81,7 +81,8 @@
 					lostPlace:this.petlist[index].lostPlace,
 					content:this.petlist[index].content,
 					mobile:this.petlist[index].mobile,
-					email:this.petlist[index].email
+					email:this.petlist[index].email,
+					publishId:this.petlist[index].publishId
 				} })
      }
   		}
