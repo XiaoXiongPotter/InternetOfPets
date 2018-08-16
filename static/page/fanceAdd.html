@@ -153,7 +153,8 @@ body, html, #allmap{
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBscRp6VhOxS1pQqPSMnU_QP2e-L-xofxI&signed_in=true"></script> -->
 <script type="text/javascript">
 	var map = new BMap.Map("allmap"); // 创建Map实例
-	var serverUrl = 'http://192.168.0.123/ClientServer';
+	//var serverUrl = 'http://petnet.imwork.net:9860/ClientServer';
+	var serverUrl = 'http://petnet.imwork.net:9860/ClientServer';
 	var url = location.href;
 	//获取当前时间戳
 	var deviceId = url.substring(url.indexOf('imeiId=')+7, url.length);
@@ -238,8 +239,8 @@ body, html, #allmap{
 			//先查询是否有围栏
 			$.ajax({
 				type:'POST',
-				headers:{x_auth_token: '123'},
-				url:serverUrl + '/necklace/info/listGeoFanceByDeviceId?deviceCode='+deviceId,
+				headers:{'x-auth-token': token},
+				url:serverUrl + '/necklace/info/listGeoFanceByDeviceId?deviceCode='+deviceId+'&x-auth-token='+token,
 				success:function(data){
 					console.log(data)
 					var num = data.data.length;
@@ -248,16 +249,16 @@ body, html, #allmap{
 					console.log("fanceId:"+fanceId)
 						$.ajax({
 							type:'POST',
-							headers:{x_auth_token: '123'},
-							url:serverUrl + '/necklace/info/updateGeoFance?fanceId='+fanceId+'&fanceCenter='+lat+','+lon+'&radius=1700&status=0&name=updata',
+							//headers:{'x-auth-token': token},
+							url:serverUrl + '/necklace/info/updateGeoFance?fanceId='+fanceId+'&fanceCenter='+lat+','+lon+'&radius=1700&status=0&name=updata'+'&x-auth-token='+token,
 							success:function(data){
 								console.log("更新围栏")
 								console.log(data)
 								if(data.header.status=='1000'){
 									$.ajax({
 							    		type:'POST',
-							    		headers:{x_auth_token: '123'},
-							    		url:serverUrl+'/necklace/info/switchGeoFance?deviceCode='+deviceId+'&fanceId='+fanceId,
+							    		//headers:{'x-auth-token': token},
+							    		url:serverUrl+'/necklace/info/switchGeoFance?deviceCode='+deviceId+'&fanceId='+fanceId+'&x-auth-token='+token,
 							    		success:function(res){
 							    			console.log('选择围栏：')
 							    			console.log(res)
@@ -265,8 +266,8 @@ body, html, #allmap{
  							    			if(status_=='1000'){
 							    				$.ajax({
 										    		type:'POST',
-										    		headers:{x_auth_token: '123'},
-										    		url:serverUrl+'/necklace/device/onoffFance?deviceCode='+deviceId+'&onoff=1&timestamp='+timestamp,
+										    		//headers:{'x-auth-token': token},
+										    		url:serverUrl+'/necklace/device/onoffFance?deviceCode='+deviceId+'&onoff=1&timestamp='+timestamp+'&x-auth-token='+token,
 										    		success:function(res){
 										    			timeOut = setTimeout(function(){
 										    				alert('网络异常')
@@ -288,21 +289,21 @@ body, html, #allmap{
 					}else{//没有围栏增加围栏
 						 $.ajax({
 						type:'POST',
-						headers:{x_auth_token: '123'},
-						url:serverUrl + '/necklace/info/addGeoFance?deviceCode='+deviceId+'&name="newFance"&fanceCenter='+lat+','+lon+'&radius=500&status=0',
+						headers:{'x-auth-token': token},
+						url:serverUrl + '/necklace/info/addGeoFance?deviceCode='+deviceId+'&name="newFance"&fanceCenter='+lat+','+lon+'&radius=500&status=0'+'&x-auth-token='+token,
 					    success:function(data){
 					    	fanceId = data.data.id;
 					    	$.ajax({
 					    		type:'POST',
-					    		headers:{x_auth_token: '123'},
-					    		url:serverUrl+'/necklace/info/switchGeoFance?deviceCode='+deviceId+'&fanceId='+fanceId,
+					    		headers:{'x-auth-token': token},
+					    		url:serverUrl+'/necklace/info/switchGeoFance?deviceCode='+deviceId+'&fanceId='+fanceId+'&x-auth-token='+token,
 					    		success:function(res){
 					    			var status_=res.header.status;
 					    			if(status_=='1000'){
 					    				$.ajax({
 								    		type:'POST',
-								    		headers:{x_auth_token: '123'},
-								    		url:serverUrl+'/necklace/device/onoffFance?deviceCode='+deviceId+'&onoff=1&timestamp='+timestamp,
+								    		headers:{'x-auth-token': token},
+								    		url:serverUrl+'/necklace/device/onoffFance?deviceCode='+deviceId+'&onoff=1&timestamp='+timestamp+'&x-auth-token='+token,
 								    		success:function(res){
 								    			timeOut = setTimeout(function(){
 								    				alert('网络异常')
