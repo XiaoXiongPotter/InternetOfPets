@@ -16,7 +16,7 @@
    <div class="commonproblem-main" ref='wrapper' v-show="flag5" style="margin-top: 10px;">
    	<div>
    	 <div class="block">
-    <el-carousel trigger="click" style='height: 200px;' arrow="always" :autoplay='false' indicator-position="none">
+    <el-carousel trigger="click"  arrow="always" :autoplay='false' indicator-position="none">
       <el-carousel-item v-for="item in Intelligentpetrobot" :key="item">
         <img :src="item"/>
       </el-carousel-item>
@@ -38,11 +38,12 @@
   </div>
   </div>
    </div>
-   	<div class="commonproblem-main" v-show="flag6" ref='wrapper' style="margin-top: 10px;">
+   	<div class="commonproblem-main" v-show="flag6" ref='wrapper1' style="margin-top: 10px;">
    		<div>
    	   	 <div class="block">
-    <el-carousel trigger="click"  arrow="always" :autoplay='false' style='height: 200px;' indicator-position="none">
-      <el-carousel-item v-for="item in 4" :key="item">
+    <el-carousel trigger="click"  arrow="always" :autoplay='false' indicator-position="none">
+      <el-carousel-item v-for="item in Automaticwater" :key="item">
+      	<img :src="item"/>
       </el-carousel-item>
     </el-carousel>
   </div>
@@ -60,12 +61,12 @@
   </div>
   </div>
    	</div>
-   	<div class="commonproblem-main"  v-show="flag7" ref='wrapper' style="margin-top: 10px;">
+   	<div class="commonproblem-main"  v-show="flag7" ref='wrapper2' style="margin-top: 10px;">
    		<div>
    	   	 <div class="block">
-    <el-carousel trigger="click"  arrow="always" :autoplay='false' style='height: 200px;'  indicator-position="none">
-      <el-carousel-item v-for="item in 4" :key="item">
-<!--        <h3>{{ item }}</h3>-->
+    <el-carousel trigger="click"  arrow="always" :autoplay='false'  indicator-position="none">
+      <el-carousel-item v-for="item in Pamper" :key="item">
+			<img :src="item"/>
       </el-carousel-item>
     </el-carousel>
   </div>
@@ -85,12 +86,12 @@
   </div>
   </div>
    	</div>
-   	<div class="commonproblem-main" v-show="flag8" ref='wrapper' style="margin-top: 10px;">
+   	<div class="commonproblem-main" v-show="flag8" ref='wrapper3' style="margin-top: 10px;">
    		<div>
    	   	 <div class="block">
-    <el-carousel trigger="click"  arrow="always" :autoplay='false' style='height: 200px;' indicator-position="none">
-      <el-carousel-item v-for="item in 4" :key="item">
-<!--        <h3>{{ item }}</h3>-->
+    <el-carousel trigger="click"  arrow="always" :autoplay='false'  indicator-position="none">
+      <el-carousel-item v-for="item in Feeders" :key="item">
+		<img :src="item"/>
       </el-carousel-item>
     </el-carousel>
   </div>
@@ -111,12 +112,12 @@
   </div>
   </div>
    	</div>
-   	<div class="commonproblem-main"  v-show="flag9" ref='wrapper' style="margin-top: 10px;">
+   	<div class="commonproblem-main"  v-show="flag9" ref='wrapper4' style="margin-top: 10px;">
    		<div>
       <div class="block">
-    <el-carousel trigger="click"  arrow="always" :autoplay='false' style='height: 200px;'  indicator-position="none">
-      <el-carousel-item v-for="item in 4" :key="item">
-<!--        <h3>{{ item }}</h3>-->
+    <el-carousel trigger="click"  arrow="always" :autoplay='false'   indicator-position="none">
+      <el-carousel-item v-for="item in Bread" :key="item">
+		<img :src="item" />
       </el-carousel-item>
     </el-carousel>
     <div class="Productintroduction" style="text-align: center;margin-top: 10px;color: #FF8C00;">
@@ -148,16 +149,51 @@
 				flag8:false,
 				flag9:false,
 				Intelligentpetrobot:[
-					require('../../image/IPETrobotQuickstart1.jpg'),
-					require('../../image/IPETrobotQuickstart2.jpg'),
-					require('../../image/IPETrobotQuickstart3.jpg'),
-					require('../../image/IPETrobotQuickstart4.jpg'),
-					require('../../image/IPETrobotQuickstart5.jpg'),
-					require('../../image/IPETrobotQuickstart6.jpg'),
-					require('../../image/IPETrobotQuickstart7.jpg'),
-					require('../../image/IPETrobotQuickstart8.jpg')
+					require('../../image/petrobot1.jpg'),
+					require('../../image/petrobot2.jpg'),
+					require('../../image/petrobot3.jpg'),
+					require('../../image/petrobot4.jpg'),
+					require('../../image/petrobot5.jpg'),
+					require('../../image/petrobot6.jpg'),
+					require('../../image/petrobot7.jpg'),
+					require('../../image/petrobot8.jpg')
+				],
+				Automaticwater:[
+					require('../../image/Waterdispenser1.jpg'),
+					require('../../image/Waterdispenser2.jpg'),
+					require('../../image/Waterdispenser3.jpg'),
+					require('../../image/Waterdispenser4.jpg')
+				],
+				Pamper:[
+					require('../../image/pamper1.jpg'),
+					require('../../image/pamper2.jpg'),
+					require('../../image/pamper3.jpg'),
+					require('../../image/pamper4.jpg'),
+					require('../../image/pamper5.jpg'),
+					require('../../image/pamper6.jpg'),
+					require('../../image/pamper7.jpg'),
+					require('../../image/pamper8.jpg')
+				],
+				Feeders:[
+					require('../../image/Feeders1.jpg'),
+					require('../../image/Feeders2.jpg'),
+					require('../../image/Feeders3.jpg'),
+					require('../../image/Feeders4.jpg'),
+					require('../../image/Feeders5.jpg'),
+					require('../../image/Feeders6.jpg'),
+					require('../../image/Feeders7.jpg'),
+					require('../../image/Feeders8.jpg')
+				],
+				Bread:[
+					require('../../image/breadinfo1.jpg'),
+					require('../../image/breadinfo2.jpg'),
+					require('../../image/breadinfo3.jpg'),
+					require('../../image/breadinfo4.jpg'),
+					require('../../image/breadinfo5.jpg'),
+					require('../../image/breadinfo6.jpg'),
+					require('../../image/breadinfo7.jpg'),
+					require('../../image/breadinfo8.jpg')
 				]
-				
 			}
 		},
   	created(){
@@ -165,15 +201,28 @@
          this.newScroll = new IScroll(this.$refs.banner, {
           click: true,
           scrollX:true,
-          scrollY:false,
-          preventDefault:false
+          scrollY:false
         })
-         this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true,
-          scrollY:true,
-          preventDefault:false
+        this.Scroll = new IScroll(this.$refs.wrapper, {
+          click: true
         })
        })
+  	},
+  	beforeUpdate(){
+  		this.$nextTick(() => {
+         this.Scroll1 = new IScroll(this.$refs.wrapper1, {
+          click: true
+        })
+         this.Scroll2 = new IScroll(this.$refs.wrapper2, {
+          click: true
+        })
+         this.Scroll3 = new IScroll(this.$refs.wrapper3, {
+          click: true
+        })
+         this.Scroll4 = new IScroll(this.$refs.wrapper4, {
+          click: true
+        })
+  		})
   	},
 		methods:{
 			back(){
@@ -219,25 +268,14 @@
 </script>
 <style>
 .el-carousel__container{
-	height: 200px;
+	height: 280px;
 }
 .commonproblem .el-carousel__container{
-	width: 80%;
-	max-width: 720px;
-	left: 10%;
+	width: 100%;
 }
-.commonproblem .el-carousel__item h3 {
-    color: #475669;
-    font-size: 14px;
-    opacity: 0.75;
-    line-height: 150px;
-    margin: 0;
-  }
-
 .commonproblem .el-carousel__item:nth-child(2n) {
      background-color: #99a9bf;
   }
-  
 .commonproblem .el-carousel__item:nth-child(2n+1) {
      background-color: #d3dce6;
   }
@@ -245,7 +283,7 @@
 <style scoped>
 .block img{
 	width: 100%;
-	height: 200px;
+	height: 100%;
 }
 .active{
 	border-bottom: 1px solid #409EFF;
@@ -272,6 +310,9 @@
 	height: 22px;
 	position: absolute;
 	top: 18%;
+}
+.head-nav{
+	overflow: hidden;
 }
 .head-nav ul{
 	display: flex;
