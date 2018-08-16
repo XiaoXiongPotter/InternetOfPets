@@ -258,9 +258,9 @@ height:40px;
 		<div id="fenceClose">
 			<img alt="fenceClose" class='fance' src="../img/fenceClose.png" />
 		</div> 
-		<div id="voice">
+		<!-- <div id="voice">
 			<img alt="voice" src="../img/voice.png" />
-		</div> 
+		</div>  -->
 		<div id="refresh">
 			<img alt="refresh" src="../img/refresh.png" />
 		</div> 
@@ -333,12 +333,12 @@ console.log('控制台打印信息');
 	//定时器
 	var timeOut;
 	//调用接口的url
-	var serverUrl = 'http://119.29.172.179860/860/ClientServer/ClientServer';
+	var serverUrl = 'http://119.29.172.17:9860/ClientServer';
 	//var serverUrl = 'http://192.168.0.123/ClientServer';
 	//链接socket的url
 	//var socketUrl = 'http://dogness.imwork.net:9227/stomp';
 	//var socketUrl = 'https://www.dognessnetwork.com/socket/stomp/topic/chat/';
-	var socketUrl = 'ws://192.168.0.123:8088/messageServer/chat';
+	var socketUrl = 'ws://119.29.172.17:8081/messageServer/chat';
 	//var socketUrl = 'wss://www.dognessnetwork.com/messageServer/chat';
 	//当前定位
 	var nopoint = null;
