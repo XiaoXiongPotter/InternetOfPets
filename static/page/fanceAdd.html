@@ -154,7 +154,7 @@ body, html, #allmap{
 <script type="text/javascript">
 	var map = new BMap.Map("allmap"); // 创建Map实例
 	//var serverUrl = 'http://petnet.imwork.net:9860/ClientServer';
-	var serverUrl = 'http://petnet.imwork.net:9860/ClientServer';
+	var serverUrl = 'http://119.29.172.17:9860/ClientServer';
 	var url = location.href;
 	//获取当前时间戳
 	var deviceId = url.substring(url.indexOf('imeiId=')+7, url.length);
@@ -163,7 +163,7 @@ body, html, #allmap{
 	var lon = url.substring(url.indexOf('lon=')+4, url.indexOf('&lat'));
 	var lat = url.substring(url.indexOf('lat=')+4, url.indexOf('&imei'));
 	//var socketUrl = 'wss://www.dognessnetwork.com/messageServer/chat';
-	var socketUrl = 'ws://localhost:8088/messageServer/chat';
+	var socketUrl = 'ws://119.29.172.17:8081/messageServer/chat';
 	var radius;
 	var point = new BMap.Point(lon,lat);
 	var fanceId;
@@ -171,17 +171,16 @@ body, html, #allmap{
 	var timeOut;
 	var token = window.sessionStorage.getItem("token");
 	$(function() {
-		//h5接收网页推送
-		var room = "866557030061396";
 		//注册websocket
 		var socket = new WebSocket(socketUrl);
 		socket.onopen = function()
 	        {
-	            console.log("链接打开");
+	            console.log("链接打开:"+imei);
 	            //sessionId是用户登录时的sessionId，要传到soket服务器
 	            var message = {
-	            		   "sessionId": imei,
-	        		       "deviceCode":deviceId
+	            		   "sessionId": token,
+	        		       "deviceCode":deviceId,
+	        		       "imei":imei
 	        		     }
 	            socket.send(JSON.stringify(message) );
 	        };
@@ -219,7 +218,7 @@ body, html, #allmap{
 							 console.log("on:"+on+'==off:'+off)
 							setTimeout(function(){
 								 window.location.href='../../static/page/necklace_map.html?deviceId='+deviceId+'&imei='+imei
-							},10)
+							},1000)
 						}//清除定时器
 						window.clearTimeout(timeOut);
 					}
@@ -266,12 +265,14 @@ body, html, #allmap{
  							    			if(status_=='1000'){
 							    				$.ajax({
 										    		type:'POST',
-										    		//headers:{'x-auth-token': token},
+										    		headers:{'x-auth-token': token},
 										    		url:serverUrl+'/necklace/device/onoffFance?deviceCode='+deviceId+'&onoff=1&timestamp='+timestamp+'&x-auth-token='+token,
 										    		success:function(res){
+										    			console.log("开关围栏")
+										    			console.log(res)
 										    			timeOut = setTimeout(function(){
 										    				alert('网络异常')
-										    				window.location.href='../../static/page/necklace_map.html?fanceId='+fanceId+'&imei='+imei;
+										    				window.location.href='../../static/page/necklace_map.html?deviceId='+deviceId+'&imei='+imei;
 										    			},60000);
 										    			//setTimeout(function(){window.location.href='/necklace_map.html?fanceId='+fanceId+'&imei='+imei},600);
 										    		}		
