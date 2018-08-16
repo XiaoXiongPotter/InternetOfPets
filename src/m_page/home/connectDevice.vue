@@ -1,7 +1,7 @@
 <template>
   <div class="connectDevice">
       <v-header :go-back="true"></v-header>
-    <p class="explain">智能宠物机器狗网络接入</p>
+    <p class="explain">多尼斯智能设备网络接入</p>
     <dl>
         <dt>
             <img src="../../image/robot.jpg" alt="">
@@ -11,7 +11,7 @@
         </dt>
     </dl>
     <div class="configuration ">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum fugiat ab sint quod provident, assumenda numquam nihil. Totam optio beatae itaque, quod provident id expedita aspernatur ipsa? Magni, ipsa ullam.
+          多尼斯宠联网平台智能设备接入
     </div>
     <router-link to="/createQrCode" class="next">下一步</router-link>
   </div>
@@ -25,7 +25,7 @@ export default {
   }
 };
 </script>
-<style scroped>
+<style scoped>
 .explain {
   color: #0ca8e3;
   text-align: center;

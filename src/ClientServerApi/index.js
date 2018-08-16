@@ -23,6 +23,10 @@ export const nearSearch = (params) => {
 export const getPetDevices = (params) => {
 	return http.fetchPost('/ClientServerApi/devices/listByPet',params)
 }
+// //通过IMEI获取项圈设备详细信息
+// export const getPetDevicesByImei = (params) => {
+// 	return http.fetchPost('/ClientServerApi/base/necklace/getNecklaceByImei',params)
+// }
 //发布协寻
 export const addPublish = (params) => {
 	return http.fetchPost('/ClientServerApi/pets/search/addPublish',params)

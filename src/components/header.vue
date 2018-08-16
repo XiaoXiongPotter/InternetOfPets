@@ -1,26 +1,25 @@
 <template>
-  <div class="header">
-
-    <div class="head_goback">
-      <img src="../image/goback.png" v-if="goBack" alt="" @click="$router.go(-1)">
-    </div>
-    <div class="imgBox"><img src="../image/logo-m.png" alt=""></div>
-    <div class="add" @click="show = !show" v-if="addDevices">
-      <transition name="el-fade-in-linear">
-        <div v-show="show" class="transition-box">
-          <div class="triangle "></div>
-          <div class="funBtn ">
-            <p>
-              <router-link to="/addDevice">添加设备</router-link>
-            </p>
-            <p>
-              <a :href="'../../static/page/scan.html?token='+authToken"> 扫一扫</a>
-            </p>
-          </div>
+    <div class="header">
+        <div class="head_goback">
+            <img src="../image/goback.png" v-if="goBack" alt="" @click="$router.go(-1)">
         </div>
-      </transition>
+        <div class="imgBox"><img src="../image/logo-m.png" alt=""></div>
+        <div class="add" @click="show = !show" v-if="addDevices">
+            <transition name="el-fade-in-linear">
+                <div v-show="show" class="transition-box">
+                    <div class="triangle "></div>
+                    <div class="funBtn ">
+                        <p>
+                            <router-link to="/addDevice">添加设备</router-link>
+                        </p>
+                        <p>
+                            <a :href="'../../static/page/scan.html?token='+authToken"> 扫一扫</a>
+                        </p>
+                    </div>
+                </div>
+            </transition>
+        </div>
     </div>
-  </div>
 </template>
 <script>
 import { systemInit } from "../api/index.js";
@@ -36,7 +35,10 @@ export default {
         systemInit().then(res => {
             // console.log('token',res.headers['x-auth-token'])
             // console.log('token111',this.authToken)
-            if (this.authToken != res.headers["x-auth-token"]) {
+            console.log("11", this.authToken);
+            if (this.authToken == undefined) {
+                this.$router.push({ path: "/login" });
+            } else if (this.authToken != res.headers["x-auth-token"]) {
                 this.$router.push({ path: "/login" });
                 this.$message({
                     type: "success",
@@ -65,9 +67,9 @@ export default {
     color: #0ca8e3;
     height: 40px;
     line-height: 40px;
-    /* position: fixed;
-  top:0;
-  z-index: 10; */
+    /* position: absolute;;
+  
+  z-index: 10000;  */
 }
 .header .imgBox {
     float: left;
