@@ -78,6 +78,7 @@ export default {
     width: 100%;
     height: 90%;
     overflow: hidden;
+    touch-action: none;
 }
 .title {
     text-align: center;
