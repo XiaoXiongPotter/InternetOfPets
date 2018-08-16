@@ -258,9 +258,9 @@ height:40px;
 		<div id="fenceClose">
 			<img alt="fenceClose" class='fance' src="../img/fenceClose.png" />
 		</div> 
-		<div id="voice">
+		<!-- <div id="voice">
 			<img alt="voice" src="../img/voice.png" />
-		</div> 
+		</div>  -->
 		<div id="refresh">
 			<img alt="refresh" src="../img/refresh.png" />
 		</div> 
@@ -333,12 +333,12 @@ console.log('控制台打印信息');
 	//定时器
 	var timeOut;
 	//调用接口的url
-	//var serverUrl = 'http://petnet.imwork.net:9860/ClientServer';
-	var serverUrl = 'http://192.168.0.123/ClientServer';
+	var serverUrl = 'http://119.29.172.17:9860/ClientServer';
+	//var serverUrl = 'http://192.168.0.123/ClientServer';
 	//链接socket的url
 	//var socketUrl = 'http://dogness.imwork.net:9227/stomp';
 	//var socketUrl = 'https://www.dognessnetwork.com/socket/stomp/topic/chat/';
-	var socketUrl = 'ws://192.168.0.123:8088/messageServer/chat';
+	var socketUrl = 'ws://119.29.172.17:8081/messageServer/chat';
 	//var socketUrl = 'wss://www.dognessnetwork.com/messageServer/chat';
 	//当前定位
 	var nopoint = null;
@@ -346,7 +346,7 @@ console.log('控制台打印信息');
 	var googleMap, infoWindow;
 	//imei
 	var imei = url.substring(url.indexOf('imei')+5, url.length)
-	//判断是在哪个国际
+	//判断是在哪个国家
 	var language = 'ZH';
 	//围栏状态
 	var fanceStatus;
@@ -374,11 +374,12 @@ console.log('控制台打印信息');
 		var socket = new WebSocket(socketUrl);
 		socket.onopen = function()
 	        {
-	            console.log("链接打开");
+	            console.log("链接打开:"+imei);
 	            //sessionId是用户登录时的sessionId，要传到soket服务器
 	            var message = {
-	        		       "sessionId": imei,
-	        		       "deviceCode":deviceId
+	        		       "sessionId": token,
+	        		       "deviceCode":deviceId,
+	        		       "imei":imei
 	        		     }
 	            socket.send(JSON.stringify(message) );
 	        };

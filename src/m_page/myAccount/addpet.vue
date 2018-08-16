@@ -35,13 +35,11 @@
                  <div class="height">
                      <span>身高(cm)</span>
                      <el-input v-model='height' placeholder='例如:20' @change='addheight'></el-input>
-                     <br />
 					<span class="danger" v-show='flag'>格式不正确</span>
                  </div>
                  <div class="weight">
                      <span>体重(kg)</span>
                      <el-input v-model='weight' placeholder='例如:20' @change='addweight'></el-input>
-                     <br />
 					 <span class="danger" v-show='flag1'>格式不正确</span>
                  </div>
                  </div>
@@ -55,7 +53,7 @@
                       value-format="yyyy-MM-dd"
                       placeholder="选择日期">
                 </el-date-picker>
-                  </div>
+                 </div>
                  </div>
                  <div class="haircolor">
                      <span>毛色</span>
@@ -91,12 +89,11 @@
                 weight:'',
                 birthday:'',
                 haircolor:'',
-                pettype:'',
                 character:'',
                 avatar:'',
 				avatar1:require('../../image/addpet1.png'),
 				imgflag:false,
-				radio:'',
+				radio:'男',
             	man:'男',
             	women:'女',
             	flag:false,

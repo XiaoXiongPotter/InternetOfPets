@@ -8,7 +8,9 @@
 		<div class="main-header">
 			<span>My Account</span>
 		</div>
-		<div class="head-img">
+		<div ref="wrapper" class='main'>
+			<div style="height: 520px;">
+			<div class="head-img">
 			<div class="head_img">
 				<img :src="imgflag?avatar:avatar1" @click.stop="uploadHeadImg" style="margin: auto;display: block;" />
 			</div>
@@ -21,8 +23,6 @@
 			</div>
 			<p>{{item.mobile}}</p>
 		</div>
-		<div ref="wrapper" class='main'>
-			<div>
 				<div class="main-content">
 					<div @click="mypet">
 						<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
@@ -186,22 +186,14 @@ export default {
             reader.onload = data => {
                 let res = data.target || data.srcElement;
                 this.avatar = res.result;
-                sessionStorage.setItem(
-                    "base",
-                    data.target.result.split(",")[1]
-                );
-            };
-            let params = Qs.stringify({ picImg: sessionStorage.base });
+             let params = Qs.stringify({ picImg: data.target.result.split(",")[1] });
             updateUserInfo(params)
                 .then(res => {
-                    if (res.data.header.status == 1000) {
-                        sessionStorage.removeItem("base");
-                    }
-                    //console.log(res)
                 })
                 .catch(error => {
                     console.log(error);
                 });
+            };
         },
         edit() {
             this.flag = false;
@@ -324,7 +316,7 @@ a {
     overflow: hidden;
     position: absolute;
     bottom: 49px;
-    top: 210px;
+    top: 55px;
     width: 100%;
     max-width: 720px;
     touch-action: none;

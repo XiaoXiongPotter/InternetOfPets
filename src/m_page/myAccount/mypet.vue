@@ -42,7 +42,8 @@ export default {
     beforeUpdate() {
         this.$nextTick(() => {
             this.Scroll = new IScroll(this.$refs.wrapper, {
-                click: true
+                click: true,
+                preventDefault:false
             });
         });
     },
