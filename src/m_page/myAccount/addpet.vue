@@ -4,14 +4,14 @@
      <img src="../../image/back.png" class="back" @click="back"/>
      <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
  </div>
-          <div class="title">
+ <div class="addpet-main" ref='wrapper'>
+     <div>
+     	<div class="title">
 		<div class="head_img">
        	<img :src="imgflag?avatar:avatar1"  @click.stop="uploadHeadImg" style="margin: auto;display: block;"/>
     	 </div>
      	<input type="file" accept="image/*" @change="handleFile" class="hiddenInput"/>                
          </div>
- <div class="addpet-main" ref='wrapper'>
-     <div>
          <div class="pet">
              <div class="petname">
                  <span>名称</span>
@@ -24,17 +24,25 @@
                  </div>
                  <div class="sex">
                      <span>性别</span>
-                     <el-input v-model='sex' placeholder='输入性别'></el-input>
+                     <br />
+					<div class="selectsex" style="margin-top: 10px;">
+					<el-radio v-model="radio" label="男" @change='selectman'>男</el-radio>
+  					<el-radio v-model="radio" label="女" @change='selectwomen'>女</el-radio>
+					</div>
                  </div>
                  </div>
                  <div class="pet-msg">
                  <div class="height">
                      <span>身高(cm)</span>
-                     <el-input v-model='height' placeholder='输入身高'></el-input>
+                     <el-input v-model='height' placeholder='例如:20' @change='addheight'></el-input>
+                     <br />
+					<span class="danger" v-show='flag'>格式不正确</span>
                  </div>
                  <div class="weight">
                      <span>体重(kg)</span>
-                     <el-input v-model='weight' placeholder='输入体重'></el-input>
+                     <el-input v-model='weight' placeholder='例如:20' @change='addweight'></el-input>
+                     <br />
+					 <span class="danger" v-show='flag1'>格式不正确</span>
                  </div>
                  </div>
                  <div class="pet-msg">
@@ -79,7 +87,6 @@
                 src:'',
                 petname:'',
                 petbelong:'',
-                sex:'',
                 height:'',
                 weight:'',
                 birthday:'',
@@ -88,13 +95,19 @@
                 character:'',
                 avatar:'',
 				avatar1:require('../../image/addpet1.png'),
-				imgflag:false
+				imgflag:false,
+				radio:'',
+            	man:'男',
+            	women:'女',
+            	flag:false,
+            	flag1:false
             }
         },
          mounted(){
            this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true
+          click: true,
+          preventDefault:false
         })
        })     
   },
@@ -109,26 +122,48 @@
         let file = $target.files[0]
     	var reader = new FileReader()
     	reader.readAsDataURL(file)
-    	this.changeflag=true
     	reader.onload = (data) => { 
         let res = data.target || data.srcElement
         this.avatar = res.result
         sessionStorage.setItem('base',data.target.result.split(',')[1])
     	}
     	},
+    	addheight(){
+    			let reg = /^[0-9]*$/
+        	if(reg.test(this.height)){
+        		this.flag=false
+        	}else{
+        		this.flag=true
+        	}
+    	},
+    	addweight(){
+    			let reg = /^[0-9]*$/
+        	if(reg.test(this.weight)){
+        		this.flag1=false
+        	}else{
+        		this.flag1=true
+        	}
+    	},
+    	selectman(){
+        	this.radio=this.man
+        },
+        selectwomen(){
+        	this.radio=this.women
+        },
         back(){
           this.$router.replace({ path: '/mypet' })
           sessionStorage.removeItem('base')
          },
         add(){
-        var params = Qs.stringify({
+        	if(this.flag==false&&this.flag1==false){
+        	var params = Qs.stringify({
                 name:this.petname,
                 height:this.height,
                 weight:this.weight,
                 birthTime:this.birthday,
                 petType:this.petbelong,
                 color:this.haircolor,
-                gender:this.sex,
+                gender:this.radio,
                 portrait:sessionStorage.base,
                 character:this.character
       })
@@ -141,6 +176,7 @@
       }).catch(error => {
           console.log(error)
       })
+        	}
         }
         }
     }
@@ -168,6 +204,10 @@
 }
 </style>
 <style scoped>
+.addpet .danger{
+	font-size: 10px;
+	color: red;
+}
 .head_img img{
   width:100px;
   height:100px;
@@ -204,7 +244,7 @@
 }
 .addpet-main{
     position: absolute;
-    top: 150px;
+    top: 40px;
     bottom: 0;
     width: 100%;
     max-width: 720px;

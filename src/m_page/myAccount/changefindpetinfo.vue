@@ -3,12 +3,15 @@
 	<div class="header">
  	<img src="../../image/back.png" class="back" @click="back"/>
     <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
- 	</div>
- 	 	<div class="pet-img">
- 				<img :src="featurePhoto"/>
- 		</div>
+ </div>
  	 	<div class="main" ref='wrapper'>
  		<div>
+ 		<div class="pet-img">
+ 		<div class="head_img">
+       <img :src="imgflag?avatar:avatar1" @click.stop="uploadHeadImg"/>
+     	</div>
+     	<input type="file" accept="image/*" @change="handleFile" class="hiddenInput"/>
+ 		</div>
  			 <div class="petmessage">
  			 	<div class="pet-msg">
  				<div class="petname">
@@ -20,7 +23,8 @@
   						v-model="value2"
   						active-color="#13ce66"
   						inactive-color="#C0C0C0"
-  						@change='switchchange'>
+  						@change='changeswitch'
+  						>
 					</el-switch>
 					<span>可开启关闭</span>
  				</div>
@@ -28,39 +32,44 @@
  				<div class="pet-msg">
  				<div class="petbelong">
  					<span>种类</span>
- 					<el-input :value='petType'  @input='changepetType'></el-input>
+ 					<el-input :value='petType' @input='changepetType'></el-input>
  				</div>
  				<div class="money" >
  					<span>赏金(￥)</span>
  					<el-input :value='bounty'  @input='changebounty' ></el-input>
  				</div>
  				</div>
- 				<div class="pet-msg">
  					<div class="losttime">
  					<span>丢失时间</span>
- 					<el-input :value='loseTime'  @input='changeloseTime' ></el-input>
+ 					<div class="block">
+                        <el-date-picker v-model="loseTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期" @input='changeloseTime'>
+                        </el-date-picker>
+                    </div>
  					</div>
  					<div class="loseplace">
  					<span>丢失地点</span>
- 					<el-input :value='lostPlace'  @input='changelostPlace' ></el-input>
+ 					<el-input :value='lostPlace' @input='changelostPlace' ></el-input>
  					</div>
- 				</div>
  				<div class="pet-msg">
  					<div class="content">
  					<span>简介</span>
- 					<el-input :value='content'  @input='changecontent' ></el-input>
+ 					<el-input :value='content' @input='changecontent' ></el-input>
   				</div>
  					</div>
  					<div class="mobile"> 
  					<span>联系电话</span>
- 					<el-input :value='mobile'  @input='changemobile' ></el-input>
+ 					<el-input :value='mobile' @input='changemobile' @change='judgemobile'></el-input>
+ 					 <br />
+                    <span class="danger" v-show='flag'>手机号不存在</span>
  					</div>
  				</div>
  				<div class="email">
  					<span>邮箱</span>
- 					<el-input :value='email'  @input='changeemail' ></el-input>
+ 					<el-input :value='email' @input='changeemail' @change='judgeemail'></el-input>
+ 					 <br />
+                    <span class="danger" v-show="flag1">邮箱不存在</span>
  				</div>
- 			<div class="save-btn" style="margin: 20px 0;">
+ 				<div class="save-btn" style="margin:20px 0;">
  				 <el-button type="primary" round style='margin: auto;display: block;' @click='save'>保存修改</el-button>
  			</div>
  			</div>
@@ -69,7 +78,7 @@
 </template>
 <script>
 	import IScroll from 'iscroll/build/iscroll-probe'
-	import {updatePublish} from'../../ClientServerApi/index.js'
+	import {updatePublish} from '../../ClientServerApi/index.js'
 	import Qs from "qs";
 	export default{
 		name:'changefindpetinfo',
@@ -84,9 +93,15 @@
 			content:'',
 			mobile:'',
 			email:'',
+			publishId:'',
+			avatar:'',
+			avatar1:'',
+			imgflag:false,
 			changeflag:false,
 			value2:true,
-			isOpen:true
+			isOpen:true,
+			flag:false,
+			flag1:false
 			}
 		},
 		mounted(){
@@ -97,7 +112,7 @@
         })
 	},
 	created(){
-		this.featurePhoto=this.$route.query.featurePhoto
+		this.avatar1=this.$route.query.featurePhoto
 		this.petName=this.$route.query.petName
 		this.petType=this.$route.query.petType
 		this.bounty=this.$route.query.bounty
@@ -106,8 +121,50 @@
 		this.content=this.$route.query.content
 		this.mobile=this.$route.query.mobile
 		this.email=this.$route.query.email
+		this.publishId=this.$route.query.publishId
 	},
 	methods:{
+		  	    // 打开图片上传
+    uploadHeadImg: function () {
+      this.$confirm('是否修改头像?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+      }).then(() => {
+       	this.$el.querySelector('.hiddenInput').click()
+       }).catch(() => {         
+       });
+    },
+    // 将头像显示
+    handleFile: function (e) {
+    	this.imgflag=true
+      let $target = e.target || e.srcElement
+      let file = $target.files[0]
+    var reader = new FileReader()
+    reader.readAsDataURL(file)
+    this.changeflag=true
+    reader.onload = (data) => { 
+        let res = data.target || data.srcElement
+        this.avatar = res.result
+        sessionStorage.setItem('base',data.target.result.split(',')[1])
+    }
+    },
+     judgemobile(){
+        	let reg1 = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/
+        	if(reg1.test(this.mobile)){
+        		this.flag=false
+        	}else{
+        		this.flag=true
+        	}
+        },
+        judgeemail(){
+        	let reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
+        		if(reg.test(this.email)){
+        		this.flag1=false
+        	}else{
+        		this.flag1=true
+        	}
+        },
 		back(){
 		if(this.changeflag==true){
   		this.$confirm('是否放弃修改?', '提示', {
@@ -115,6 +172,7 @@
           cancelButtonText: '取消',
           type: 'warning'
        }).then(() => {
+       		this.$router.replace('/mysearch')
 			sessionStorage.removeItem('base')
         }).catch(() => {          
         });
@@ -122,25 +180,37 @@
 			this.$router.replace('/mysearch')
   		}
 		},
-		switchchange(){
+		changeswitch(){
 			this.isOpen=!this.isOpen
+			console.log(this.isOpen)
 		},
 		save(){
-//			let params = Qs.stringify({
-//				petId:this.id,
-//				lat:31.1882600000,
-//				lon:121.4368700000,
-//				mobile:this.$route.query.mobile,
-//				
-//			})
-//			updatePublish(params).then(res => {
-//				console.log(res)
-//			}).catch(error => {
-//				console.log(error)
-//			})
-		},
+          let params = Qs.stringify({
+              publishId:this.publishId,
+              lat:31.1882600000,
+              lon:121.4368700000,
+              mobile:this.$route.query.mobile,
+              email:this.$route.query.email,
+			  loseTime:this.loseTime,
+			  lostPlace:this.$route.query.lostPlace,
+			  bounty:this.$route.query.bounty,
+			  featurePhoto:sessionStorage.base,
+			  content:this.$route.query.content,
+			  isOpen:this.isOpen
+          })
+          updatePublish(params).then(res => {
+              console.log(res)
+				if(res.data.header.status==1000){
+					sessionStorage.removeItem('base')
+					this.$router.replace('/mysearch')
+				}
+          }).catch(error => {
+              console.log(error)
+          })
+        },
 		changepetName(e){
 		this.$route.query.petName=e
+		console.log(this.$route.query.petName)
 		this.changeflag=true
 		},
 		changepetType(e){
@@ -152,7 +222,6 @@
 		this.changeflag=true
 		},
 		changeloseTime(e){
-		this.$route.query.loseTime=e
 		this.changeflag=true
 		},
 		changelostPlace(e){
@@ -198,8 +267,18 @@
 	border-right-color: white;
 	border-left-color: white;
 }
+.changefindpetinfo .el-icon-time:before{
+	display: none;
+}
 </style>
 <style scoped>
+.changefindpetinfo .danger{
+	font-size: 10px;
+	color: red;
+}
+.hiddenInput{
+  display: none;
+}
 .header span{
   width: 100%;
   text-align: center;
@@ -217,11 +296,13 @@
   width: 100%;
   vertical-align: middle;
 }
+.pet-img{
+	margin-bottom: 15px;
+}
 .pet-img img{
 	width: 100px;
 	height: 100px;
 	margin-left: 15px;
-	margin-bottom: 15px;
 }
 .header{
 	display: flex;
@@ -240,7 +321,7 @@
 }
 .main{
 	position: absolute;
-	top: 170px;
+	top: 50px;
 	bottom: 0px;
 	width: 100%;
 	overflow: hidden;
@@ -267,21 +348,21 @@
 .pet-msg{
 	display: flex;
 	margin-bottom: 30px;
-	margin-top: 30px;
 }
 .money{
 	flex: 1;
 }
 .losttime{
-	flex: 1;
 	margin-left: 15px;
 }
 .loseplace{
-	flex: 1;
+	margin-left: 15px;
+	margin-top: 30px;
 }
 .content{
 	flex: 1;
 	margin-left: 15px;
+	margin-top: 30px;
 }
 .mobile{
 	margin-left: 15px;
