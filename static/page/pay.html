@@ -1,0 +1,94 @@
+<div hidden="true" id="paydiv"></div>
+<button type="button" id='button'>cs</button>
+<img alt='￥25 一个月' id='taocan1'></img>
+<!-- 记得引入js -->
+<script type="text/javascript" src="../js/jquery-2.1.4.js"></script>
+<!--获取ip用  -->
+<script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8"></script> 
+<script src="//cdn.jsdelivr.net/npm/eruda"></script>
+
+<script type="text/javascript">
+eruda.init();
+console.log('控制台打印信息');
+</script>
+<script>
+//var serverUrl = 'http://dgsnet.mynatapp.cc/ClientServer'
+var serverUrl = 'http://119.29.172.17:9860/ClientServer';
+var token = window.sessionStorage.getItem("token")
+var data;
+var token = window.sessionStorage.getItem("token")
+$(function(){
+	
+	$('#button').click(function(){
+		alert(1)
+		$.ajax({
+			url:'http://192.168.0.123/necklace/device/getCurrentLocation?deviceCode=1&timestamp=1534328956?x-auth-token='+token,
+			type:'POST',
+			headers:{'x-auth-token': token},
+			success:function(res){
+				console.log(res)
+			},
+			fail:function(res){
+				console.log(res)
+			}
+		})
+	})
+	
+	$('#taocan1').click(function(){
+		data = {
+				'out_trade_no':'123',
+				'subject':'taocan1',
+				'total_amount':'0.1',
+				'body':'taocan1'
+		}
+		//alipay(data);
+		wxpay();
+	})
+	//支付宝支付
+	function alipay(data){
+		 $.ajax({
+			   url:serverUrl+'/postMessage?x-auth-token='+token,
+			   type:"POST",
+			   //dataType:'text',
+			   data:data,
+			   headers:{'x-auth-token': token},
+              success:function(data){
+           	   //var dataObj = eval("(" + data + ")");
+           	  // var dataObj = eval('('+data+')');
+           	   console.log("返回信息");
+           	   $('#paydiv').append(data)
+           	   console.log(data);
+                  
+              },
+              error:function(){
+              alert("failer")
+              }
+          });
+	}
+	//微信支付
+	function wxpay(){
+		var json={};
+		 json.body='123'//$(".body").val();
+		 json.outTradeNo="12345";
+		 json.totalFee=1;//$("#total_fee").val();
+		 json.tradeType="MWEB";
+		 json.sceneInfo='{"h5_info": {"type":"Wap","wap_url": "http://dgsnet.mynatapp.cc","wap_name": "腾讯充值"}}'
+		 json.spbillCreateIp = returnCitySN.cip;
+		 json = JSON.stringify( json );
+			$.ajax({
+				 type:'POST',
+				 url:serverUrl+'/pay/unifiedOrder?x-auth-token='+token,
+				 data:json,
+				 headers:{'x-auth-token': token},
+				 contentType: 'application/json',
+				 success:function(data){
+					 console.log("微信支付返回对象：");
+					 console.log(data.mwebUrl);
+					 var mwebUrl = data.mwebUrl;
+					 window.location.href=mwebUrl
+					 
+				 },
+			 })
+	}
+})
+</script>
