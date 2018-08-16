@@ -53,7 +53,7 @@
         </div>
     </div>
 </template>
-<script>
+<script scoped>
 import header from "../../components/header";
 import IScroll from "iscroll/build/iscroll-probe";
 export default {

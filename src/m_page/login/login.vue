@@ -1,53 +1,53 @@
 <template>
-  <div class="sign" ref="sign">
-    <div class="sign-content">
-      <el-header class="sign-header" style="height: 50px;">
-        <p>用户登录</p>
-      </el-header>
-      <el-main class="sign-msg">
-        <el-input placeholder="手机/邮箱" v-model="username" clearable class="username">
-        </el-input>
-        <el-input placeholder="密码" type="password" v-model="password" clearable class="password">
-        </el-input>
-        <div class="ver">
-          <el-input placeholder="请输入验证码" v-model="code" v-show='flag' clearable class="Verification">
-          </el-input>
-          <img v-show="flag" :src="img" class="image" @click="change" ref="banner" />
+    <div class="sign" ref="sign">
+        <div class="sign-content">
+            <el-header class="sign-header" style="height: 50px;">
+                <p>用户登录</p>
+            </el-header>
+            <el-main class="sign-msg">
+                <el-input placeholder="手机/邮箱" v-model="username" clearable class="username">
+                </el-input>
+                <el-input placeholder="密码" type="password" v-model="password" clearable class="password">
+                </el-input>
+                <div class="ver">
+                    <el-input placeholder="请输入验证码" v-model="code" v-show='flag' clearable class="Verification">
+                    </el-input>
+                    <img v-show="flag" :src="img" class="image" @click="change" ref="banner" />
+                </div>
+                <br />
+                <div class="for-btn" style="max-width: 720px;">
+                    <el-checkbox class="check" v-model="checked">记住密码</el-checkbox>
+                    <el-button class="forget" type="text">
+                        <router-link to="/forgetpassword">忘记密码?</router-link>
+                    </el-button>
+                </div>
+                <br/>
+                <div class="btn">
+                    <el-button class="login" type="primary" @click="login">登录</el-button>
+                    <el-button class="set" type="danger">
+                        <router-link to="/register">注册</router-link>
+                    </el-button>
+                </div>
+            </el-main>
+            <el-footer class="footer">
+                <p class="three">第三方软件</p>
+                <ul>
+                    <li><img src="@/image/qq.png">
+                        <p>QQ</p>
+                    </li>
+                    <li>
+                        <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wx21af39d03b12dd37&redirect_uri=http://www.dognessnetwork.com:8080/wxLogin&response_type=code&scope=snsapi_login&state=wx#wechat_redirect"><img src="@/image/wechat.png">
+                            <p>微信</p>
+                        </a>
+                    </li>
+                    <li><img src="@/image/sina.png">
+                        <p>新浪微博</p>
+                    </li>
+                </ul>
+            </el-footer>
+            <v-foot :loginsuccess='loginsuccess' :loginshowflag='loginshowflag'></v-foot>
         </div>
-        <br />
-        <div class="for-btn" style="max-width: 720px;">
-          <el-checkbox class="check" v-model="checked">记住密码</el-checkbox>
-          <el-button class="forget" type="text">
-            <router-link to="/forgetpassword">忘记密码?</router-link>
-          </el-button>
-        </div>
-        <br/>
-        <div class="btn">
-          <el-button class="login" type="primary" @click="login">登录</el-button>
-          <el-button class="set" type="danger">
-            <router-link to="/register">注册</router-link>
-          </el-button>
-        </div>
-      </el-main>
-      <el-footer class="footer">
-        <p class="three">第三方软件</p>
-        <ul>
-          <li><img src="@/image/qq.png">
-            <p>QQ</p>
-          </li>
-          <li>
-            <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wx21af39d03b12dd37&redirect_uri=http://www.dognessnetwork.com:8080/wxLogin&response_type=code&scope=snsapi_login&state=wx#wechat_redirect"><img src="@/image/wechat.png">
-              <p>微信</p>
-            </a>
-          </li>
-          <li><img src="@/image/sina.png">
-            <p>新浪微博</p>
-          </li>
-        </ul>
-      </el-footer>
-      <v-foot :loginsuccess='loginsuccess' :loginshowflag='loginshowflag'></v-foot>
     </div>
-  </div>
 </template>
 <script>
 import { systemInit } from "../../api/index.js";
@@ -57,7 +57,6 @@ import Qs from "qs";
 import axios from "axios";
 import footernav from "../../components/footernav";
 export default {
-
     name: "login",
     data() {
         return {
@@ -84,14 +83,13 @@ export default {
                 //         message: "已登录，请勿重复登录"
                 //     });
                 // } else {
-                    if (data != undefined) {
-                        this.$store.commit("set_token", data); //根据store中set_token方法将token保存至localStorage/sessionStorage中，data["Authentication-Token"]，获取token的value值
-                    }
+                if (data != undefined) {
+                    this.$store.commit("set_token", data); //根据store中set_token方法将token保存至localStorage/sessionStorage中，data["Authentication-Token"]，获取token的value值
+                }
                 // }
             })
             .catch(error => {
                 console.log(error);
-
             });
     },
     mounted() {
@@ -178,47 +176,6 @@ export default {
                 .catch(error => {
                     console.log(error);
                 })
-                .then(res => {
-                    console.log(res.data);
-                    if (res.data.header.status == 1000) {
-                        sessionStorage.removeItem("imgcode");
-                        this.loginsuccess = true;
-                        this.$router.replace({ path: "/myAccount" });
-                        sessionStorage.setItem("login", "1");
-
-                        this.$store.commit(
-                            "set_token",
-                            res.headers["x-auth-token"]
-                        );
-                    } else {
-                        this.$message({
-                            message: res.data.header.message,
-                            center: true,
-                            type: "error"
-                        });
-                        if (res.data.data.hasImgCode) {
-                            sessionStorage.setItem(
-                                "imgcode",
-                                res.data.data.hasImgCode
-                            );
-                        }
-                        if (res.data.header.status == 3001) {
-                            this.flag = true;
-                            getimg()
-                                .then(res => {
-                                    this.img =
-                                        "data:image/jpeg;base64," +
-                                        res.data.data;
-                                })
-                                .catch(error => {
-                                    console.log(error);
-                                });
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                });
             if (this.checked == true) {
                 localStorage.setItem("username", this.username);
                 localStorage.setItem("password", this.password);

@@ -1,9 +1,10 @@
 <template>
 	<div class="account" ref='banner'>
-		<div class="header">
+		<!-- <div class="header">
 			<div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
 
-		</div>
+		</div> -->
+        <header-top></header-top>
 		<div class="main-header">
 			<span>My Account</span>
 		</div>
@@ -111,6 +112,7 @@ import IScroll from "iscroll/build/iscroll-probe";
 import footernav from "../../components/footernav";
 import userInformation from "../myAccount/userInformation";
 import { logout } from "../../api/index.js";
+import headerTop from "../../components/header"
 import { updateUserInfo } from "../../api/index.js";
 import { getLoginUser } from "../../api/index.js";
 import Qs from "qs";
@@ -252,7 +254,8 @@ export default {
     },
     components: {
         "v-foot": footernav,
-        userInformation
+        userInformation,
+        headerTop
     }
 };
 </script>

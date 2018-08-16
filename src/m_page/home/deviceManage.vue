@@ -12,6 +12,10 @@
                     <span>产品名称</span>
                     <p v-text='deviceName'></p>
                 </li>
+                 <li>
+                    <span>产品类型</span>
+                    <p v-text='deviceType'></p>
+                </li>
                 <li>
                     <span>产品编号</span>
                     <p v-text='deviceCode'></p>
@@ -39,7 +43,7 @@
 import headerTop from "../../components/header";
 import Qs from "qs";
 import { getDevicesInfo } from "../../deviceApi/index.js";
- import {getPetDevicesByImei} from "../../ClientServerApi/index.js"
+import { getPetDevicesByImei } from "../../ClientServerApi/index.js";
 import { getpet } from "../../ClientServerApi/index.js";
 import { bindPet } from "../../deviceApi/index.js";
 import { unbindDevice } from "../../deviceApi/index.js";
@@ -50,6 +54,7 @@ export default {
             deviceInfo: "",
             deviceName: "",
             deviceCode: "",
+            deviceType:"",
             options: "",
             bindPet: this.$route.query.binded,
             petname: ""
@@ -69,6 +74,7 @@ export default {
                     this.deviceInfo = res;
                     this.deviceName = res.data.data.device.deviceName;
                     this.deviceCode = res.data.data.device.deviceCode;
+                    this.deviceType = res.data.data.device.type;
                     this.petId = res.data.data.device.petId;
                     //  this.bindPet =res.data.data.pet==null?'':res.data.data.pet
                     console.log("bingpat", res.data);
@@ -80,29 +86,51 @@ export default {
                 this.options = res.data.data;
                 console.log("petlist", res.data.data);
             });
-        } else if (this.$route.query.code == "4201") {
-            alert("这是项圈啊");
+        } else if (this.$route.query.code == "0") {
+            let params = Qs.stringify({
+                deviceCode: this.$route.query.id
+            });
+            //获得谁设备详细信息
+            getDevicesInfo(params)
+                .then(res => {
+                    this.deviceInfo = res;
+                    this.deviceName = res.data.data.device.deviceName;
+                    this.deviceCode = res.data.data.device.deviceCode;
+                    this.deviceType = res.data.data.device.type;
+                    this.petId = res.data.data.device.petId;
+                    //  this.bindPet =res.data.data.pet==null?'':res.data.data.pet
+                    console.log("bingpat", res.data);
+                    //输出返回值
+                    console.log("设备", res);
+                })
+                .catch(err => {});
+            getpet().then(res => {
+                this.options = res.data.data;
+                console.log("petlist", res.data.data);
+            });
+        } else {
+            let params = Qs.stringify({
+                deviceCode: this.$route.query.deviceCode
+            });
+            //获得谁设备详细信息
+            getDevicesInfo(params)
+                .then(res => {
+                    this.deviceInfo = res;
+                    this.deviceName = res.data.data.device.deviceName;
+                    this.deviceCode = res.data.data.device.deviceCode;
+                     this.deviceType = res.data.data.device.type;
+                    this.petId = res.data.data.device.petId;
+                    //  this.bindPet =res.data.data.pet==null?'':res.data.data.pet
+                    console.log("bingpat", res.data);
+                    //输出返回值
+                    console.log("设备", res);
+                })
+                .catch(err => {});
+            getpet().then(res => {
+                this.options = res.data.data;
+                console.log("petlist", res.data.data);
+            });
         }
-        let params = Qs.stringify({
-            deviceCode: this.$route.query.deviceCode
-        });
-        //获得谁设备详细信息
-        getDevicesInfo(params)
-            .then(res => {
-                this.deviceInfo = res;
-                this.deviceName = res.data.data.device.deviceName;
-                this.deviceCode = res.data.data.device.deviceCode;
-                this.petId = res.data.data.device.petId;
-                //  this.bindPet =res.data.data.pet==null?'':res.data.data.pet
-                console.log("bingpat", res.data);
-                //输出返回值
-                console.log("设备", res);
-            })
-            .catch(err => {});
-        getpet().then(res => {
-            this.options = res.data.data;
-            console.log("petlist", res.data.data);
-        });
     },
     methods: {
         //切换绑定宠物

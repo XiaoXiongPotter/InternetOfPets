@@ -35,7 +35,10 @@ export default {
         systemInit().then(res => {
             // console.log('token',res.headers['x-auth-token'])
             // console.log('token111',this.authToken)
-            if (this.authToken != res.headers["x-auth-token"]) {
+            console.log("11", this.authToken);
+            if (this.authToken == undefined) {
+                this.$router.push({ path: "/login" });
+            } else if (this.authToken != res.headers["x-auth-token"]) {
                 this.$router.push({ path: "/login" });
                 this.$message({
                     type: "success",
@@ -64,7 +67,7 @@ export default {
     color: #0ca8e3;
     height: 40px;
     line-height: 40px;
-     /* position: absolute;;
+    /* position: absolute;;
   
   z-index: 10000;  */
 }
