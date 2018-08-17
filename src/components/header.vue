@@ -39,12 +39,12 @@ export default {
             if (this.authToken == undefined) {
                 this.$router.push({ path: "/login" });
             } else if (this.authToken != res.headers["x-auth-token"]) {
+                sessionStorage.removeItem('login')
                 this.$router.push({ path: "/login" });
                 this.$message({
                     type: "success",
                     message: "用户登录超时，请重新登录"
                 });
-                sessionStorage.removeItem('login')
                 // alert('token过期')
             }
         });
