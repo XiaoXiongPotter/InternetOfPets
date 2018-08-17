@@ -17,6 +17,7 @@ export default {
 	mounted(){
 		 let params = Qs.stringify({petId:this.id})
 			getPetDevices(params).then(res => {
+				console.log(res)
 				if(res.data.header.status==1000){
 					this.device=res.data.data[0].device.type
 				}
@@ -28,7 +29,7 @@ export default {
 </script>
 <style scoped>
 	.petdevice{
-	padding-top: 30px;
+	padding-top: 10px;
 	font-family: "微软雅黑";
 	font-size: 14px;
 }
