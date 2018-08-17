@@ -14,7 +14,7 @@
                 </li>
                 <li>
                     <span>产品类型</span>
-                    <p v-text='deviceType | productType'></p>
+                    <p>{{deviceType | productType}}</p>
                 </li>
                 <li>
                     <span>产品编号</span>
@@ -183,6 +183,8 @@ export default {
     filters: {
         productType: function(value) {
             if (value == "TAG") return "多尼斯协寻吊坠";
+            if (value == "FEEDER") return "多尼斯智能喂食器";
+             if (value == "NECKLACE") return "多尼斯智能项圈";
         }
     },
     components: {

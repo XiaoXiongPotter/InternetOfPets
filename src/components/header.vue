@@ -39,6 +39,7 @@ export default {
             if (this.authToken == undefined) {
                 this.$router.push({ path: "/login" });
             } else if (this.authToken != res.headers["x-auth-token"]) {
+                sessionStorage.removeItem('login')
                 this.$router.push({ path: "/login" });
                 this.$message({
                     type: "success",
