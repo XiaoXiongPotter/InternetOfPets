@@ -8,7 +8,7 @@
  	<el-tabs v-model="activeName"  @tab-click="handleClick">
     <el-tab-pane label="找寻中" name="first">
     <ul>
- 		<li v-for="(item,index) in petlist" :key='index' class="petlist" v-if='item.isOpen' @click="changefindpetinfo(index)">
+ 		<li v-for="(item,index) in petlist" :key='index' class="petlist" v-if='item.isOpen==1' @click="changefindpetinfo(index)">
  		<div class="petimg"><img :src="item.portrait"/></div>
  		<div class="petmsg">
  		<p class="petname">{{item.petName}}</p>
@@ -20,7 +20,7 @@
     </el-tab-pane>
     <el-tab-pane label="已找到" name="second">
     <ul>
- 		<li v-for="(item,index) in petlist" :key='index' class="petlist" v-if='!item.isOpen'>
+ 		<li v-for="(item,index) in petlist" :key='index' class="petlist" v-if='item.isOpen==2'>
  		<div class="petimg"><img :src="item.portrait"/></div>
  		<div class="petmsg">
  		<p class="petname">{{item.petName}}</p>
@@ -32,7 +32,7 @@
     </el-tab-pane>
     <el-tab-pane label="已关闭" name="third">
     <ul>
- 		<li v-for="(item,index) in petlist" :key='index' class="petlist" v-if='!item.isOpen'>
+ 		<li v-for="(item,index) in petlist" :key='index' class="petlist" v-if='item.isOpen==0'>
  		<div class="petimg"><img :src="item.portrait"/></div>
  		<div class="petmsg">
  		<p class="petname">{{item.petName}}</p>

@@ -224,9 +224,6 @@ export default {
         changepassword() {
             this.$router.replace({ path: "/changepassword" });
         },
-//      commonproblem() {
-//          this.$router.replace({ path: "/commonproblem" });
-//      },
         loginauthorization() {
             this.$router.replace({ path: "/loginauthorization" });
         },

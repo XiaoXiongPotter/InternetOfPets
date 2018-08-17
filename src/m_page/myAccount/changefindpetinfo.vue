@@ -24,9 +24,22 @@
   						active-color="#13ce66"
   						inactive-color="#C0C0C0"
   						@change='changeswitch'
+						:disabled="isopen"
+						style="padding:10px"
   						>
 					</el-switch>
-					<span>可开启关闭</span>
+					<span>可关闭</span>
+					<br>
+					<el-switch
+  						v-model="value3"
+  						active-color="#13ce66"
+  						inactive-color="#C0C0C0"
+  						@change='changeswitch1'
+						:disabled="isopen1"
+						style="padding:10px"
+  						>
+					</el-switch>
+					<span>已找到</span>
  				</div>
  				</div>
  				<div class="pet-msg">
@@ -46,10 +59,11 @@
                         </el-date-picker>
                     </div>
  					</div>
+
  					<div class="loseplace">
  					<span>丢失地点</span>
  					<el-input :value='lostPlace' @input='changelostPlace' ></el-input>
- 					</div>
+					 </div>
  				<div class="pet-msg">
  					<div class="content">
  					<span>简介</span>
@@ -77,205 +91,245 @@
  		</div>
 </template>
 <script>
-	import IScroll from 'iscroll/build/iscroll-probe'
-	import {updatePublish} from '../../ClientServerApi/index.js'
-	import Qs from "qs";
-	export default{
-		name:'changefindpetinfo',
-		data(){
-			return{
-			featurePhoto:'',
-			petName:'',
-			petType:'',
-			bounty:'',
-			loseTime:'',
-			lostPlace:'',
-			content:'',
-			mobile:'',
-			email:'',
-			publishId:'',
-			avatar:'',
-			avatar1:'',
-			imgflag:false,
-			changeflag:false,
-			value2:true,
-			isOpen:true,
-			flag:false,
-			flag1:false
-			}
-		},
-		mounted(){
-		  this.$nextTick(() => {
-          this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true,
-          preventDefault:false
+import IScroll from "iscroll/build/iscroll-probe";
+import { updatePublish } from "../../ClientServerApi/index.js";
+import Qs from "qs";
+export default {
+  name: "changefindpetinfo",
+  data() {
+    return {
+      featurePhoto: "",
+      petName: "",
+      petType: "",
+      bounty: "",
+      loseTime: "",
+      lostPlace: "",
+      content: "",
+      mobile: "",
+      email: "",
+      publishId: "",
+      avatar: "",
+      avatar1: "",
+      imgflag: false,
+      changeflag: false,
+      value2: true,
+      isOpen: 1,
+      flag: false,
+      flag1: false,
+      isopen: false,
+      value3: false,
+      isopen1: false
+    };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.Scroll = new IScroll(this.$refs.wrapper, {
+        click: true
+      });
+    });
+  },
+  created() {
+    this.avatar1 = this.$route.query.featurePhoto;
+    this.petName = this.$route.query.petName;
+    this.petType = this.$route.query.petType;
+    this.bounty = this.$route.query.bounty;
+    this.loseTime = this.$route.query.loseTime;
+    this.lostPlace = this.$route.query.lostPlace;
+    this.content = this.$route.query.content;
+    this.mobile = this.$route.query.mobile;
+    this.email = this.$route.query.email;
+    this.publishId = this.$route.query.publishId;
+  },
+  methods: {
+    // 打开图片上传
+    uploadHeadImg: function() {
+      this.$confirm("是否修改头像?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$el.querySelector(".hiddenInput").click();
         })
-        })
-	},
-	created(){
-		this.avatar1=this.$route.query.featurePhoto
-		this.petName=this.$route.query.petName
-		this.petType=this.$route.query.petType
-		this.bounty=this.$route.query.bounty
-		this.loseTime=this.$route.query.loseTime
-		this.lostPlace=this.$route.query.lostPlace
-		this.content=this.$route.query.content
-		this.mobile=this.$route.query.mobile
-		this.email=this.$route.query.email
-		this.publishId=this.$route.query.publishId
-	},
-	methods:{
-		  	    // 打开图片上传
-    uploadHeadImg: function () {
-      this.$confirm('是否修改头像?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-      }).then(() => {
-       	this.$el.querySelector('.hiddenInput').click()
-       }).catch(() => {         
-       });
+        .catch(() => {});
     },
     // 将头像显示
-    handleFile: function (e) {
-    	this.imgflag=true
-      let $target = e.target || e.srcElement
-      let file = $target.files[0]
-    var reader = new FileReader()
-    reader.readAsDataURL(file)
-    this.changeflag=true
-    reader.onload = (data) => { 
-        let res = data.target || data.srcElement
-        this.avatar = res.result
-        sessionStorage.setItem('base',data.target.result.split(',')[1])
-    }
+    handleFile: function(e) {
+      this.imgflag = true;
+      let $target = e.target || e.srcElement;
+      let file = $target.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      this.changeflag = true;
+      reader.onload = data => {
+        let res = data.target || data.srcElement;
+        this.avatar = res.result;
+        sessionStorage.setItem("base", data.target.result.split(",")[1]);
+      };
     },
-     judgemobile(){
-        	let reg1 = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/
-        	if(reg1.test(this.mobile)){
-        		this.flag=false
-        	}else{
-        		this.flag=true
-        	}
-        },
-        judgeemail(){
-        	let reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
-        		if(reg.test(this.email)){
-        		this.flag1=false
-        	}else{
-        		this.flag1=true
-        	}
-        },
-		back(){
-		if(this.changeflag==true){
-  		this.$confirm('是否放弃修改?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-       }).then(() => {
-       		this.$router.replace('/mysearch')
-			sessionStorage.removeItem('base')
-        }).catch(() => {          
+    judgemobile() {
+      let reg1 = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+      if (reg1.test(this.mobile)) {
+        this.flag = false;
+      } else {
+        this.flag = true;
+      }
+    },
+    judgeemail() {
+      let reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+      if (reg.test(this.email)) {
+        this.flag1 = false;
+      } else {
+        this.flag1 = true;
+      }
+    },
+    back() {
+      if (this.changeflag == true) {
+        this.$confirm("是否放弃修改?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.$router.replace("/mysearch");
+            sessionStorage.removeItem("base");
+          })
+          .catch(() => {});
+      } else {
+        this.$router.replace("/mysearch");
+      }
+    },
+    changeswitch() {
+      this.$confirm("是否关闭协寻?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.isOpen = 0;
+          this.isopen = true;
+          this.isopen1 = true;
+        })
+        .catch(() => {
+          this.value2 = true;
         });
-  		}else{
-			this.$router.replace('/mysearch')
-  		}
-		},
-		changeswitch(){
-			this.isOpen=!this.isOpen
-			console.log(this.isOpen)
-		},
-		save(){
-          let params = Qs.stringify({
-              publishId:this.publishId,
-              lat:31.1882600000,
-              lon:121.4368700000,
-              mobile:this.$route.query.mobile,
-              email:this.$route.query.email,
-			  loseTime:this.loseTime,
-			  lostPlace:this.$route.query.lostPlace,
-			  bounty:this.$route.query.bounty,
-			  featurePhoto:sessionStorage.base,
-			  content:this.$route.query.content,
-			  isOpen:this.isOpen
-          })
-          updatePublish(params).then(res => {
-              console.log(res)
-				if(res.data.header.status==1000){
-					sessionStorage.removeItem('base')
-					this.$router.replace('/mysearch')
-				}
-          }).catch(error => {
-              console.log(error)
-          })
-        },
-		changebounty(e){
-		this.$route.query.bounty=e
-		this.changeflag=true
-		},
-		changeloseTime(e){
-		this.changeflag=true
-		},
-		changelostPlace(e){
-		this.$route.query.lostPlace=e
-		this.changeflag=true
-		},
-		changecontent(e){
-		this.$route.query.content=e
-		this.changeflag=true
-		},
-		changemobile(e){
-		this.$route.query.mobile=e
-		this.changeflag=true
-		},
-		changeemail(e){
-		this.$route.query.email=e
-		this.changeflag=true
-		}
-	}
-	}
+    },
+    changeswitch1() {
+      this.$confirm("是否开启已找到?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.isOpen = 2;
+          this.isopen = true;
+          this.isopen1 = true;
+        })
+        .catch(() => {
+          this.value3 = false;
+        });
+    },
+    save() {
+      let params = Qs.stringify({
+        publishId: this.publishId,
+        lat: 31.18826,
+        lon: 121.43687,
+        mobile: this.$route.query.mobile,
+        email: this.$route.query.email,
+        loseTime: this.loseTime,
+        lostPlace: this.$route.query.lostPlace,
+        bounty: this.$route.query.bounty,
+        featurePhoto: sessionStorage.base,
+        content: this.$route.query.content,
+        isOpen: this.isOpen
+      });
+      updatePublish(params)
+        .then(res => {
+          console.log(res);
+          if (res.data.header.status == 1000) {
+            sessionStorage.removeItem("base");
+            this.$router.replace("/mysearch");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    changebounty(e) {
+      this.$route.query.bounty = e;
+      this.changeflag = true;
+    },
+    changeloseTime(e) {
+      this.changeflag = true;
+    },
+    changelostPlace(e) {
+      this.$route.query.lostPlace = e;
+      this.changeflag = true;
+    },
+    changecontent(e) {
+      this.$route.query.content = e;
+      this.changeflag = true;
+    },
+    changemobile(e) {
+      this.$route.query.mobile = e;
+      this.changeflag = true;
+    },
+    changeemail(e) {
+      this.$route.query.email = e;
+      this.changeflag = true;
+    }
+  }
+};
 </script>
 <style>
-.changefindpetinfo .el-input__inner{
-	padding: 0 0;
-	width: 150px;
-	height: 30px;
-	line-height: 30px;
-	border-top-color: white;
-	border-right-color: white;
-	border-left-color: white;
+.changefindpetinfo .el-radio {
+  margin-top: 20px;
 }
-.changefindpetinfo .el-input__inner:hover{
-	border-top-color: white;
-	border-right-color: white;
-	border-left-color: white;
+.changefindpetinfo .el-input.is-disabled .el-input__inner {
+  border-top-color: white;
+  border-right-color: white;
+  border-left-color: white;
 }
-.content .el-input__inner{
-	padding: 0 0;
-	width: 100%;
-	height: 30px;
-	line-height: 30px;
-	border-top-color: white;
-	border-right-color: white;
-	border-left-color: white;
+.changefindpetinfo .el-input__inner {
+  padding: 0 0;
+  width: 150px;
+  height: 30px;
+  line-height: 30px;
+  border-top-color: white;
+  border-right-color: white;
+  border-left-color: white;
 }
-.changefindpetinfo .el-icon-time:before{
-	display: none;
+.changefindpetinfo .el-input__inner:hover {
+  border-top-color: white;
+  border-right-color: white;
+  border-left-color: white;
+}
+.content .el-input__inner {
+  padding: 0 0;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  border-top-color: white;
+  border-right-color: white;
+  border-left-color: white;
+}
+.changefindpetinfo .el-icon-time:before {
+  display: none;
 }
 </style>
 <style scoped>
-.changefindpetinfo .danger{
-	font-size: 10px;
-	color: red;
+.changefindpetinfo .danger {
+  font-size: 10px;
+  color: red;
 }
-.hiddenInput{
+.hiddenInput {
   display: none;
 }
-.header span{
+.header span {
   width: 100%;
   text-align: center;
   background: #fff;
-  color:#0CA8E3;
+  color: #0ca8e3;
   height: 40px;
   line-height: 40px;
   flex: 1;
@@ -288,85 +342,89 @@
   width: 100%;
   vertical-align: middle;
 }
-.pet-img{
-	margin-bottom: 15px;
+.pet-img {
+  margin-bottom: 15px;
 }
-.pet-img img{
-	width: 100px;
-	height: 100px;
-	margin-left: 15px;
+.pet-img img {
+  width: 100px;
+  height: 100px;
+  margin-left: 15px;
 }
-.header{
-	display: flex;
-	position: relative;
-	width: 100%;
- 	background: #fff;
-  	color: #0ca8e3;
-  	height: 40px;
-  	line-height: 40px;
+.header {
+  display: flex;
+  position: relative;
+  width: 100%;
+  background: #fff;
+  color: #0ca8e3;
+  height: 40px;
+  line-height: 40px;
 }
-.back{
-	width: 22px;
-	height: 22px;
-	position: absolute;
-	top: 18%;
+.back {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: 18%;
 }
-.main{
-	position: absolute;
-	top: 50px;
-	bottom: 0px;
-	width: 100%;
-	overflow: hidden;
-	touch-action: none;
+.main {
+  position: absolute;
+  top: 50px;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  touch-action: none;
 }
-.petname{
-	margin-left: 15px;
-	flex: 1;
+.petname {
+  margin-left: 15px;
+  flex: 1;
 }
-.switch{
-	flex: 1;
+.switch {
+  flex: 1;
 }
-.petmessage span{
-	font-size: 16px;
-	color: #00BFFF;
+.petmessage span {
+  font-size: 16px;
+  color: #00bfff;
 }
-.petmessage p{
-	font-size: 14px;
+.petmessage p {
+  font-size: 14px;
 }
-.petbelong{
-	flex: 1;
-	margin-left: 15px;
+.petbelong {
+  flex: 1;
+  margin-left: 15px;
 }
-.pet-msg{
-	display: flex;
-	margin-bottom: 30px;
+.pet-msg {
+  display: flex;
+  margin-bottom: 30px;
 }
-.money{
-	flex: 1;
+.money {
+  flex: 1;
 }
-.losttime{
-	margin-left: 15px;
+.losttime {
+  margin-left: 15px;
 }
-.loseplace{
-	margin-left: 15px;
-	margin-top: 30px;
+.loseplace {
+  flex: 1;
+  margin-left: 15px;
+  margin-top: 30px;
 }
-.content{
-	flex: 1;
-	margin-left: 15px;
-	margin-top: 30px;
+.isfind {
+  flex: 1;
 }
-.mobile{
-	margin-left: 15px;
-	margin-top: 30px;
+.content {
+  flex: 1;
+  margin-left: 15px;
+  margin-top: 30px;
 }
-.email span{
-	font-size: 16px;
-	color: #00BFFF;
+.mobile {
+  margin-left: 15px;
+  margin-top: 30px;
 }
-.email{
-	margin-left: 15px;
-	width: 50%;
-	margin-top: 30px;
+.email span {
+  font-size: 16px;
+  color: #00bfff;
+}
+.email {
+  margin-left: 15px;
+  width: 50%;
+  margin-top: 30px;
 }
 </style>
