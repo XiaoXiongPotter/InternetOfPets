@@ -1,12 +1,12 @@
 <template>
 <div class="findPetInfo"> 
-<header-top></header-top>
+<!-- <header-top></header-top> -->
 this is findPetInfo
   
 </div>
 </template>
 <script>
-import headerTop from "../../components/header.vue";
+//import headerTop from "../../components/header.vue";
 export default {
   name: "findPetInfo",
   data() {
@@ -14,9 +14,9 @@ export default {
   },
   created(){    
   },
-  components: {
-    headerTop
-  }
+  // components: {
+  //   headerTop
+  // }
 };
 </script>
 <style scoped>

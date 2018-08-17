@@ -57,6 +57,9 @@ export default {
 };
 </script>
 <style scoped>
+.connectDevice .el-message-box{
+    width: 300px;
+}
 .btn {
     border: 0;
     color: #fff;
