@@ -13,6 +13,7 @@
                     <div class="petimg"><img :src="item.portrait" /></div>
                     <div class="petmsg">
                         <p class="petname">{{item.name}}</p>
+                        <p class="birthday">出生日期:{{item.birthTime.split(' ')[0]}}</p>
                         <binddevice :id='item.id'></binddevice>
                     </div>
                 </li>
@@ -36,7 +37,7 @@ export default {
         return {
             petlist: "",
             index: "",
-            showflag: false,
+            showflag: false
         };
     },
     beforeUpdate() {
@@ -97,6 +98,11 @@ export default {
 };
 </script>
 <style scoped>
+.birthday{
+	padding-top: 10px;
+	font-family: "微软雅黑";
+	font-size: 14px;
+}
 .header .imgBox {
     width: 100px;
     margin: 0 auto;

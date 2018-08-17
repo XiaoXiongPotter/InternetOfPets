@@ -32,6 +32,7 @@ import qrFindError from '../m_page/finder/qrFindError.vue'
 import findPetInfo from '../m_page/finder/findPetInfo.vue'
 import petDetails from '../m_page/finder/petDetails.vue'
 import changefindpetinfo from '../m_page/myAccount/changefindpetinfo.vue'
+import OperationGuide from '../m_page/myAccount/OperationGuide.vue'
 import store from '../store/store.js'
 //import collor from '../m_page/home/collor/necklace_map.html'
 Vue.use(Router)
@@ -229,6 +230,12 @@ const router = new Router({
       path: '/changefindpetinfo',
       name: 'changefindpetinfo',
       component: changefindpetinfo
+    },
+    //操作指南
+    {
+    	 path: '/OperationGuide',
+      name: 'OperationGuide',
+      component: OperationGuide
     }
   ]
 })
