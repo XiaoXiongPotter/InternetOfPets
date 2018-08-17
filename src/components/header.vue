@@ -112,6 +112,7 @@ export default {
     border-radius: 5px;
     text-align: center;
     color: #fff;
+    z-index: 200;
 }
 .funBtn p a {
     color: #fff;

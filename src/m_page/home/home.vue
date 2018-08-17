@@ -70,15 +70,17 @@ export default {
         }
     },
     created() {
-        this.$nextTick(() => {
-              this.Scroll = new IScroll(this.$refs.wrapper, {
-                click: true
-            });
               if (sessionStorage.getItem("login")) {
                 this.loginsuccess = true;
                 this.loginshowflag = false;
-            }
-        });
+            }    
+    },
+    beforeUpdate(){
+ this.$nextTick(() => {
+              this.Scroll = new IScroll(this.$refs.wrapper, {
+                click: true
+            });
+            });
     },
     computed: {},
     filters: {
