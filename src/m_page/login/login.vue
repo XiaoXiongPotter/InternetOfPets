@@ -2,7 +2,7 @@
     <div class="sign" ref="sign">
         <div class="sign-content">
             <el-header class="sign-header" style="height: 50px;">
-                <p>用户登录</p>
+                <p>多尼斯宠联网平台</p>
             </el-header>
             <el-main class="sign-msg">
                 <el-input placeholder="手机/邮箱" v-model="username" clearable class="username">
