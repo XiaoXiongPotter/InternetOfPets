@@ -36,6 +36,9 @@ export default {
 					if(this.device1=='FEEDER'){
 						this.device='智能喂食器'
 					}
+					if(this.device1=='DISPENSER'){
+						this.device='智能投食器'
+					}
 				}
      		}).catch(error => {
      		console.log(error)
