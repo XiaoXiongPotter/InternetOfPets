@@ -2,7 +2,6 @@
 	<div class="account" ref='banner'>
 		<!-- <div class="header">
 			<div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
-
 		</div> -->
         <header-top></header-top>
 		<div class="main-header">
@@ -16,12 +15,12 @@
 			</div>
 			<input type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
 		</div>
-		<div class="main-headportrait" v-for="(item,index) in message" :key='index'>
+		<div class="main-headportrait">
 			<div class="user">
-				<span v-if="flag">{{item.nickname}}<img src="../../image/change.png" @click="edit"></span>
+				<span v-if="flag">{{message.nickname}}<img src="../../image/change.png" @click="edit"></span>
 				<el-input v-model='user' placeholder='输入昵称' v-else @blur='input' ref='inp'></el-input>
 			</div>
-			<p>{{item.mobile}}</p>
+			<p>{{message.mobile}}</p>
 		</div>
 				<div class="main-content">
 					<div @click="mypet">
@@ -60,7 +59,7 @@
 							</el-col>
 						</el-row>
 					</div>
-					<a :href="'../../../static/page/userchat.html?username='+message[0].username+'&token='+authtoken">
+					<a :href="'http://manager.dognessnetwork.com:8666/requestCustomerService?username='+message.username+'&token='+authtoken">
 						<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
 							<el-col :span="21">
 								<div class="msg"><img src="../../image/Customer.png">
@@ -120,12 +119,13 @@ export default {
     name: "account",
     data() {
         return {
-            message: [
+            message: 
                 {
                     nickname: "",
+                    username:"",
                     mobile: ""
                 }
-            ],
+            ,
             listshow: false,
             loginsuccess: false,
             loginshowflag: true,
@@ -153,9 +153,11 @@ export default {
         getLoginUser()
             .then(res => {
                 console.log(res.data);
-                this.message[0].nickname = res.data.data.nickname;
-                this.message[0].mobile = res.data.data.mobile;
+                this.message.nickname = res.data.data.nickname;
+                this.message.username = res.data.data.username
+                this.message.mobile = res.data.data.mobile;
                 this.avatar1 = res.data.data.photoUrl;
+                console.log(this.message.username)
             })
             .catch(error => {
                 console.log(error);
@@ -197,14 +199,14 @@ export default {
         },
         edit() {
             this.flag = false;
-            this.user = this.message[0].nickname;
+            this.user = this.message.nickname;
         },
         input() {
             this.flag = true;
-            if (this.user != this.message[0].user) {
-                this.message[0].nickname = this.user;
+            if (this.user != this.message.user) {
+                this.message.nickname = this.user;
                 let params = Qs.stringify({
-                    nickname: this.message[0].nickname
+                    nickname: this.message.nickname
                 });
                 updateUserInfo(params)
                     .then(res => {

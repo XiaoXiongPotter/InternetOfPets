@@ -6,15 +6,19 @@
 		<form>
 			<div>
 				<img src="../../image/people.png" alt="图标" />
-				<input type="text" required="required" class="input_text" value="" placeholder="请输入账号" />
-				<span class="clear_input" @click="clear_input">X</span>
+				<input type="text" required="required" class="input_text" v-model="input_text" placeholder="请输入账号" />
+				<span class="clear_input" @click="clear_input" v-bind:class="{'clear_inputb':isB,'clear_inputn':isN}" >X</span>
 			</div>
-			<div><img src="../../image/password.png" alt="图标" /><input type="password" value="" placeholder="请输入密码" /></div>
-			<p class="identifying_code">
-				<input v-show='flag' type="text" name="" id="" value="" placeholder="验证码" />
+			<div>
+				<img src="../../image/password.png" alt="图标" />
+				<input type="password"  required="required" class="password_text" v-model="password_text" placeholder="请输入密码" />
+				<span class="clear_password" @click="clear_password" >X</span>
+			</div>
+			<p class="identifying_code" v-show='flag' >
+				<input v-show='flag' type="text" name="" id="" value="" v-model="code" placeholder="请输入验证码" />
 				<img v-show='flag' :src="img" class="image" @click="change" ref="banner"/>
 			</p>
-			<div><button type="button" @click="login" id="sub">登陆</button><button type="button" id="but">申请吊牌</button></div>
+			<div><p @click="login" id="sub">登陆</p><button type="button" id="but">申请吊牌</button></div>
 		</form>
 	</div>
 	<div class="reg">
@@ -23,25 +27,15 @@
 	</div>
 </div>
 </template>
-<style scoped>
-	.clear_input{
-		position: absolute;
-		right: 0;
-		top: 5px;
-		font-size: 20px;
-		color: #38aaff;
-		display: none;
-	}
-	.input_text:valid + .clear_input {display: block;}
-</style>
+
 <script>
 import headerTop from "../../components/header.vue";
 //import IScroll from 'iscroll/build/iscroll-probe'
+import { systemInit } from "../../api/index.js";
+import { getimg } from "../../api/index.js";
 import store from "../../store/store.js";
 import Qs from "qs";
 import axios from "axios";
-import { systemInit } from "../../api/index.js";
-import { getimg } from "../../api/index.js";
 export default {
   name: "guide",
   data() {
@@ -55,7 +49,11 @@ export default {
     	img: "",
     	num: 1,
     	loginsuccess: false,
-    	loginshowflag: true
+    	loginshowflag: true,
+    	input_text:"",
+    	password_text:"",
+    	isB:true,
+    	isN:false
     };
   },
   created(){
@@ -68,18 +66,20 @@ export default {
   components: {
     headerTop
   },
-  mounted() {//生命周期
-  	console.log(sessionStorage.token);
+  mounted()  {//生命周期
+    console.log(sessionStorage.token);
     systemInit()
       .then(res => {
         let data = res.headers["x-auth-token"];
         if (data != undefined) {
           this.$store.commit("set_token", data);//根据store中set_token方法将token保存至localStorage/sessionStorage中，data["Authentication-Token"]，获取token的value值
+        	console.log(data)
         }
       })
       .catch(error => {
         console.log(error);
       });
+      
     if (sessionStorage.getItem("imgcode")) {
       this.flag = true;
       getimg()
@@ -96,14 +96,15 @@ export default {
     }
   },
   methods:{
-  	//login()登陆事件
+  	
+  	//login()登陆事件	Qs.stringify()将对象 序列化成URL的形式，以&进行拼接	axios()从node.js发出http请求、拦截or转换or取消 请求和响应、自动转换JSON数据
   	login() {
-      var data = Qs.stringify({//Qs.stringify()将对象 序列化成URL的形式，以&进行拼接
-        username: this.username,
-        password: this.password,
+      var data = Qs.stringify({
+        username: this.input_text,
+        password: this.password_text,
         imageCode: this.code
       });
-      axios({//从node.js发出http请求、拦截or转换or取消 请求和响应、自动转换JSON数据
+      axios({
         method: "post",
         url: "/api/authentication/login",
         headers: {
@@ -112,10 +113,11 @@ export default {
         data
       })
         .then(res => {
+        	
           console.log(res.data);
           if (res.data.header.status == 1000) {
+          	
             sessionStorage.removeItem("imgcode");
-          	console.log(imagecode)
             this.loginsuccess = true;
             this.$router.push({ name: "account",query:{username:res.data.data.username,mobile:res.data.data.mobile} });
             sessionStorage.setItem("login", "1");
@@ -144,46 +146,14 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          alert("")
         })
-        .then(res => {
-          console.log(res.data);
-          if (res.data.header.status == 1000) {
-            sessionStorage.removeItem("imgcode");
-            this.loginsuccess = true;
-            this.$router.replace({ path: "/myAccount" });
-            sessionStorage.setItem("login", "1");
-
-            this.$store.commit("set_token", res.headers["x-auth-token"]);
-          } else {
-            this.$message({
-              message: res.data.header.message,
-              center: true,
-              type: "error"
-            });
-            if (res.data.data.hasImgCode) {
-              sessionStorage.setItem("imgcode", res.data.data.hasImgCode);
-            }
-            if (res.data.header.status == 3001) {
-              this.flag = true;
-              getimg()
-                .then(res => {
-                  this.img = "data:image/jpeg;base64," + res.data.data;
-                })
-                .catch(error => {
-                  console.log(error);
-                });
-            }
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-//    if (this.checked == true) {
-//      localStorage.setItem("username", this.username);
-//      localStorage.setItem("password", this.password);
-//    }
+      
+      if (this.checked == true) {
+        localStorage.setItem("username", this.username);
+        localStorage.setItem("password", this.password);
+      }
     },
+//  change verifying code
     change() {
       getimg()
         .then(res => {
@@ -193,10 +163,11 @@ export default {
           console.log(error);
         });
     },
-    clear_input(){//previousSibling
-    	var find_cli=document.getElementsByClassName("clear_input");
-    	var val=find_cli.previousSibling;
-    	setAttribute(val,"")
+    clear_input(){//clear input value
+    	this.input_text="";
+    },
+    clear_password(){//clear password value
+    	this.password_text="";
     }
   }
 };
@@ -243,6 +214,11 @@ export default {
 		border: 1px solid #bfbfbf;
 		border-radius: 5px;
 		padding-left: 1.8rem;
+		padding-right: 2.2rem;
+	}
+	.guide_bot form div input:focus{
+		outline: none;
+		border: 1px solid #38AAFF;
 	}
 	.guide_bot form div img{
 		width: 1.2rem;
@@ -251,7 +227,7 @@ export default {
 		top: 0.8rem;
 		vertical-align: middle;
 	}
-	.guide_bot form div button{
+	.guide_bot form div button,#sub{
 		width: 42%;
 		height: 3.4rem;
 		border-radius: 5px;
@@ -282,5 +258,48 @@ export default {
 	.reg a{
 		margin: 0 10px;
 		color: #000000;
+	}
+	/*清除表单内容*/
+	.clear_input,.clear_password{
+		position: absolute;
+		right: 0.5rem;
+		top: 1.2rem;
+		font-size: 0.8rem;
+		color: #FFFFFF;
+		display: none;
+		width: 1.2rem;
+		height: 1.2rem;
+		line-height: 1.2rem;
+		border-radius: 50%;
+		border: 1px solid #CCCCCC;
+		background: #CCCCCC;
+		text-align: center;
+	}
+	.input_text:valid + .clear_input,.password_text:valid + .clear_password {display: block;}
+	.clear_inputb{opacity: 1;}
+	.clear_inputn{opacity: 0;}
+	/*验证码*/
+	.identifying_code{
+		width: 80%;
+		height: 3.4rem;
+		margin: 0 auto;
+		margin-bottom: 0.8rem;
+	}
+	.identifying_code input{
+		width: 50%;
+		height: 3.4rem;
+		line-height: 100%;
+		float: left;
+		border-radius: 5px;
+    	border: 1px solid #bfbfbf;
+    	box-sizing: border-box;
+    	padding: 0 10px;
+	}
+	.identifying_code input:focus{
+		outline: none;
+		border: 1px solid #38AAFF;
+	}
+	.identifying_code .image{
+		float: right;
 	}
 </style> 
