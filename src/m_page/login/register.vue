@@ -812,12 +812,12 @@ export default {
 					console.log(res.data)
 					if(res.data.header.status==1000){
 						//成功后跳转页面
-						this.$router.replace({ path: '/myAccount' })
+						this.$router.replace({ path: '/login' })
 						sessionStorage.setItem('login','1')
 					}
 					else {						
 						this.$message({
-          				message: res.data.msg,
+          				message: "手机验证码不正确",
           				center: true,
           				type:'error'
         					})
