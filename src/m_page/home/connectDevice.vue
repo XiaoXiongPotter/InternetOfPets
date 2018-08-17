@@ -4,15 +4,12 @@
     <p class="explain">多尼斯智能设备网络接入</p>
     <dl>
         <dt>
-            <img src="../../image/robot.jpg" alt="">
-        </dt>
-        <dt>
-                <p>智能宠物机器狗</p>
+            <img src="../../image/connent.jpg" alt="">
         </dt>
     </dl>
-    <div class="configuration ">
+    <!-- <div class="configuration ">
           多尼斯宠联网平台智能设备接入
-    </div>
+    </div> -->
     <router-link to="/createQrCode" class="next">下一步</router-link>
   </div>
 </template>
@@ -43,9 +40,7 @@ export default {
 .connectDevice dl dt {
   text-align: center;
 }
-.connectDevice dl dt:first-child {
-  background-color: #f0f0f0;
-}
+
 .connectDevice dl dt p {
   background-color: #0ca8e3;
   color: #fff;
