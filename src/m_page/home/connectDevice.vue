@@ -7,9 +7,9 @@
             <img src="../../image/connent.jpg" alt="">
         </dt>
     </dl>
-    <!-- <div class="configuration ">
-          多尼斯宠联网平台智能设备接入
-    </div> -->
+    <div class="configuration ">
+         手机生成二维码后对准设备摄像头月15cm左右前后微调，可使智能设备摄像头更容易识别二维码
+    </div> 
     <router-link to="/createQrCode" class="next">下一步</router-link>
   </div>
 </template>
@@ -52,6 +52,8 @@ export default {
   width: 90%;
   margin: 0 auto;
   margin-top: 20px;
+  font-size: 1.5rem;
+  line-height:24px;
 }
 .next {
   width: 200px;

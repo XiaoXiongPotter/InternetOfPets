@@ -37,7 +37,7 @@ export default {
             // console.log('token111',this.authToken)
             console.log("11", this.authToken);
             if (this.authToken == undefined) {
-                this.$router.push({ path: "/login" });
+                //this.$router.push({ path: "/login" });
             } else if (this.authToken != res.headers["x-auth-token"]) {
                 sessionStorage.removeItem('login')
                 this.$router.push({ path: "/login" });

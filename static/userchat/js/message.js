@@ -1,4 +1,4 @@
-    var	urlPath	=	'http://192.168.0.139:8080'
+    var	urlPath	=	'http://manager.dognessnetwork.com:8666'
     function GetRequest() {  
 	   var url = location.search; //获取url中"?"符后的字串  
 	   var theRequest = new Object();  
