@@ -44,6 +44,7 @@ export default {
                     type: "success",
                     message: "用户登录超时，请重新登录"
                 });
+                sessionStorage.removeItem('login')
                 // alert('token过期')
             }
         });

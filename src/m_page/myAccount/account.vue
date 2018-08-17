@@ -72,7 +72,7 @@
 							</el-col>
 						</el-row>
 					</a>
-					<div @click="commonproblem">
+					<a>
 						<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
 							<el-col :span="21">
 								<div class="msg"><img src="../../image/help.png">
@@ -83,7 +83,7 @@
 								<div class="right"><img src="../../image/right.png"></div>
 							</el-col>
 						</el-row>
-					</div>
+					</a>
 					<div @click="loginauthorization">
 						<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
 							<el-col :span="21">
@@ -224,9 +224,9 @@ export default {
         changepassword() {
             this.$router.replace({ path: "/changepassword" });
         },
-        commonproblem() {
-            this.$router.replace({ path: "/commonproblem" });
-        },
+//      commonproblem() {
+//          this.$router.replace({ path: "/commonproblem" });
+//      },
         loginauthorization() {
             this.$router.replace({ path: "/loginauthorization" });
         },
