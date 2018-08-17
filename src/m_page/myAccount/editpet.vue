@@ -246,13 +246,20 @@ export default {
             this.showflag = true;
         },
         search() {
-            this.$router.push({
+        	if(this.device){
+        		 this.$router.push({
                 name: "releaseSearch",
                 query: {
                     id: this.id,
                     petname: this.petname
                 }
             });
+        	}else{
+        		  this.$message({
+                        type: "error",
+                        message: "该宠物未绑定设备"
+                    });
+        	}
         },
         remove() {
             this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {

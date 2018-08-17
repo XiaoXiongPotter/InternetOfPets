@@ -3,6 +3,7 @@
 
 <head>
   <title>HTML5 code Reader</title>
+  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
   <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
@@ -118,7 +119,7 @@
       var base64Data = imgData; //.substr(22); //在前端截取22位之后的字符串作为图像数据
       //开始异步上
       var data = base64Data.substr(base64Data.indexOf(',') + 1);
-      $.post("http://manager.dognessnetwork.com/document/IMG", {
+      $.post("http://119.28.222.154/document/IMG", {
         "img": data
       }, function (result) {
 	//	printHtml("解析结果：" + result.data);

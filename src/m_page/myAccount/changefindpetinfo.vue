@@ -16,7 +16,7 @@
  			 	<div class="pet-msg">
  				<div class="petname">
  					<span>名称</span>
- 					<el-input  :value='petName' @input='changepetName'></el-input>
+ 					<el-input  :value='petName' :disabled="true"></el-input>
  				</div>
  				<div class="switch">
  					<el-switch
@@ -32,7 +32,7 @@
  				<div class="pet-msg">
  				<div class="petbelong">
  					<span>种类</span>
- 					<el-input :value='petType' @input='changepetType'></el-input>
+ 					<el-input :value='petType' :disabled="true"></el-input>
  				</div>
  				<div class="money" >
  					<span>赏金(￥)</span>
@@ -107,7 +107,8 @@
 		mounted(){
 		  this.$nextTick(() => {
           this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true
+          click: true,
+          preventDefault:false
         })
         })
 	},
@@ -208,15 +209,6 @@
               console.log(error)
           })
         },
-		changepetName(e){
-		this.$route.query.petName=e
-		console.log(this.$route.query.petName)
-		this.changeflag=true
-		},
-		changepetType(e){
-		this.$route.query.petType=e
-		this.changeflag=true
-		},
 		changebounty(e){
 		this.$route.query.bounty=e
 		this.changeflag=true

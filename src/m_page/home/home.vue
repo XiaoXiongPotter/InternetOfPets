@@ -7,6 +7,7 @@
         <span>HOME</span>
         <i class="line"></i>
       </div>
+      <div class="device_main" ref='wrapper'>
       <ul class="device_box">
         <li v-for="(info,index) in infos" :key="index">
           <div class="device_box_l">
@@ -29,6 +30,7 @@
           </div>
         </li>
       </ul>
+      </div>
     </div>
     <div class="notlogin" v-else>
       亲，请先登录再查看您的设备
@@ -41,6 +43,7 @@
 import { getDevices } from "../../deviceApi/index.js";
 import header from "../../components/header";
 import footernav from "../../components/footernav";
+import IScroll from "iscroll/build/iscroll-probe";
 
 export default {
     name: "home",
@@ -68,7 +71,10 @@ export default {
     },
     created() {
         this.$nextTick(() => {
-            if (sessionStorage.getItem("login")) {
+              this.Scroll = new IScroll(this.$refs.wrapper, {
+                click: true
+            });
+              if (sessionStorage.getItem("login")) {
                 this.loginsuccess = true;
                 this.loginshowflag = false;
             }
@@ -98,6 +104,14 @@ export default {
 };
 </script>
 <style scoped>
+.device_main{
+	position: absolute;
+	top: 55px;
+	bottom: 50px;
+	overflow: hidden;
+	width: 100%;
+	touch-action: none;
+}
 .home {
     width: 100%;
 }
