@@ -149,7 +149,7 @@ export default {
                         );
                     } else {
                         this.$message({
-                            message: res.data.header.message,
+                            message: "账号或密码错误",
                             center: true,
                             type: "error"
                         });

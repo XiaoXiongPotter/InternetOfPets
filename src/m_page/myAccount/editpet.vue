@@ -122,8 +122,7 @@ export default {
     beforeUpdate() {
         this.$nextTick(() => {
             this.Scroll = new IScroll(this.$refs.wrapper, {
-                click: true,
-                preventDefault:false
+                click: true
             });
             this.id = this.list[this.index].id;
             let params = Qs.stringify({ petId: this.id });
