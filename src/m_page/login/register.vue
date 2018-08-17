@@ -828,10 +828,6 @@ export default {
 				})
 				}else{
 					if(this.email.length>0){
-			let params = this.email
-			email(params).then(res => {
-				console.log(res.data)
-				if(res.data.data==false){
 					this.flag7=false					
 					var data =  Qs.stringify({
     					email:this.email,
@@ -846,7 +842,7 @@ export default {
 					data
 					}).then(res => {
 					console.log(res.data)
-					if(res.data.header.status==1000){
+					if(res.data.header.status==1000&&res.data.data==null){
 						this.$message({
           				message: '请前往注册邮箱点击激活',
           				center: true,
@@ -855,23 +851,24 @@ export default {
         				setInterval(()=>{
         					this.$router.replace({ path: '/login' })
         				},3000)
-					}else{
-						this.$message({
-          				message: res.data.msg,
+          }
+          if(res.data.header.status==1000&&res.data.data!=null){
+            this.$message({
+          				message: '请再次前往注册邮箱点击激活',
+          				center: true,
+          				type:'warning'
+        				});
+          }
+          if(res.data.header.status==3025){
+              	this.$message({
+          				message: "该账号已经注册过",
           				center: true,
           				type:'error'
-        				});					
-					}
+        				});
+          }
 				}).catch(error => {
 					console.log(error)
-				})
-				
-				}else{
-					this.flag7=true
-				}				
-			}).catch(error => {
-				console.log(error)
-			})
+				})				
 			}else{
 				this.flag7=false
 			}
