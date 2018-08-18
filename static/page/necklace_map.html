@@ -273,7 +273,7 @@ height:40px;
 		<!-- <div id="chr">
 			<img alt="chr" class = 'chr' src="../img/sig0.png" />
 		</div>  -->
-		<audio src="/voice/ling1_dogness.mp3" controls="controls" id = 'audio'></audio>
+		<audio src="../voice/ling1_dogness.mp3" controls="controls" id = 'audio'></audio>
 	</div> 	
 
 
@@ -431,7 +431,7 @@ console.log('控制台打印信息');
 				    		getCurrentLocation(deviceId,timestamp);
 				    	},1000);
 				    	//getPets();
-				    }else{
+				    }else if(status_=='off'){
 				    	// map.removeOverlay();
 				    	status_ = 'off';
 				    	 var point = new BMap.Point(lon,lat);
@@ -513,22 +513,28 @@ console.log('控制台打印信息');
 	$('#light').click(function(){
 		if(status_=='on'){
 			ledControl('light', deviceId, timestamp)
-		}else{
+		}else if(status_=='off'){
 			alert('请先链接设备')
+		}else {
+			alert('设备过期，请充值')
 		}
 	})
 	$('#flash').click(function(){
 		if(status_=='on'){
 			ledControl('flash', deviceId, timestamp)
-		}else{
+		}else if(status_=='off'){
 			alert('请先链接设备')
+		}else {
+			alert('设备过期，请充值')
 		}
 	})
 	$('#close').click(function(){
 		if(status_=='on'){
 			ledControl('clsoe', deviceId, timestamp)
-		}else{
+		}else if(status_=='off'){
 			alert('请先链接设备')
+		}else {
+			alert('设备过期，请充值')
 		}
 	})
 	//刷新页面
@@ -553,8 +559,8 @@ console.log('控制台打印信息');
 					},12000)
 				} else if (data == '8000') {
 					alert('请先链接设备')
-				} else {
-					alert('切换失败，请稍后重试')
+				} else if(data=='80007'){
+					alert('设备过期去，请充值')
 				} 
 			}
 		}) 
@@ -632,9 +638,11 @@ console.log('控制台打印信息');
 			}else{
 				window.location.href='/static/page/fanceAdd.html?lon='+lon+'&lat='+lat+'&imei='+imei+'&imeiId='+deviceId
 			}
-	    }else{
+	    }else if(status_=='off'){
 	    	alert('请先链接设备')
-	    } 
+	    } else{
+	    	alert('设备过期，请充值')
+	    }
 		
 	})
 	/*************************************初始化谷歌地图************************************  */
@@ -742,6 +750,7 @@ console.log('控制台打印信息');
 						ledStatus='close';
 						var img = '../img/off.png';
 						status_ = 'off';
+						status_ = data.data.status;
 						var loaction = data.data.location;
 						console.log('location:')
 						console.log(loaction)
@@ -750,7 +759,6 @@ console.log('控制台打印信息');
 						    if(newLoaction.lon != 'undefined'){
 						    	lon = newLoaction.lon;
 							    lat = newLoaction.lat
-							    status_ = data.data.status;
 							    console.log(' status_ = data.data.status:'+status_)
 							    fanceStatus = data.data.fanceStatus;
 							    trakeStatus = data.data.trackStatus;
@@ -920,7 +928,7 @@ console.log('控制台打印信息');
 		geolocation.getCurrentPosition(function(r) {
 			if (this.getStatus() == BMAP_STATUS_SUCCESS) {
 				nopoint = r.point;
-				var img = '../img/on.png';
+				var img = '../img/off.png';
 				var new_point = new BMap.Point(r.point.lng,r.point.lat);
 				mark(new_point,img);
 				map.panTo(new_point);
