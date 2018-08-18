@@ -1,7 +1,7 @@
 <template>
   <div class="connectDevice">
     <v-header :go-back="true"></v-header>
-    <p class="explain">智能宠物机器狗网络接入</p>
+    <p class="explain">智能设备网络接入</p>
     <div style="margin: 20px;">
       <el-form :label-position="labelPosition" label-width="80px" :model="formcon">
       <el-form-item label="请输入正在连接的wifi名">
@@ -57,6 +57,9 @@ export default {
 };
 </script>
 <style scoped>
+.connectDevice .el-message-box{
+    width: 300px;
+}
 .btn {
     border: 0;
     color: #fff;
