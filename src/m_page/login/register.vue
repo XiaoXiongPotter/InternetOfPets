@@ -812,8 +812,32 @@ export default {
 					console.log(res.data)
 					if(res.data.header.status==1000){
 						//成功后跳转页面
-						this.$router.replace({ path: '/login' })
-						sessionStorage.setItem('login','1')
+						this.$router.replace({ path: '/myAccount' })
+            sessionStorage.setItem('login','1')
+            var data = Qs.stringify({
+                username: this.phonenumber,
+                password: this.password
+            });
+            axios({
+                method: "post",
+                url: "/api/authentication/login",
+                headers: {
+                    "Content-Type":
+                        "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                data
+            })
+                .then(res => {
+                        sessionStorage.setItem("login", "1");
+                        this.$store.commit(
+                            "set_token",
+                            res.headers["x-auth-token"]
+                        );
+                    
+                })
+                .catch(error => {
+                    console.log(error);
+                })              
 					}
 					else {						
 						this.$message({
