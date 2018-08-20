@@ -235,9 +235,9 @@ a {
   padding-top: 10px;
 }
 .petname {
-  font-weight: bold;
-  font-size: 20px;
-  color: #4169e1;
+
+  font-size: 1.8rem;
+  color: #034b94;
   padding-bottom: 10px;
 }
 .reward {
@@ -245,7 +245,7 @@ a {
   padding: 15px 0px;
 }
 .reward p {
-  color: #ff8c00;
+  color: #de3f19;
   text-align: center;
   padding: 12px 0px;
 }

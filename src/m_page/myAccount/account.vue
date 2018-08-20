@@ -59,7 +59,7 @@
 							</el-col>
 						</el-row>
 					</div>
-					<a :href="'http://manager.dognessnetwork.com:8666/requestCustomerService?username='+message.username+'&token='+authtoken">
+					<a :href="'http://manager.dognessnetwork.com:8666/requestCustomerService?username='+message.username+'&token='+authtoken+'&platForm=web&area=en'">
 						<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
 							<el-col :span="21">
 								<div class="msg"><img src="../../image/Customer.png">

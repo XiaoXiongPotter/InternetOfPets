@@ -4,7 +4,7 @@
             <img src="../image/goback.png" v-if="goBack" alt="" @click="$router.go(-1)">
         </div>
         <div class="imgBox"><img src="../image/logo-m.png" alt=""></div>
-        <div class="add" @click="show = !show" v-if="addDevices">
+        <div class="add" @click="show = !show" v-if="addDevices?headToken=='1'?true:false:false" >
             <transition name="el-fade-in-linear">
                 <div v-show="show" class="transition-box">
                     <div class="triangle "></div>
@@ -28,16 +28,18 @@ export default {
     props: ["goBack", "addDevices"],
     data: () => ({
         show: false,
-        authToken: sessionStorage.token
+        authToken: sessionStorage.token,
+        headToken:sessionStorage['login']
     }),
     created() {
+        console.log(this.addDevices)
         //验证token是否过期
         systemInit().then(res => {
             // console.log('token',res.headers['x-auth-token'])
             // console.log('token111',this.authToken)
             console.log("11", this.authToken);
             if (this.authToken == undefined) {
-                //this.$router.push({ path: "/login" });
+                this.$router.push({ path: "/login" });
             } else if (this.authToken != res.headers["x-auth-token"]) {
                 sessionStorage.removeItem('login')
                 this.$router.push({ path: "/login" });

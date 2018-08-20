@@ -855,11 +855,12 @@ export default {
 					this.flag7=false					
 					var data =  Qs.stringify({
     					email:this.email,
-						password: this.password
+            password: this.password,
+            lang:""
 				})
 					axios({
 					method: 'post',
-      				url: '/api/registerSendEmail',
+      				url: '/api/registerSendEmail?',
 					headers:{
 			 		"Content-Type":'application/x-www-form-urlencoded; charset=UTF-8'
 					},

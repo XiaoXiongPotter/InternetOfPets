@@ -23,7 +23,7 @@
                 <li>
                     <span>绑定宠物</span>
                     <p>
-                        <el-select v-model="bindPet" placeholder="未绑定宠物" @change="changepet">
+                        <el-select v-model="petname" placeholder="未绑定宠物" @change="changepet">
                             <el-option v-for="(item,index) in options" :key="index" :label="item.name" :value="item.id">
                             </el-option>
                         </el-select>
@@ -121,6 +121,7 @@ export default {
                     this.deviceType = res.data.data.device.type;
                     this.petId = res.data.data.device.petId;
                     //  this.bindPet =res.data.data.pet==null?'':res.data.data.pet
+                    this.petname = res.data.data.pet.name
                     console.log("bingpat", res.data);
                     //输出返回值
                     console.log("设备", res);
@@ -138,7 +139,7 @@ export default {
             console.log(this.bindPet, this.deviceCode);
             let params = Qs.stringify({
                 deviceCode: this.deviceCode,
-                petId: this.bindPet
+                petId: this.petname
             });
             //绑定宠物
             bindPet(params).then(res => {
@@ -184,7 +185,7 @@ export default {
         productType: function(value) {
             if (value == "TAG") return "多尼斯协寻吊坠";
             if (value == "FEEDER") return "多尼斯智能喂食器";
-             if (value == "NECKLACE") return "多尼斯智能项圈";
+            if (value == "NECKLACE") return "多尼斯智能项圈";
         }
     },
     components: {

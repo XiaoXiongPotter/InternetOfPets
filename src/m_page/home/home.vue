@@ -23,7 +23,7 @@
               <p>{{info.pet?info.pet.name:'未绑定宠物'}}</p>
             </div>
             <div class="btn_box">
-              <a class="btn caozuo" v-show="info.device.type=='NECKLACE'?true:false" href="../../static/page/necklace_map.html"></a>
+              <a class="btn caozuo" v-show="info.device.type=='NECKLACE'?true:false" :href="'http://192.168.0.123/NeckSever/necklace_map.html?token='+getToken+'&deviceId='+info.device.deviceCode+'&imei='+info.object.imei"></a>
               <router-link class="btn caozuo" v-show="info.device.type=='TAG'?true:false" to="/tag"></router-link>
               <router-link class="btn guanli" :to="{path:'/deviceManage',query:{deviceCode:info.device.deviceCode,binded:info.pet==null?'':info.pet.id}}"></router-link>
             </div>
@@ -53,7 +53,9 @@ export default {
             islogin: false,
             infos: "",
             loginsuccess: false,
-            loginshowflag: true
+            loginshowflag: true,
+            getToken:sessionStorage['token'],
+            imei:''
         };
     },
     mounted() {
@@ -90,6 +92,7 @@ export default {
             if (value == "ROBOT") return "宠物机器人";
             if (value == "TAG") return "协寻二维码";
             if (value == "NECKLACE") return "智能项圈";
+            if (value == "DISPENSER") return "迷你逗宠器";
         },
         lowercase: function(value) {
             return value.toLowerCase();

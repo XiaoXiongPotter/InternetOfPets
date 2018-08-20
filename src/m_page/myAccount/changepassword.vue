@@ -108,7 +108,7 @@
 	top: 18%;
 }
 .changepassword-main{
-	margin-top: 50%;
+	margin-top: 10%;
 }
 .danger{
 	font-size: 12px;
