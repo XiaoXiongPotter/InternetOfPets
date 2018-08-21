@@ -7,7 +7,7 @@
 		<div class="main" ref='wrapper'>
 			<div>
 				<div class="pet-img">
-					<img :src="featurePhoto" />
+					<img v-image-preview :src="featurePhoto"/>
 				</div>
 				<div class="petmessage">
 					<div class="petname">
@@ -44,11 +44,16 @@
 						<span>联系电话</span>
 						<p>{{mobile}}</p>
 					</div>
-				</div>
-				<div class="email">
+                  <div class="email">
 					<span>邮箱</span>
 					<p>{{email}}</p>
 				</div>
+				</div>
+                <a class="call" :href="'tel:'+mobile">
+                    <div class="save-btn" style="margin: 20px 0;">
+							<el-button type="primary" round style='margin: auto;display: block;'>联系主人</el-button>
+					</div>
+                </a>
 			</div>
 		</div>
 	</div>
@@ -117,8 +122,9 @@ export default {
 .pet-img img {
     width: 100px;
     height: 100px;
-    margin-left: 15px;
-    margin-bottom: 15px;
+    margin: 0px auto;
+    display: block;
+    /* margin-bottom: 15px; */
 }
 .header {
     display: flex;
@@ -147,6 +153,7 @@ export default {
     position: relative;
     margin-left: 15px;
     width: 50%;
+    margin-top: 20px;
 }
 .petmessage span {
     font-size: 16px;
@@ -154,6 +161,7 @@ export default {
 }
 .petmessage p {
     font-size: 14px;
+    padding-top: 5px;
 }
 .petbelong {
     flex: 1;

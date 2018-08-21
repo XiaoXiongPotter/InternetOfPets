@@ -5,11 +5,11 @@ export const systemInit = () => {
 }
 // 登陆
 export const userLogin = (params) => {
-  return http.fetchPost('/api/authentication/form', params)
+  return http.fetchPost('/api/authentication/login', params)
 }
 // 邮箱注册账号
 export const registerSendEmail = (params) => {
-  return http.fetchPost('/api/registerSendEmail', params)
+  return http.fetchPost('/api/registerSendEmail?', params)
 }
 // 手机注册
 export const registerByMobile = (params) => {

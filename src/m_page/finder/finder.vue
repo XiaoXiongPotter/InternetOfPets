@@ -13,9 +13,9 @@
 		</div>
 		<div class="main-content" ref="wrapper">
 			<ul>
-				<li v-for="(item,index) in list" :key='index' @click="inquire(index)">
-					<img :src='item.portrait'>
-					<div class="message">
+				<li v-for="(item,index) in list" :key='index'>
+					<img :src='item.portrait' @click="inquire(index)">
+					<div class="message" @click="inquire(index)">
 						<p class="petname">{{item.petName}}</p>
 						<span>{{item.loseTime}}</span>
 						<p class="place">{{item.lostPlace}}</p>
@@ -23,7 +23,7 @@
 					<div class="reward">
 						<div class="reward-title"><span>赏金</span></div>
 						<p>￥{{item.bounty}}</p>
-						<div class="reward-btn"><el-button size="mini" style="color: #FF8C00;padding: 3px 3px;position: absolute;left: 15%;"><a href="tel:item.mobile">联系主人</a></el-button></div>
+						<div class="reward-btn"><el-button size="mini" style="color: #FF8C00;padding: 3px 3px;position: absolute;left: 15%;"><a :href="'tel:'+item.mobile">联系主人</a></el-button></div>
 					</div>
 				</li>
 			</ul>

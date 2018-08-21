@@ -42,6 +42,19 @@
  	</li>
  	</ul>
     </el-tab-pane>
+	<!-- <el-tab-pane label="扫描记录" name="fourth"> 
+		 <ul>
+ 		<li v-for="(item,index) in petlist" :key='index' class="petlist" v-if='item.isOpen==1'>
+ 		<div class="petimg"><img :src="item.portrait"/></div>
+ 		<div class="petmsg">
+ 		<p class="petname">{{item.petName}}</p>
+ 		<p class="pettime">扫描地点:{{item.lostPlace}}</p>
+ 		<p class="pettime">扫描时间:{{item.loseTime}}</p>
+		<p class="pettime">留言:{{item.lostPlace}}</p>
+ 		</div>
+ 	</li>
+ 	</ul>
+	 </el-tab-pane> -->
   </el-tabs>
  </div>
 	</div>
