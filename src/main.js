@@ -7,12 +7,13 @@ import ElementUI from 'element-ui'
 import VueResource from 'vue-resource'
 import axios from 'axios'
 import store from './store/store'
+import VueDirectiveImagePreviewer from 'vue-directive-image-previewer'
 // import VueI18n from 'vue-i18n'
 // import LangEn from '../static/lang/en'
 // import LangZhCHS from '../static/lang/zhCHS'
 
 import 'element-ui/lib/theme-chalk/index.css'
-
+import 'vue-directive-image-previewer/dist/assets/style.css'
 Vue.config.productionTip = false
 
 
@@ -63,6 +64,7 @@ axios.interceptors.response.use(
 /* eslint-disable no-new */
 Vue.use(VueResource)
 Vue.use(ElementUI)
+Vue.use(VueDirectiveImagePreviewer)
 //Vue.use(VueI18n)
 new Vue({
     el: '#app',

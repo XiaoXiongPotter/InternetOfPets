@@ -44,6 +44,7 @@
 					clearable
 					type="password"
 					v-show="flag8"
+          @change="passwordVerification"
 					>				
 				</el-input>
 				<span class="danger" v-show="flag1">密码不能少于6位</span>
@@ -53,6 +54,7 @@
 					clearable
 					type="password"
 					v-show="flag8"
+          @change="repasswordVerification"
 					>				
 				</el-input>
 				<span class="danger" v-show="flag2">密码不一致</span>
@@ -1005,6 +1007,20 @@ export default {
     routerback: function() {
       this.$router.back(-1);
     },
+    passwordVerification() {
+      if (this.respect.length < 6 && this.respect.length > 0) {
+        this.flag1 = true;
+      } else {
+        this.flag1 = false;
+      }
+    },
+    repasswordVerification() {
+      if (this.input1 != this.respect && this.input1.length != 0) {
+        this.flag2 = true;
+      } else {
+        this.flag2 = false;
+      }
+    },
     send() {
       if (this.phonenumber.length > 0) {
         let params = this.phonenumber;
@@ -1051,20 +1067,20 @@ export default {
       }
     },
     wan() {
-      if (this.flag == true) {
-        var data = Qs.stringify({
+      if (
+        this.flag == true &&
+        this.input1.length > 0 &&
+        this.respect.length > 0 &&
+        this.input1 == this.respect &&
+        this.phonenumber.length > 0 &&
+        this.input4.length > 0
+      ) {
+        var params = Qs.stringify({
           mobile: this.phonenumber,
           password: this.respect,
           smsCode: this.input4
         });
-        axios({
-          method: "post",
-          url: "/api/updatePasswordByMobile",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-          },
-          data
-        })
+        updatePasswordByMobile(params)
           .then(res => {
             if (res.data.header.status == 1000) {
               this.$router.replace({ path: "/resetsuccess" });
@@ -1081,7 +1097,7 @@ export default {
             console.log(error);
           });
       } else {
-        if (this.input2.length > 0) {
+        if (this.input2.length > 0 && this.flag6 == false) {
           let params = this.input2;
           email(params)
             .then(res => {
@@ -1092,21 +1108,10 @@ export default {
                   this.flag7 == false &&
                   this.input2.length > 0
                 ) {
-                  let params = {
-                    username: this.input2
-                  };
-                  var data = Qs.stringify({
+                  var params = Qs.stringify({
                     username: this.input2
                   });
-                  axios({
-                    method: "post",
-                    url: "/api/send_reset_pass_link",
-                    headers: {
-                      "Content-Type":
-                        "application/x-www-form-urlencoded; charset=UTF-8"
-                    },
-                    data
-                  })
+                  sendreset(params)
                     .then(res => {
                       console.log(res.data);
                       this.$message({
@@ -1144,29 +1149,18 @@ export default {
         this.flag5 = true;
         this.flag8 = false;
         this.msg2 = "下一步";
+        this.flag4 = false;
       } else {
         this.msg1 = "邮箱找回?";
         this.flag5 = false;
         this.flag8 = true;
         this.msg2 = "完成";
+        this.flag7 = false;
+        this.flag6 = false;
       }
     }
   },
   watch: {
-    respect(val) {
-      if (val.length < 6 && val.length > 0) {
-        this.flag1 = true;
-      } else {
-        this.flag1 = false;
-      }
-    },
-    input1(val) {
-      if (val != this.respect && val.length != 0) {
-        this.flag2 = true;
-      } else {
-        this.flag2 = false;
-      }
-    },
     input2(val) {
       let reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
       if (reg.test(val) || val.length == 0) {

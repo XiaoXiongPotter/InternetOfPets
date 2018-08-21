@@ -4,15 +4,15 @@
             <img src="../../image/back.png" class="back" @click="back" />
             <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
         </div>
-        <div class="petphoto">
+        <div class="main" ref='wrapper'>
+            <div>
+             <div class="petphoto">
             <p>宠物照片</p>
             <div class="head_img">
                 <img :src="imgflag?avatar:avatar1" @click.stop="uploadHeadImg" style="margin-left:10px;margin-top: 10px;" />
             </div>
             <input type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
-        </div>
-        <div class="main" ref='wrapper'>
-            <div>
+            </div>
                 <div class="losepet">
                     <p>走失宠物</p>
                     <el-input v-model="petname" :disabled="true"></el-input>
@@ -234,7 +234,7 @@ export default {
 }
 .main {
     position: absolute;
-    top: 150px;
+    top: 40px;
     bottom: 0;
     width: 100%;
     overflow: hidden;
@@ -256,9 +256,7 @@ export default {
 .losttime {
     margin-top: 15px;
 }
-.petphoto {
-    margin-top: 15px;
-}
+
 .petphoto p {
     padding-left: 10px;
     font-size: 13px;

@@ -73,147 +73,160 @@
     </div>
 </template>
 <script>
-    import IScroll from 'iscroll/build/iscroll-probe'
-    import axios from "axios";
-    import {getpet} from '../../ClientServerApi/index.js'
-    import {addPet} from '../../ClientServerApi/index.js'
-    import Qs from "qs";
-    export default {
-        name:'addpet',
-        data(){
-            return{
-                src:'',
-                petname:'',
-                petbelong:'',
-                height:'',
-                weight:'',
-                birthday:'',
-                haircolor:'',
-                character:'',
-                avatar:'',
-				avatar1:require('../../image/addpet1.png'),
-				imgflag:false,
-				radio:'男',
-            	man:'男',
-            	women:'女',
-            	flag:false,
-            	flag1:false
-            }
-        },
-         mounted(){
-           this.$nextTick(() => {
-          this.Scroll = new IScroll(this.$refs.wrapper, {
-          click: true
-        })
-       })     
+import IScroll from "iscroll/build/iscroll-probe";
+import axios from "axios";
+import { getpet } from "../../ClientServerApi/index.js";
+import { addPet } from "../../ClientServerApi/index.js";
+import Qs from "qs";
+export default {
+  name: "addpet",
+  data() {
+    return {
+      src: "",
+      petname: "",
+      petbelong: "",
+      height: "",
+      weight: "",
+      birthday: "",
+      haircolor: "",
+      character: "",
+      avatar: "",
+      avatar1: require("../../image/addpet1.png"),
+      imgflag: false,
+      radio: "男",
+      man: "男",
+      women: "女",
+      flag: false,
+      flag1: false
+    };
   },
-        methods:{
-        uploadHeadImg: function () {
-       	this.$el.querySelector('.hiddenInput').click()
+  mounted() {
+    this.$nextTick(() => {
+      this.Scroll = new IScroll(this.$refs.wrapper, {
+        click: true
+      });
+    });
+  },
+  methods: {
+    uploadHeadImg: function() {
+      this.$el.querySelector(".hiddenInput").click();
     },
     // 将头像显示
-    	handleFile: function (e) {
-        this.imgflag=true
-        let $target = e.target || e.srcElement
-        let file = $target.files[0]
-    	var reader = new FileReader()
-    	reader.readAsDataURL(file)
-    	reader.onload = (data) => { 
-        let res = data.target || data.srcElement
-        this.avatar = res.result
-        sessionStorage.setItem('base',data.target.result.split(',')[1])
-    	}
-    	},
-    	addheight(){
-    			let reg = /^[0-9]*$/
-        	if(reg.test(this.height)){
-        		this.flag=false
-        	}else{
-        		this.flag=true
-        	}
-    	},
-    	addweight(){
-    			let reg = /^[0-9]*$/
-        	if(reg.test(this.weight)){
-        		this.flag1=false
-        	}else{
-        		this.flag1=true
-        	}
-    	},
-    	selectman(){
-        	this.radio=this.man
-        },
-        selectwomen(){
-        	this.radio=this.women
-        },
-        back(){
-          this.$router.replace({ path: '/mypet' })
-          sessionStorage.removeItem('base')
-         },
-        add(){
-        	if(this.flag==false&&this.flag1==false){
-        	var params = Qs.stringify({
-                name:this.petname,
-                height:this.height,
-                weight:this.weight,
-                birthTime:this.birthday,
-                petType:this.petbelong,
-                color:this.haircolor,
-                gender:this.radio,
-                portrait:sessionStorage.base,
-                character:this.character
-      })
-      addPet(params).then(res =>{
-          console.log(res)
-          if(res.data.header.status==1000){
-              sessionStorage.removeItem('base')
-              this.$router.replace({ path: '/mypet' })
+    handleFile: function(e) {
+      this.imgflag = true;
+      let $target = e.target || e.srcElement;
+      let file = $target.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = data => {
+        let res = data.target || data.srcElement;
+        this.avatar = res.result;
+        sessionStorage.setItem("base", data.target.result.split(",")[1]);
+      };
+    },
+    addheight() {
+      let reg = /^[0-9]*$/;
+      if (reg.test(this.height)) {
+        this.flag = false;
+      } else {
+        this.flag = true;
+      }
+    },
+    addweight() {
+      let reg = /^[0-9]*$/;
+      if (reg.test(this.weight)) {
+        this.flag1 = false;
+      } else {
+        this.flag1 = true;
+      }
+    },
+    selectman() {
+      this.radio = this.man;
+    },
+    selectwomen() {
+      this.radio = this.women;
+    },
+    back() {
+      getpet()
+        .then(res => {
+          if (res.data.header.status == 1000 && res.data.data.length == 0) {
+            this.$router.replace({ path: "/myAccount" });
+          } else {
+            this.$router.replace({ path: "/mypet" });
+            sessionStorage.removeItem("base");
           }
-      }).catch(error => {
-          console.log(error)
-      })
-        	}
-        }
-        }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    add() {
+      if (this.flag == false && this.flag1 == false) {
+        var params = Qs.stringify({
+          name: this.petname,
+          height: this.height,
+          weight: this.weight,
+          birthTime: this.birthday,
+          petType: this.petbelong,
+          color: this.haircolor,
+          gender: this.radio,
+          portrait: sessionStorage.base,
+          character: this.character
+        });
+        addPet(params)
+          .then(res => {
+            console.log(res);
+            if (res.data.header.status == 1000) {
+              sessionStorage.removeItem("base");
+              this.$router.replace({ path: "/mypet" });
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     }
+  }
+};
 </script>
 <style>
-.pet .el-date-editor.el-input, .el-date-editor.el-input__inner{
-    width: 100px;
+.pet .el-date-editor.el-input,
+.el-date-editor.el-input__inner {
+  width: 100px;
 }
-.pet .el-input__icon{
-    display: none;
+.pet .el-input__icon {
+  display: none;
 }
-.pet .el-input__inner{
-    padding: 0 0;
-    width: 100px;
-    height: 30px;
-    line-height: 30px;
-    border-top-color: white;
-    border-right-color: white;
-    border-left-color: white;
+.pet .el-input__inner {
+  padding: 0 0;
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  border-top-color: white;
+  border-right-color: white;
+  border-left-color: white;
 }
-.pet .el-input__inner:hover{
-    border-top-color: white;
-    border-right-color: white;
-    border-left-color: white;
+.pet .el-input__inner:hover {
+  border-top-color: white;
+  border-right-color: white;
+  border-left-color: white;
 }
 </style>
 <style scoped>
-.addpet .danger{
-	font-size: 10px;
-	color: red;
+.addpet .danger {
+  font-size: 10px;
+  color: red;
 }
-.head_img img{
-  width:100px;
-  height:100px;
-  border-radius:50px
+.head_img img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
 }
-.hiddenInput{
+.hiddenInput {
   display: none;
 }
-.addpet{
-    width: 100%;
+.addpet {
+  width: 100%;
 }
 .header .imgBox {
   width: 100px;
@@ -223,74 +236,74 @@
   width: 100%;
   vertical-align: middle;
 }
-.header{
-    display: flex;
-    width: 100%;
-      background: #fff;
-      color: #0ca8e3;
-      height: 40px;
-      line-height: 40px;
-    position: relative;
+.header {
+  display: flex;
+  width: 100%;
+  background: #fff;
+  color: #0ca8e3;
+  height: 40px;
+  line-height: 40px;
+  position: relative;
 }
-.back{
-    width: 22px;
-    height: 22px;
-    position: absolute;
-    top: 18%;
+.back {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: 18%;
 }
-.addpet-main{
-    position: absolute;
-    top: 40px;
-    bottom: 0;
-    width: 100%;
-    max-width: 720px;
-    overflow: hidden;
-    touch-action: none;
+.addpet-main {
+  position: absolute;
+  top: 40px;
+  bottom: 0;
+  width: 100%;
+  max-width: 720px;
+  overflow: hidden;
+  touch-action: none;
 }
-.petname{
-    margin-left: 15px;
-    width: 50%;
+.petname {
+  margin-left: 15px;
+  width: 50%;
 }
-.pet{
-    width: 100%;
+.pet {
+  width: 100%;
 }
-.pet span{
-    font-size: 16px;
-    color: #00BFFF;
+.pet span {
+  font-size: 16px;
+  color: #00bfff;
 }
-.petbelong{
-    flex: 1;
-    margin-left: 15px;
-    margin-top: 40px;
+.petbelong {
+  flex: 1;
+  margin-left: 15px;
+  margin-top: 40px;
 }
-.pet-msg{
-    display: flex;
+.pet-msg {
+  display: flex;
 }
-.sex{
-    flex: 1;
-    margin-top: 40px;
+.sex {
+  flex: 1;
+  margin-top: 40px;
 }
-.height{
-    flex: 1;
-    margin-left: 15px;
-    margin-top: 40px;
+.height {
+  flex: 1;
+  margin-left: 15px;
+  margin-top: 40px;
 }
-.weight{
-    flex: 1;
-    margin-top: 40px;
+.weight {
+  flex: 1;
+  margin-top: 40px;
 }
-.birthday{
-    flex: 1;
-    margin-left: 15px;
-    margin-top: 40px;
+.birthday {
+  flex: 1;
+  margin-left: 15px;
+  margin-top: 40px;
 }
-.haircolor{
-    flex: 1;
-    margin-top: 40px;
+.haircolor {
+  flex: 1;
+  margin-top: 40px;
 }
-.character{
-    margin-top: 40px;
-    margin-left: 15px;
-    width: 50%;
+.character {
+  margin-top: 40px;
+  margin-left: 15px;
+  width: 50%;
 }
 </style>
