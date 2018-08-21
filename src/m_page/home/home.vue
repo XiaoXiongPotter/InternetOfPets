@@ -1,43 +1,43 @@
 <template>
-  <div class="home">
-    <v-header :go-back='false' :add-devices='true'></v-header>
-    <div v-if="islogin">
-      <div class="title">
-        <i class="line"></i>
-        <span>HOME</span>
-        <i class="line"></i>
-      </div>
-      <div class="device_main" ref='wrapper'>
-      <ul class="device_box">
-        <li v-for="(info,index) in infos" :key="index">
-          <div class="device_box_l">
-            <img :src="'../../../static/img/'+info.device.type +'.png'">
-            <span>{{info.device.type | infosCmputed}}</span>
-          </div>
-          <div class="device_box_r">
-            <div class="touxiang_box">
-              <img :src="info.pet?info.pet.portrait:'../../../static/img/defaultpet.jpg'" alt="">
+    <div class="home">
+        <v-header :go-back='false' :add-devices='true'></v-header>
+        <div v-if="islogin">
+            <div class="title">
+                <i class="line"></i>
+                <span>HOME</span>
+                <i class="line"></i>
             </div>
-            <div class="info_box">
-              <p>{{info.device.deviceName}}</p>
-              <p>{{info.pet?info.pet.name:'未绑定宠物'}}</p>
+            <div class="device_main" ref='wrapper'>
+                <ul class="device_box">
+                    <li v-for="(info,index) in infos" :key="index">
+                        <div class="device_box_l">
+                            <img :src="'../../../static/img/'+info.device.type +'.png'">
+                            <span>{{info.device.type | infosCmputed}}</span>
+                        </div>
+                        <div class="device_box_r">
+                            <div class="touxiang_box">
+                                <img :src="info.pet?info.pet.portrait:'../../../static/img/defaultpet.jpg'" alt="">
+                            </div>
+                            <div class="info_box">
+                                <p>{{info.device.deviceName}}</p>
+                                <p>{{info.pet?info.pet.name:'未绑定宠物'}}</p>
+                            </div>
+                            <div class="btn_box">
+                                <a class="btn caozuo" v-show="info.device.type=='NECKLACE'?true:false" :href="'http://192.168.0.123/NeckSever/necklace_map.html?token='+getToken+'&deviceId='+info.device.deviceCode+'&imei='+info.object.imei"></a>
+                                <router-link class="btn caozuo" v-show="info.device.type=='TAG'?true:false" to="/tag"></router-link>
+                                <router-link class="btn guanli" :to="{path:'/deviceManage',query:{deviceCode:info.device.deviceCode,binded:info.pet==null?'':info.pet.id}}"></router-link>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
-            <div class="btn_box">
-              <a class="btn caozuo" v-show="info.device.type=='NECKLACE'?true:false" :href="'http://192.168.0.123/NeckSever/necklace_map.html?token='+getToken+'&deviceId='+info.device.deviceCode+'&imei='+info.object.imei"></a>
-              <router-link class="btn caozuo" v-show="info.device.type=='TAG'?true:false" to="/tag"></router-link>
-              <router-link class="btn guanli" :to="{path:'/deviceManage',query:{deviceCode:info.device.deviceCode,binded:info.pet==null?'':info.pet.id}}"></router-link>
-            </div>
-          </div>
-        </li>
-      </ul>
-      </div>
+        </div>
+        <div class="notlogin" v-else>
+            亲，请先登录再查看您的设备
+            <router-link :to="{name:'login'}">去登录</router-link>
+        </div>
+        <v-foot :loginsuccess='loginsuccess' :loginshowflag='loginshowflag'></v-foot>
     </div>
-    <div class="notlogin" v-else>
-      亲，请先登录再查看您的设备
-      <router-link :to="{name:'login'}">去登录</router-link>
-    </div>
-    <v-foot :loginsuccess='loginsuccess' :loginshowflag='loginshowflag'></v-foot>
-  </div>
 </template>
 <script >
 import { getDevices } from "../../deviceApi/index.js";
@@ -54,8 +54,8 @@ export default {
             infos: "",
             loginsuccess: false,
             loginshowflag: true,
-            getToken:sessionStorage['token'],
-            imei:''
+            getToken: sessionStorage["token"],
+            imei: ""
         };
     },
     mounted() {
@@ -66,23 +66,26 @@ export default {
             getDevices()
                 .then(res => {
                     this.infos = res.data.data;
-                    console.log(res.data);
+                    if(this.infos.length=='0'){
+                       
+                    }
+                    console.log(res.data.data);
                 })
                 .catch(err => {});
         }
     },
     created() {
-              if (sessionStorage.getItem("login")) {
-                this.loginsuccess = true;
-                this.loginshowflag = false;
-            }    
+        if (sessionStorage.getItem("login")) {
+            this.loginsuccess = true;
+            this.loginshowflag = false;
+        }
     },
-    beforeUpdate(){
- this.$nextTick(() => {
-              this.Scroll = new IScroll(this.$refs.wrapper, {
+    beforeUpdate() {
+        this.$nextTick(() => {
+            this.Scroll = new IScroll(this.$refs.wrapper, {
                 click: true
             });
-            });
+        });
     },
     computed: {},
     filters: {
@@ -109,13 +112,13 @@ export default {
 };
 </script>
 <style scoped>
-.device_main{
-	position: absolute;
-	top: 55px;
-	bottom: 50px;
-	overflow: hidden;
-	width: 100%;
-	touch-action: none;
+.device_main {
+    position: absolute;
+    top: 55px;
+    bottom: 50px;
+    overflow: hidden;
+    width: 100%;
+    touch-action: none;
 }
 .home {
     width: 100%;
@@ -158,9 +161,9 @@ img {
     box-sizing: border-box;
     border-right: 1px solid #ddd;
 }
-.device_box_l img{
-  width:60px;
-  height:60px;
+.device_box_l img {
+    width: 60px;
+    height: 60px;
 }
 .device_box_l span {
     font-size: 12px;
@@ -171,7 +174,7 @@ img {
 .device_box_r {
     float: left;
     width: 70%;
-    height:100%;
+    height: 100%;
     padding: 0 10px;
     box-sizing: border-box;
 }
@@ -184,7 +187,7 @@ img {
     border-radius: 5px;
     width: 60px;
     height: 60px;
-    vertical-align: middle
+    vertical-align: middle;
 }
 .info_box {
     float: left;

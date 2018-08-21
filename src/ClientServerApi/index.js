@@ -39,3 +39,7 @@ export const listPublish = (params) => {
 export const updatePublish = (params) => {
 	return http.fetchPost('/ClientServerApi/pets/search/updatePublish',params)
 }
+//扫码后获得狗牌信息
+export const getTagInfo = (params) => {
+	return http.fetchPost('/ClientServerApi/qr/qrMsg',params)
+}
