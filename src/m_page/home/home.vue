@@ -8,28 +8,35 @@
                 <i class="line"></i>
             </div>
             <div class="device_main" ref='wrapper'>
-                <ul class="device_box">
-                    <li v-for="(info,index) in infos" :key="index">
-                        <div class="device_box_l">
-                            <img :src="'../../../static/img/'+info.device.type +'.png'">
-                            <span>{{info.device.type | infosCmputed}}</span>
-                        </div>
-                        <div class="device_box_r">
-                            <div class="touxiang_box">
-                                <img :src="info.pet?info.pet.portrait:'../../../static/img/defaultpet.jpg'" alt="">
+                <div>
+                    <div v-show="addDeviceBtn" class="addDeviceBtn">
+                        <span>您还没有添加任何多尼斯智能产品</span>
+                        <router-link to="/addDevice" class="addBtn">添加新设备</router-link>
+                    </div>
+                    <ul class="device_box">
+                        <li v-for="(info,index) in infos" :key="index">
+                            <div class="device_box_l">
+                                <img :src="'../../../static/img/'+info.device.type +'.png'">
+                                <span>{{info.device.type | infosCmputed}}</span>
                             </div>
-                            <div class="info_box">
-                                <p>{{info.device.deviceName}}</p>
-                                <p>{{info.pet?info.pet.name:'未绑定宠物'}}</p>
+                            <div class="device_box_r">
+                                <div class="touxiang_box">
+                                    <img :src="info.pet?info.pet.portrait:'../../../static/img/defaultpet.jpg'" alt="">
+                                </div>
+                                <div class="info_box">
+                                    <p>{{info.device.deviceName}}</p>
+                                    <p>{{info.pet?info.pet.name:'未绑定宠物'}}</p>
+                                </div>
+                                <div class="btn_box">
+                                    <a class="btn caozuo" v-show="info.device.type=='NECKLACE'?true:false" :href="'http://119.29.172.17:8081/NeckSever/necklace_map.html?token='+getToken+'&deviceId='+info.device.deviceCode+'&imei='+info.object.imei"></a>
+                                    <router-link class="btn caozuo" v-show="info.device.type=='TAG'?true:false" to="/tag"></router-link>
+                                    <router-link class="btn guanli" :to="{path:'/deviceManage',query:{deviceCode:info.device.deviceCode,binded:info.pet==null?'':info.pet.id}}"></router-link>
+                                </div>
                             </div>
-                            <div class="btn_box">
-                                <a class="btn caozuo" v-show="info.device.type=='NECKLACE'?true:false" :href="'http://192.168.0.123/NeckSever/necklace_map.html?token='+getToken+'&deviceId='+info.device.deviceCode+'&imei='+info.object.imei"></a>
-                                <router-link class="btn caozuo" v-show="info.device.type=='TAG'?true:false" to="/tag"></router-link>
-                                <router-link class="btn guanli" :to="{path:'/deviceManage',query:{deviceCode:info.device.deviceCode,binded:info.pet==null?'':info.pet.id}}"></router-link>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
         <div class="notlogin" v-else>
@@ -55,7 +62,8 @@ export default {
             loginsuccess: false,
             loginshowflag: true,
             getToken: sessionStorage["token"],
-            imei: ""
+            imei: "",
+            addDeviceBtn: false
         };
     },
     mounted() {
@@ -66,8 +74,10 @@ export default {
             getDevices()
                 .then(res => {
                     this.infos = res.data.data;
-                    if(this.infos.length=='0'){
-                       
+                    if (this.infos.length == "0") {
+                        this.addDeviceBtn = true;
+                    } else {
+                        this.addDeviceBtn = false;
                     }
                     console.log(res.data.data);
                 })
@@ -112,6 +122,21 @@ export default {
 };
 </script>
 <style scoped>
+.addDeviceBtn{
+    text-align: center;
+   
+}
+.addBtn{
+     background-color: #085196;
+    color: #fff;
+    font-size: 1.3rem;
+
+    width: 80%;
+    display: block;
+    margin: 0 auto;
+    margin-top:20px;
+    border-radius: 50px; 
+}
 .device_main {
     position: absolute;
     top: 55px;
@@ -119,6 +144,16 @@ export default {
     overflow: hidden;
     width: 100%;
     touch-action: none;
+}
+.device_main span{
+    display: block;
+    margin-top: 20px;
+    font-size: 1.5rem;
+    
+}
+.device_main .addBtn{
+    display: block;
+    padding:10px;
 }
 .home {
     width: 100%;

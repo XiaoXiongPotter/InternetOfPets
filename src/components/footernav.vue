@@ -9,7 +9,7 @@
         <div>
           <i class="icon home-tip"></i>
         </div>
-        <div>首页</div>
+        <div>设备</div>
       </router-link>
       
       <router-link :to="{name:'finder'}" active-class="activeNav" tag="li">

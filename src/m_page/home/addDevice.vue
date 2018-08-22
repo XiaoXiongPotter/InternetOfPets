@@ -36,17 +36,18 @@
                         </router-link>
                     </li>
                     <li>
-                        <router-link to="/connectDevice">
-                            <img src="../../image/tag.jpg" alt="">
-                            <span>多尼斯协寻吊坠</span>
-                        </router-link>
+                        <a href="../../../static/page/scan.html">
+                            <img src="../../image/necklace.jpg" alt="">
+                            <span>多尼斯智能项圈</span>
+                        </a>
                     </li>
                     <li>
-                        <router-link to="/connectDevice">
-                            <img src="../../image/water.jpg" alt="">
-                            <span>多尼斯自动饮水机</span>
-                        </router-link>
+                        <a href="../../../static/page/scan.html">
+                            <img src="../../image/tag.jpg" alt="">
+                            <span>多尼斯协寻吊坠</span>
+                        </a>
                     </li>
+
                 </ul>
             </div>
 
@@ -71,10 +72,9 @@ export default {
 };
 </script>
 <style scroped>
-
 .addDevice-box {
     position: absolute;
-    top:40px;
+    top: 40px;
     width: 100%;
     height: 90%;
     overflow: hidden;

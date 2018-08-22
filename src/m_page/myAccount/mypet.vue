@@ -101,7 +101,7 @@ export default {
 .birthday{
 	padding-top: 10px;
 	font-family: "微软雅黑";
-	font-size: 14px;
+	font-size: 1.2rem;
 }
 .header .imgBox {
     width: 100px;
@@ -183,9 +183,8 @@ export default {
 }
 .petname {
     font-family: "微软雅黑";
-    font-size: 20px;
-    font-weight: bold;
-    color: #4169e1;
+    font-size: 1.7rem;
+    color:#034b94
 }
 .petdevice {
     padding-top: 30px;

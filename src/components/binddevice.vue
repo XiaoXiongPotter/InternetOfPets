@@ -62,9 +62,10 @@ export default {
   font-size: 14px;
 }
 .adddevice {
-  padding-top: 10px;
+  padding-top: 1rem;
   font-family: "微软雅黑";
-  font-size: 14px;
+  font-size: 1.2rem;
   color: #034b94;
+  display: inline-block
 }
 </style>

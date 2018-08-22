@@ -76,6 +76,7 @@ export default {
   created() {
     systemInit()
       .then(res => {
+
         let data = res.headers["x-auth-token"];
         // if (data == sessionStorage.token) {
         //     this.$router.push({ path: "/" });
