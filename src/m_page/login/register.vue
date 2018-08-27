@@ -1197,7 +1197,7 @@ export default {
       }
     },
     send() {
-      if (this.phonenumber.length > 0) {
+      if (this.phonenumber.length > 0 && this.flag5==false) {
         let params = this.phonenumber;
         email(params)
           .then(res => {

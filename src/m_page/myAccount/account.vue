@@ -71,7 +71,7 @@
 							</el-col>
 						</el-row>
 					</a>
-					<a>
+					<a href="https://www.dognessnetwork.com/help/index.html">
 						<el-row type="flex" class="row-bg" style="height: 50px;line-height: 50px;border-bottom: solid 1px #DCDCDC;">
 							<el-col :span="21">
 								<div class="msg"><img src="../../image/help.png">

@@ -10,8 +10,12 @@
             <p>宠物照片</p>
             <div class="head_img">
                 <img :src="imgflag?avatar:avatar1" @click.stop="uploadHeadImg" style="margin-left:10px;margin-top: 10px;" />
+                <!-- <img :src="imgflag1?avatar2:avatar1" @click.stop="uploadHeadImg1" style="margin-left:10px;margin-top: 10px;" v-show="flag" /> -->
+                <!-- <img :src="imgflag2?avatar3:avatar1" @click.stop="uploadHeadImg2" style="margin-left:10px;margin-top: 10px;" v-show="flag1" /> -->
             </div>
             <input type="file" accept="image/*" @change="handleFile" class="hiddenInput" />
+            <!-- <input type="file" accept="image/*" @change="handleFile1" class="hiddenInput1" /> -->
+            <!-- <input type="file" accept="image/*" @change="handleFile2" class="hiddenInput2" /> -->
             </div>
                 <div class="losepet">
                     <p>走失宠物</p>
@@ -66,11 +70,18 @@ export default {
             losttime: "",
             avatar: "",
             avatar1: require("../../image/addpet.png"),
+            // avatar2:"",
+            // avatar3:"",
             imgflag: false,
             mobile: "",
             email: "",
             loseplace: "",
-            id: ""
+            id: "",
+            // flag:false,
+            // imgflag1:false,
+            // imgflag2:false,
+            // flag1:false,
+            // imgbase:[]
         };
     },
     mounted() {
@@ -105,13 +116,61 @@ export default {
                     "base",
                     data.target.result.split(",")[1]
                 );
+                this.flag=true
             };
         },
+        //         // 打开图片上传
+        // uploadHeadImg1: function() {
+        //     this.$el.querySelector(".hiddenInput1").click();
+        // },
+        // // 将头像显示
+        // handleFile1: function(e) {
+        //     this.imgflag1 = true;
+        //     let $target = e.target || e.srcElement;
+        //     let file = $target.files[0];
+        //     var reader = new FileReader();
+        //     reader.readAsDataURL(file);
+        //     this.changeflag = true;
+        //     reader.onload = data => {
+        //         let res = data.target || data.srcElement;
+        //         this.avatar2 = res.result;
+        //         sessionStorage.setItem(
+        //             "base1",
+        //             data.target.result.split(",")[1]
+        //         );
+        //         this.flag1=true
+        //     };
+        // },
+        //                 // 打开图片上传
+        // uploadHeadImg2: function() {
+        //     this.$el.querySelector(".hiddenInput2").click();
+        // },
+        // // 将头像显示
+        // handleFile2: function(e) {
+        //     this.imgflag2 = true;
+        //     let $target = e.target || e.srcElement;
+        //     let file = $target.files[0];
+        //     var reader = new FileReader();
+        //     reader.readAsDataURL(file);
+        //     this.changeflag = true;
+        //     reader.onload = data => {
+        //         let res = data.target || data.srcElement;
+        //         this.avatar3 = res.result;
+        //         sessionStorage.setItem(
+        //             "base2",
+        //             data.target.result.split(",")[1]
+        //         );
+        //     };
+        // },
         back() {
             sessionStorage.removeItem("base");
+            // sessionStorage.removeItem("base1");
+            //  sessionStorage.removeItem("base2");
             this.$router.back(-1)
         },
         release() {
+            // this.imgbase.push(sessionStorage.base,sessionStorage.base1,sessionStorage.base2)
+            // console.log(this.imgbase)
             let params = Qs.stringify({
                 content: this.introduction,
                 lat: 31.18826,
@@ -207,6 +266,12 @@ export default {
     height: 60px;
 }
 .hiddenInput {
+    display: none;
+}
+.hiddenInput1 {
+    display: none;
+}
+.hiddenInput2 {
     display: none;
 }
 .header .imgBox {
