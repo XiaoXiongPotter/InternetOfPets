@@ -1,7 +1,7 @@
 <template>
 	<div class="binddevice">
 		<p class="petdevice" v-if="device.length>0">绑定设备:<span v-for="(item,index) in device" :key="index">{{item}}</span></p>
-		<p class="adddevice" v-else @click="adddevice">点击添加设备</p>
+		<span class="adddevice" v-else @click="adddevice">点击添加设备</span>
 	</div>
 </template>
 <script>
@@ -42,7 +42,7 @@ export default {
             this.device.push("智能投食器");
           }
         }
-        console.log(this.device)
+        // console.log(this.device)
       })
       .catch(error => {
         console.log(error);
@@ -57,12 +57,10 @@ export default {
 </script>
 <style scoped>
 .petdevice {
-  padding-top: 10px;
   font-family: "微软雅黑";
   font-size: 14px;
 }
 .adddevice {
-  padding-top: 10px;
   font-family: "微软雅黑";
   font-size: 14px;
   color: #034b94;

@@ -170,6 +170,12 @@ export default {
                             });
                             this.$router.push({ path: "/" });
                         }
+                        if(res.data.header.status==81003){
+                             this.$message({
+                                type: "error",
+                                message: "该宠物在协寻中!"
+                            });
+                        }
                         console.log(res.data.header);
                     });
                 })

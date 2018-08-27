@@ -102,6 +102,7 @@ export default {
 	padding-top: 10px;
 	font-family: "微软雅黑";
 	font-size: 14px;
+    padding-bottom:10px; 
 }
 .header .imgBox {
     width: 100px;
