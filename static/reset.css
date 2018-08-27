@@ -105,3 +105,6 @@ input, select {
 i{
   font-style: normal
 }
+.el-message-box{
+  width:300px;
+}

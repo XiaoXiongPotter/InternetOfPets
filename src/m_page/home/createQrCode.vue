@@ -20,7 +20,7 @@
 <script>
 import header from "../../components/header";
 import Qs from "qs";
-import { bindDevice } from "../../deviceApi/index.js";
+import { createQrCode } from "../../deviceApi/index.js";
 export default {
     data() {
         return {
@@ -39,7 +39,7 @@ export default {
                 pwd: this.formcon.pwd
             });
 
-            bindDevice(params).then(res => {
+            createQrCode(params).then(res => {
                 console.log(res.data.data);
                 this.$alert(
                     '<img src="' + res.data.data + '" style="width:100%">',

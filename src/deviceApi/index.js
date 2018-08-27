@@ -15,8 +15,13 @@ export const bindPet = (params) => {
 }
 //生成绑定二维码
 
-export const bindDevice = (params) => {
+export const createQrCode = (params) => {
 	return http.fetchPost('/deviceApi/devices/getQrCode',params)
+}
+//绑定设备
+
+export const bindDevice = (params) => {
+	return http.fetchPost('/deviceApi/devices/bind',params)
 }
 //解绑设备
 
