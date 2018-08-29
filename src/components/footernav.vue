@@ -11,7 +11,7 @@
         </div>
         <div>设备</div>
       </router-link>
-      
+
       <router-link :to="{name:'finder'}" active-class="activeNav" tag="li">
         <div>
           <i class="icon finder-tip"></i>
@@ -24,7 +24,7 @@
         </div>
         <div>我的</div>
       </router-link>
-       <router-link :to="{name:'login'}" active-class="activeNav" tag="li" v-show='loginshowflag'>
+      <router-link :to="{name:'login'}" active-class="activeNav" tag="li" v-show='loginshowflag'>
         <div>
           <i class="icon account-tip"></i>
         </div>
@@ -35,49 +35,58 @@
 </template>
 <script type="text/ecmascript-6">
 export default {
-  name: "footernav",
-   props:['loginsuccess','loginshowflag']
+    name: "footernav",
+    props: ["loginsuccess", "loginshowflag"]
 };
 </script>
 <style >
 .nav {
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  background-color: #0ca8e3;
-  width: 100%;
-  font-size: 14px;
-  color: #ffffff;
-  box-sizing: border-box
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+        "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-size: 14px;
+    color: #ffffff;
+    box-sizing: border-box;
+}
+.nav ul {
+    max-width: 720px;
+    margin: 0 auto;
+    background-color: #0ca8e3;
+}
+.nav ul::after{
+  content: '';
+  display: block;
+  clear: both
 }
 .nav li {
-  width: 33.3%;
-  padding:5px 0;
-  float: left;
-  text-align: center;
+    width: 33.3%;
+    padding: 5px 0;
+    float: left;
+    text-align: center;
 }
-.icon{
-  display: block;
-  width:25px;
-  height: 25px;
-  margin: 0 auto;
+.icon {
+    display: block;
+    width: 25px;
+    height: 25px;
+    margin: 0 auto;
 }
-.finder-tip{
-  background-image: url(../image/finder-tip.png);
-  background-size: 25px;
+.finder-tip {
+    background-image: url(../image/finder-tip.png);
+    background-size: 25px;
 }
-.home-tip{
-  background-image: url(../image/home-tip.png);
-  background-size: 25px;
+.home-tip {
+    background-image: url(../image/home-tip.png);
+    background-size: 25px;
 }
-.account-tip{
-  background-image: url(../image/account-tip.png);
-  background-size: 25px;
+.account-tip {
+    background-image: url(../image/account-tip.png);
+    background-size: 25px;
 }
-.activeNav{
-  color: #000
+.activeNav {
+    color: #000;
 }
 </style>
 

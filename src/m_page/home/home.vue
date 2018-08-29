@@ -138,9 +138,9 @@ export default {
     border-radius: 50px; 
 }
 .device_main {
-    position: absolute;
-    top: 55px;
-    bottom: 50px;
+    /* position: absolute; */
+    /* top: 55px;
+    bottom: 50px; */
     overflow: hidden;
     width: 100%;
     touch-action: none;
