@@ -218,6 +218,7 @@ export default {
     mypet() {
       getpet()
         .then(res => {
+          console.log(res)
           if (res.data.header.status == 1000 && res.data.data.length > 0) {
             this.$router.replace({ path: "/mypet" });
           } else if (
