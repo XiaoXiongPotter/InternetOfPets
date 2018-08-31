@@ -288,18 +288,25 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
           var params = Qs.stringify({
             petId: this.id
           });
           deletepet(params)
             .then(res => {
+              console.log(res)
               if (res.data.header.status == 1000) {
+                    this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
                 this.showflag = false;
                 this.$emit("remove", this.index);
+              }
+              if(res.data.header.status == 81004){
+                    this.$message({
+            type: "error",
+            message: "该宠物在协寻中，无法删除!"
+          });
               }
             })
             .catch(error => {

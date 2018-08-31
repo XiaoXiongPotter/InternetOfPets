@@ -81,7 +81,7 @@ export default {
           }
           console.log(res.data.data);
         })
-        .catch(err => {});
+        .catch(err => {console.log(err)});
     }
   },
   created() {
