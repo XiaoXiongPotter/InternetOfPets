@@ -5,7 +5,7 @@
   "author": "wanghaiyang <619747158@qq.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 192.168.0.219",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 192.168.0.222",
     "start": "npm run dev",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "e2e": "node test/e2e/runner.js",
@@ -16,6 +16,7 @@
     "axios": "^0.18.0",
     "element-ui": "^2.4.1",
     "iscroll": "^5.2.0",
+    "iview": "^3.0.1",
     "jquery": "^1.12.4",
     "qs": "^6.5.2",
     "vue": "^2.5.2",

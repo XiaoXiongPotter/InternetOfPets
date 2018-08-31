@@ -9,7 +9,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         //target: 'http://manager.dognessnetwork.com:8080',//设置你调用的接口域名和端口号 别忘了加http 
-        target: "http://119.29.172.17:8080",
+        target: "http://petnet.imwork.net:8080",
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'
@@ -17,14 +17,15 @@ module.exports = {
       },
 
       '/deviceApi': {
-        target: 'http://119.29.172.17/device', //设置你调用的接口域名和端口号 别忘了加http
+        target: 'http://petnet.imwork.net/device', //设置你调用的接口域名和端口号 别忘了加http
         changeOrigin: true,
         pathRewrite: {
           '^/deviceApi': '/'
         }
       },
       '/ClientServerApi': {
-        target: 'http://119.29.172.17:9860/ClientServer', //设置你调用的接口域名和端口号 别忘了加http
+        target: 'http://petnet.imwork.net:9860/ClientServer', //设置你调用的接口域名和端口号 别忘了加http
+        // target: 'http://192.168.0.45:9860/ClientServer',
         changeOrigin: true,
         pathRewrite: {
           '^/ClientServerApi': '/'

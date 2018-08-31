@@ -43,3 +43,7 @@ export const updatePublish = (params) => {
 export const getTagInfo = (params) => {
 	return http.fetchPost('/ClientServerApi/qr/qrMsg',params)
 }
+//获取扫码记录
+export const listScanner = (params) => {
+	return http.fetchPost('/ClientServerApi/pets/search/listScanner',params)
+}

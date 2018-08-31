@@ -143,7 +143,7 @@ export default {
   methods: {
     // 打开图片上传
     uploadHeadImg: function() {
-      this.$confirm("是否修改头像?", "提示", {
+      this.$confirm("是否修改照片?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"

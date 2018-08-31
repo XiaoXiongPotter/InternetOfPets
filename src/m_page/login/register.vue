@@ -1180,7 +1180,7 @@ export default {
                   type: "warning"
                 });
               }
-              if (res.data.header.status == 3025) {
+              if (res.data.header.status == 3008) {
                 this.$message({
                   message: "该账号已经注册过",
                   center: true,
