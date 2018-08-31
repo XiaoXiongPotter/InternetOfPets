@@ -115,13 +115,14 @@ export default {
             //获得谁设备详细信息
             getDevicesInfo(params)
                 .then(res => {
+                    console.log(res)
                     this.deviceInfo = res;
                     this.deviceName = res.data.data.device.deviceName;
                     this.deviceCode = res.data.data.device.deviceCode;
                     this.deviceType = res.data.data.device.type;
                     this.petId = res.data.data.device.petId;
                     //  this.bindPet =res.data.data.pet==null?'':res.data.data.pet
-                    this.petname = res.data.data.pet.name
+                    this.petname = res.data.data.petDto.name;
                     console.log("bingpat", res.data);
                     //输出返回值
                     console.log("设备", res);
@@ -144,11 +145,16 @@ export default {
             //绑定宠物
             bindPet(params).then(res => {
                 console.log(res);
-                this.$message({
-                    type: "success",
-                    message: "绑定宠物成功!"
-                });
-                this.$router.push({ path: "/" });
+                if (res.data.header.status == 1000) {
+                    console.log(res);
+                    this.$message({
+                        type: "success",
+                        message: "绑定宠物成功!"
+                    });
+                    this.$router.push({ path: "/" });
+                }else{
+                    alert('失败')
+                }
             });
         },
         //设备解绑
@@ -170,8 +176,8 @@ export default {
                             });
                             this.$router.push({ path: "/" });
                         }
-                        if(res.data.header.status==81003){
-                             this.$message({
+                        if (res.data.header.status == 81003) {
+                            this.$message({
                                 type: "error",
                                 message: "该宠物在协寻中!"
                             });

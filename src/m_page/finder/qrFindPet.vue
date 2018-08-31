@@ -94,7 +94,8 @@ export default {
             id: this.$route.query.id
         });
         getTagInfo(params).then(res => {
-			let pet = res.data.data
+            let pet = res.data.data
+            console.log(res);
 			this.name = pet.petName
 			this.weight = pet.weight
 			this.height = pet.height
@@ -107,7 +108,7 @@ export default {
 			this.nickname = pet.nickname
 			this.mobile = pet.mobile
 			this.email = pet.email
-			console.log(pet);
+			
 			
         });
 	},
