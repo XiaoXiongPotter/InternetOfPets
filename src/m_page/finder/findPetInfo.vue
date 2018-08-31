@@ -1,39 +1,39 @@
 <template>
-	<div class="findPetInfo">
-		<div class="header">
-			<img src="../../image/back.png" class="back" @click="back" />
-			<div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
-		</div>
-		<div class="pet_news">
-			<div class="pet_pic"><img :src="photoUrl" alt="头像" /></div>
-			<div>宠物名称<br />
-				<span v-text="name">厌骨</span>
-			</div>
-			<ul>
-				<li >宠物品种<br />
-					<span v-text="petType">秋田</span>
-				</li>
-				<li >宠物毛色<br />
-					<span v-text="color">浅棕色</span>
-				</li>
-				<li >宠物性别<br />
-					<span v-text="gender">男</span>
-				</li>
-				<li >宠物体重(Kg)<br />
-					<span v-text="weight">10</span>
-				</li>
-				<li >宠物身高(cm)<br />
-					<span v-text="height">40</span>
-				</li>
-				<li >出生日期<br />
-					<span v-text="birthTime">2018-08-14</span>
-				</li>
-				<li >宠物性格<br />
-					<span v-text="character">嚣张跋扈</span>
-				</li>
-			</ul>
-		</div>
-	</div>
+    <div class="findPetInfo">
+        <div class="header">
+            <img src="../../image/back.png" class="back" @click="back" />
+            <div class="imgBox"><img src="../../image/logo-m.png" alt=""></div>
+        </div>
+        <div class="pet_news">
+            <div class="pet_pic"><img :src="photoUrl" alt="头像" /></div>
+            <div>宠物名称<br />
+                <span v-text="name">厌骨</span>
+            </div>
+            <ul>
+                <li>宠物品种<br />
+                    <span v-text="petType">秋田</span>
+                </li>
+                <li>宠物毛色<br />
+                    <span v-text="color">浅棕色</span>
+                </li>
+                <li>宠物性别<br />
+                    <span v-text="gender">男</span>
+                </li>
+                <li>宠物体重(Kg)<br />
+                    <span v-text="weight">10</span>
+                </li>
+                <li>宠物身高(cm)<br />
+                    <span v-text="height">40</span>
+                </li>
+                <li>出生日期<br />
+                    <span v-text="birthTime">2018-08-14</span>
+                </li>
+                <li>宠物性格<br />
+                    <span v-text="character">嚣张跋扈</span>
+                </li>
+            </ul>
+        </div>
+    </div>
 </template>
 <script>
 import headerTop from "../../components/header.vue";
@@ -43,16 +43,16 @@ export default {
     name: "findPetInfo",
     data() {
         return {
-						name: "",
-						color:'',
+            name: "",
+            color: "",
             weight: "",
             height: "",
             birthTime: "",
             character: "",
             petType: "",
             gender: "",
-						content: "",
-						photoUrl:'',
+            content: "",
+            photoUrl: ""
         };
     },
     created() {
@@ -61,16 +61,17 @@ export default {
         });
         getTagInfo(params).then(res => {
             let pet = res.data.data;
-            this.name = pet.petName;
-						this.weight = pet.weight;
-						this.color = pet.color;
+            this.name = pet.name;
+            
+            this.weight = pet.weight;
+            this.color = pet.color;
             this.height = pet.height;
-            this.birthTime = pet.birthTime.substr(0,10);
+            this.birthTime = pet.birthTime.substr(0, 10);
             this.character = pet.character;
             this.petType = pet.petType;
             this.gender = pet.gender;
-						this.content = pet.content;
-						this.photoUrl = pet.portrait
+            this.content = pet.content;
+            this.photoUrl = pet.portrait;
             console.log(res);
         });
     },
@@ -142,8 +143,10 @@ export default {
     border-radius: 50%;
     overflow: hidden;
     margin: 0 auto;
+    line-height: 8rem;
 }
 .pet_pic img {
     width: 100%;
+    height: 100%;
 }
 </style> 

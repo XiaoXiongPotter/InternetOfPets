@@ -17,6 +17,7 @@
 <script src="//cdn.jsdelivr.net/npm/eruda"></script>
 <script>
   //这段代 主要是获取摄像头的视频流并显示在Video 签中    
+  alert(navigator.appCodeName)
   var canvas = null,
     context = null,
     video = null;
@@ -25,7 +26,6 @@
       canvas = document.getElementById("canvas"); //获取id=canvas的元素
       context = canvas.getContext("2d"); //描绘一个二维画面
       video = document.getElementById("video"); //获取id=video的元素
-
       var videoObj = {
           "video": true,
           audio: false
@@ -105,7 +105,7 @@
     setTimeout(function () { //防止调用过快
       if (context) {
 
-        context.drawImage(video, 0, 0, 320, 320); //drawImage（）在画布上绘制图像、画布或视频 x=0 y=0 width=320 height=320 video是规定要使用的图像、画布或视频
+        context.drawImage(video, 0, 0,400, 400); //drawImage（）在画布上绘制图像、画布或视频 x=0 y=0 width=320 height=320 video是规定要使用的图像、画布或视频
         CatchCode();
       }
     }, 200);
@@ -199,7 +199,7 @@
   </div>
   <div id="contentHolder">
     <video id="video" autoplay></video>
-    <canvas style="display:none;" id="canvas" width="320" height="320"></canvas>
+    <canvas style="display:none;" id="canvas" width="500" height="500"></canvas>
     <br/>
     <button id="snap" style="display:none; ">扫一扫</button>
   </div>
