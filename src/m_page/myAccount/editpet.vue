@@ -91,6 +91,7 @@ import IScroll from "iscroll/build/iscroll-probe";
 import { getPetDevices } from "../../ClientServerApi/index.js";
 import { updatePet } from "../../ClientServerApi/index.js";
 import { deletepet } from "../../ClientServerApi/index.js";
+import { isPetImage } from "../../ClientServerApi/index.js";
 import store from "../../store/store.js";
 import Qs from "qs";
 export default {
@@ -235,26 +236,41 @@ export default {
     },
     save() {
       if (this.flag == false && this.flag1 == false) {
-        var params = Qs.stringify({
-          name: this.list[this.index].name,
-          petId: this.id,
-          height: this.list[this.index].height,
-          weight: this.list[this.index].weight,
-          birthTime: this.list[this.index].birthTime,
-          petType: this.list[this.index].petType,
-          portrait: sessionStorage.base,
-          color: this.list[this.index].color,
-          gender: this.list[this.index].gender,
-          character: this.list[this.index].character
-        });
-        updatePet(params)
+        let params = Qs.stringify({ image: sessionStorage.base });
+        isPetImage(params)
           .then(res => {
             console.log(res);
-            if (res.data.header.status == 1000) {
-              sessionStorage.removeItem("base");
-              this.changeflag = false;
-              this.showflag = false;
-              this.$emit("react");
+            if (res.data.data == true) {
+              var params = Qs.stringify({
+                name: this.list[this.index].name,
+                petId: this.id,
+                height: this.list[this.index].height,
+                weight: this.list[this.index].weight,
+                birthTime: this.list[this.index].birthTime,
+                petType: this.list[this.index].petType,
+                portrait: sessionStorage.base,
+                color: this.list[this.index].color,
+                gender: this.list[this.index].gender,
+                character: this.list[this.index].character
+              });
+              updatePet(params)
+                .then(res => {
+                  console.log(res);
+                  if (res.data.header.status == 1000) {
+                    sessionStorage.removeItem("base");
+                    this.changeflag = false;
+                    this.showflag = false;
+                    this.$emit("react");
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            } else {
+              this.$message({
+                type: "error",
+                message: "宠物头像不符合"
+              });
             }
           })
           .catch(error => {
@@ -293,20 +309,20 @@ export default {
           });
           deletepet(params)
             .then(res => {
-              console.log(res)
+              console.log(res);
               if (res.data.header.status == 1000) {
-                    this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
                 this.showflag = false;
                 this.$emit("remove", this.index);
               }
-              if(res.data.header.status == 81004){
-                    this.$message({
-            type: "error",
-            message: "该宠物在协寻中，无法删除!"
-          });
+              if (res.data.header.status == 81004) {
+                this.$message({
+                  type: "error",
+                  message: "该宠物在协寻中，无法删除!"
+                });
               }
             })
             .catch(error => {
@@ -508,8 +524,8 @@ export default {
   margin-left: 15px;
   width: 50%;
 }
-.editpet .binddevice .bind{
-    font-size: 14px;
-    color:black;
+.editpet .binddevice .bind {
+  font-size: 14px;
+  color: black;
 }
 </style>

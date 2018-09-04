@@ -47,3 +47,7 @@ export const getTagInfo = (params) => {
 export const listScanner = (params) => {
 	return http.fetchPost('/ClientServerApi/pets/search/listScanner',params)
 }
+//识别宠物头像
+export const isPetImage = (params) => {
+	return http.fetchPost('/ClientServerApi/base/medias/isPetImage',params)
+}

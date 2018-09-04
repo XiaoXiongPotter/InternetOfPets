@@ -46,11 +46,15 @@
                 </div>
                 <div class="mobile">
                     <p>电话</p>
-                    <el-input v-model="mobile"></el-input>
+                    <el-input v-model="mobile" @change='judgemobile'></el-input>
+                    			 <br />
+                    <span class="danger" v-show='flag'>手机号不存在</span>
                 </div>
                 <div class="email">
                     <p>邮箱</p>
-                    <el-input v-model="email"></el-input>
+                    <el-input v-model="email" @change='judgeemail'></el-input>
+                    			 <br />
+                    <span class="danger" v-show="flag1">邮箱不存在</span>
                 </div>
                 <div class="release-btn">
                     <el-button type="primary" round style="margin: auto;display: block;margin-top: 15px;" @click='release'>确认发布</el-button>
@@ -62,6 +66,7 @@
 <script>
 import IScroll from "iscroll/build/iscroll-probe";
 import { addPublish } from "../../ClientServerApi/index.js";
+import { isPetImage } from "../../ClientServerApi/index.js";
 import Qs from "qs";
 import BMap from "BMap";
 export default {
@@ -83,7 +88,9 @@ export default {
       loseplace: "",
       id: "",
       lat: "",
-      lng: ""
+      lng: "",
+      flag: false,
+      flag1: false,
       // flag:false,
       // imgflag1:false,
       // imgflag2:false,
@@ -203,27 +210,57 @@ export default {
       //  sessionStorage.removeItem("base2");
       this.$router.back(-1);
     },
+        judgemobile() {
+      let reg1 = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+      if (reg1.test(this.mobile)) {
+        this.flag = false;
+      } else {
+        this.flag = true;
+      }
+    },
+    judgeemail() {
+      let reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+      if (reg.test(this.email)) {
+        this.flag1 = false;
+      } else {
+        this.flag1 = true;
+      }
+    },
     release() {
       // this.imgbase.push(sessionStorage.base,sessionStorage.base1,sessionStorage.base2)
       // console.log(this.imgbase)
-      let params = Qs.stringify({
-        content: this.introduction,
-        lat: this.lat,
-        lon: this.lng,
-        mobile: this.mobile,
-        email: this.email,
-        loseTime: this.losttime,
-        lostPlace: this.loseplace,
-        bounty: this.money,
-        featurePhoto: sessionStorage.base,
-        petId: this.id
-      });
-      addPublish(params)
+      let params = Qs.stringify({ image: sessionStorage.base });
+      isPetImage(params)
         .then(res => {
-          console.log(res);
-          if (res.data.header.status == 1000) {
-            this.$router.replace({ path: "/finder" });
-            sessionStorage.removeItem("base");
+          if (res.data.data == true) {
+            let params = Qs.stringify({
+              content: this.introduction,
+              lat: this.lat,
+              lon: this.lng,
+              mobile: this.mobile,
+              email: this.email,
+              loseTime: this.losttime,
+              lostPlace: this.loseplace,
+              bounty: this.money,
+              featurePhoto: sessionStorage.base,
+              petId: this.id
+            });
+            addPublish(params)
+              .then(res => {
+                console.log(res);
+                if (res.data.header.status == 1000) {
+                  this.$router.replace({ path: "/finder" });
+                  sessionStorage.removeItem("base");
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          } else {
+            this.$message({
+              type: "error",
+              message: "宠物照片不符合"
+            });
           }
         })
         .catch(error => {
@@ -234,6 +271,9 @@ export default {
 };
 </script>
 <style>
+.el-message-box {
+  width: 300px;
+}
 .losepet .el-input.is-disabled .el-input__inner {
   border-top-color: white;
   border-right-color: white;
@@ -296,6 +336,10 @@ export default {
 }
 </style>
 <style scoped>
+.releaseSearch .danger {
+  font-size: 10px;
+  color: red;
+}
 .anchorBL {
   display: none;
 }
